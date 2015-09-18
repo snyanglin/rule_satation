@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns:context="http://www.springframework.org/schema/context"
+xmlns:aop="http://www.springframework.org/schema/aop"
+xmlns:tx="http://www.springframework.org/schema/tx"
+xmlns:util="http://www.springframework.org/schema/util"
+xmlns:mvc="http://www.springframework.org/schema/mvc"
+xmlns:cache="http://www.springframework.org/schema/cache"
+xmlns:p="http://www.springframework.org/schema/p"
+xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd  
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd  
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd  
+http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd
+http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-3.2.xsd
+">
+	<!-- <bean id="restfulInterceptor" class="com.founder.framework.interceptor.RestfulInterceptor" /> -->
+	<aop:aspectj-autoproxy proxy-target-class="true"/> 
+	<context:component-scan base-package="org.activiti.rest.editor"></context:component-scan>  
+	<context:component-scan base-package="com.founder" use-default-filters="false">
+		<context:include-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
+	</context:component-scan>
+
+	<!-- 返回类型定义  -->
+	<bean  id="stringHttpMessageConverter"
+		class="org.springframework.http.converter.StringHttpMessageConverter">
+		<constructor-arg value="UTF-8" index="0"></constructor-arg>
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/plain;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="fastJsonHttpMessageConverter"
+			class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/html;charset=UTF-8</value>
+				<value>application/json;charset=UTF-8</value>
+			</list>
+		</property>
+		<property name="features">
+		<util:list>
+			<value>WriteMapNullValue</value>
+			<value>WriteNullStringAsEmpty</value>
+			<value>QuoteFieldNames</value>
+			<value>WriteNullListAsEmpty</value>
+			<!--  <value>WriteDateUseDateFormat</value>-->
+		</util:list>
+		</property>
+		
+	</bean>
+	<bean id="marshallingHttpMessageConverter"
+		class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+		<property name="marshaller" ref="castorMarshaller" />
+		<property name="unmarshaller" ref="castorMarshaller" />
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/xml;charset=UTF-8</value>
+				<value>application/xml;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+	<util:list id="messageConverters">
+		<ref bean="stringHttpMessageConverter" />
+		<ref bean="fastJsonHttpMessageConverter" />
+		<ref bean="marshallingHttpMessageConverter" />
+	</util:list>
+
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<ref bean="stringHttpMessageConverter" />
+			<ref bean="fastJsonHttpMessageConverter" />
+			<ref bean="marshallingHttpMessageConverter" />
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<property name="messageConverters" ref="messageConverters"></property>
+		<!--线程安全的访问session-->  
+    	<property name="synchronizeOnSession" value="true"/>
+	</bean>
+
+	<bean id="handlerExceptionResolver" class="com.founder.framework.exception.AnnotationHandlerMethodExceptionResolver">
+		<property name="defaultErrorView" value="500"/><!-- 错误页面 -->
+		<property name="messageConverters"  ref="messageConverters"></property> <!--绑定错误信息-->
+	</bean>
+	
+	<!--  <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/*/**"/>
+            <bean class="com.founder.framework.interceptor.SessionInterceptor">
+            <property name="allowUrls">    
+                <list>    
+                  <value>^\/(\w+\/)*index\.jsp$</value>    
+                  <value>^\/(\w+\/)*LoginPage\/login.*</value>
+                  <value>.*\.(js|png|css)$</value>
+                  <value>.*\/forward\/forword</value>
+                  <value>.*\/test\/.*</value>
+                </list>    
+            </property>
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors> -->
+	<!-- 不进行拦截的 -->
+	<mvc:resources location="/" mapping="/**/*.html" order="0" />
+	<mvc:resources location="/images/" mapping="/images/**" />
+	<mvc:resources location="/common/" mapping="/common/**" />
+	<mvc:resources location="/editor-app/" mapping="/editor-app/**" />
+	<mvc:resources location="/js/" mapping="/js/**" />
+	<mvc:resources location="/css/" mapping="/css/**" />
+	<mvc:resources location="/plugin/" mapping="/plugin/**" />
+	<mvc:resources location="/WEB-INF/pages/" mapping="/pages/**" />
+
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/pages/" />
+		<property name="suffix" value=".jsp" />
+	</bean>	
+	<!-- 支持上传文件 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    	<property name="defaultEncoding">
+    		<value>UTF-8</value>
+    	</property>
+    	<property name="maxUploadSize">
+    		<value>104857600</value>
+    	</property>
+    	<property name="maxInMemorySize">
+    		<value>2048000</value>
+    	</property>
+    </bean>
+</beans>

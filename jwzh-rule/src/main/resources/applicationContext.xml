@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                     http://www.springframework.org/schema/beans/spring-beans.xsd
+                     http://www.springframework.org/schema/tx
+                     http://www.springframework.org/schema/tx/spring-tx.xsd
+                     http://www.springframework.org/schema/context 
+                     http://www.springframework.org/schema/context/spring-context.xsd
+                     http://www.springframework.org/schema/aop
+                     http://www.springframework.org/schema/aop/spring-aop.xsd
+                     http://www.springframework.org/schema/jdbc
+                     http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+                     http://www.springframework.org/schema/util      
+          			 http://www.springframework.org/schema/util/spring-util-3.2.xsd
+                     http://www.springframework.org/schema/mvc 
+  					 http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+
+
+	<!-- <bean id="logInterceptor" class="com.founder.framework.interceptor.LogInterceptor" 
+		/> -->
+    <util:properties id="APP_PROPERTIES" location="classpath:system.properties" local-override="true"/>
+
+	<bean id="castorMarshaller" class="org.springframework.oxm.castor.CastorMarshaller" />
+
+	<!-- AOP自动注解功能 -->
+	<aop:aspectj-autoproxy />
+	<!-- json处理 -->
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"></bean>
+
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="messages"></property>
+	</bean>
+	
+	<import resource="spring-source.xml" />
+</beans>
