@@ -327,7 +327,7 @@
 		  </dependency>
 		<!-- Drools end -->
 		
-		<!-- activity start -->
+		<!-- activity start 
 		 <dependency>
 		    <groupId>org.activiti</groupId>
 		    <artifactId>activiti-engine</artifactId>
@@ -345,8 +345,7 @@
 		    <artifactId>activiti-spring</artifactId>
 		    <version>${activiti.version}</version>
 		    <scope>provided</scope>
-		  </dependency>
-	  		<!-- activity end -->
+		  </dependency>  activity end -->
 	</dependencies>
 	<build>
 		<plugins>
