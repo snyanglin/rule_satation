@@ -2,6 +2,8 @@ package com.founder.zdrylg.bean;
 
 import java.io.Serializable;
 
+import com.founder.framework.base.entity.BaseEntity;
+
 /***
  * ****************************************************************************
  * 
@@ -16,7 +18,7 @@ import java.io.Serializable;
  * @Version: [v1.0]
  */
 
-public class ZdryZdryzb   implements Serializable {
+public class ZdryZdryzb extends BaseEntity implements Serializable {
 	
 	private static final long serialVersionUID = -5971506890685259930L;
 	//("重点人员ID") 
