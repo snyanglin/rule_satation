@@ -109,7 +109,7 @@
 		</property>
 	</bean>
 	
-	<bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<!-- Drools与Activity结合列子配置<bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
 				<value>/WEB-INF/db.properties</value>
@@ -117,7 +117,7 @@
 		</property>
 	</bean>
 	
-   <!-- Drools与Activity结合列子配置 <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">  
+    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">  
         <property name="dataSource" ref="dataSource" />  
         <property name="transactionManager" ref="transactionManager" />  
         <property name="databaseSchemaUpdate" value="true" />  

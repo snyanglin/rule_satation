@@ -2,7 +2,7 @@
 package com.product
 
 //list any import classes here.
-import cn.com.guotl.bean.Leave;
+import com.founder.zdrylg.bean.ZdryZdryzb;
 
 //declare any global variables here
 
@@ -10,9 +10,8 @@ rule "single_test"
 
     when 
         //conditions
-        a:Leave(name == 'aa');
+        a:ZdryZdryzb();
     then
-    	a.setDay(200);
         //actions
-		System.out.println('测试成功，自定义规则框架，无activity集成   '+a.getName());
+		System.out.println('测试成功，自定义规则框架，无activity集成   ');
 end
