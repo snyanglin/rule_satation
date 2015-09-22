@@ -36,4 +36,44 @@
 	</bean>
 	
 	<import resource="spring-source.xml" />
+	
+	<!-- <bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/db.properties</value>
+			</list>
+		</property>
+	</bean> -->
+	
+	<!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">  
+        <property name="driverClass" value="org.postgresql.Driver" />  
+        <property name="url" value="jdbc:postgresql://localhost/activity17" />  
+        <property name="username" value="postgres" />  
+        <property name="password" value="root" />  
+    </bean>  
+  
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+        <property name="dataSource" ref="dataSource" />  
+    </bean>  
+  
+    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">  
+        <property name="dataSource" ref="dataSource" />  
+        <property name="transactionManager" ref="transactionManager" />  
+        <property name="databaseSchemaUpdate" value="true" />  
+        <property name="customPostDeployers">  
+            <list>   
+                  <bean class="org.activiti.engine.impl.rules.RulesDeployer" />  
+            </list>   
+        </property>  
+    </bean>  
+  
+    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">  
+        <property name="processEngineConfiguration" ref="processEngineConfiguration" />  
+    </bean>  
+  
+    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />  
+    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />  
+    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />  
+    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />  
+    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />  -->
 </beans>

@@ -78,6 +78,10 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 	
+	<!-- 依赖注入扫描路径 -->
+	<context:component-scan base-package="cn.com.founder.*.controller.*" />
+	<context:component-scan base-package="cn.com.founder.*.service.*.*" />
+	
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
 		<property name="messageConverters" ref="messageConverters"></property>
 		<!--线程安全的访问session-->  
