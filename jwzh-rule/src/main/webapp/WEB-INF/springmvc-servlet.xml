@@ -51,7 +51,6 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
 			<!--  <value>WriteDateUseDateFormat</value>-->
 		</util:list>
 		</property>
-		
 	</bean>
 	<bean id="marshallingHttpMessageConverter"
 		class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
@@ -79,8 +78,10 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
 	</mvc:annotation-driven>
 	
 	<!-- 依赖注入扫描路径 -->
-	<context:component-scan base-package="cn.com.founder.*.controller.*" />
-	<context:component-scan base-package="cn.com.founder.*.service.*.*" />
+	<context:component-scan base-package="com.founder.zdrylg.controller.*" />
+	<context:component-scan base-package="com.founder.zdrylg.controller" />
+	<context:component-scan base-package="com.founder.*.controller.*" />
+	<context:component-scan base-package="com.founder.*.service.*.*" />
 	
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
 		<property name="messageConverters" ref="messageConverters"></property>
@@ -89,10 +90,11 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
 	</bean>
 
 	<bean id="handlerExceptionResolver" class="com.founder.framework.exception.AnnotationHandlerMethodExceptionResolver">
-		<property name="defaultErrorView" value="500"/><!-- 错误页面 -->
-		<property name="messageConverters"  ref="messageConverters"></property> <!--绑定错误信息-->
+		<property name="defaultErrorView" value="500"/>错误页面
+		<property name="messageConverters"  ref="messageConverters"></property> 绑定错误信息
 	</bean>
 	
+	<!-- 此部分暂时注释掉 -->
 	<!--  <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/*/**"/>

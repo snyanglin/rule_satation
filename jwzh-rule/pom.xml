@@ -293,6 +293,7 @@
 			<version>1.2</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- 警综基础jar -->
 		<dependency>
 			<groupId>com.founder</groupId>
 			<artifactId>jwzh-baseframework</artifactId>
