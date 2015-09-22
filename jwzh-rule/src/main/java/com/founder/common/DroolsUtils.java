@@ -1,4 +1,4 @@
-package cn.com.founder.common;
+package com.founder.common;
 
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;

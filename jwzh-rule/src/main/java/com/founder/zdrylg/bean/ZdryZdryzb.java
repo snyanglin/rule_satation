@@ -1,4 +1,4 @@
-package cn.com.founder.zdrylg.bean;
+package com.founder.zdrylg.bean;
 
 import java.io.Serializable;
 
