@@ -13,11 +13,12 @@
                      http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
                      http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd" 
     default-autowire="byName">
+    
 	<!-- 配置文件路径定义 -->
-	<context:property-placeholder ignore-unresolvable="true" local-override="true"
-                                  location="classpath*:/resources.properties,classpath*:/resources.local.properties"/>
+	<context:property-placeholder ignore-unresolvable="true"  local-override="true" 
+            location="classpath*:/resources.properties,classpath*:/resources.local.properties"/>
 	
-	<context:component-scan base-package="com.founder,org.activiti.rest.editor" >
+	<context:component-scan base-package="com.founder" >
 		<context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
 	</context:component-scan>
 	
