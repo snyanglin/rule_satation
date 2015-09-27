@@ -297,7 +297,7 @@
 		<dependency>
 		  <groupId>com.founder</groupId>
 		  <artifactId>jwzh-baseframework</artifactId>
-		  <version>f1.01</version>
+		  <version>f1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.oracle</groupId>
