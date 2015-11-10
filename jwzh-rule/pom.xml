@@ -291,14 +291,8 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
-			<scope>test</scope>
 		</dependency>
 		<!-- 警综基础jar -->
-		<dependency>
-		  <groupId>com.founder</groupId>
-		  <artifactId>jwzh-baseframework</artifactId>
-		  <version>f1.0</version>
-		</dependency>
 		<dependency>
 			<groupId>org.oracle</groupId>
 			<artifactId>ojdbc6</artifactId>
@@ -346,6 +340,11 @@
 		    <version>${activiti.version}</version>
 		    <scope>provided</scope>
 		  </dependency>  activity end -->
+		<dependency>
+			<groupId>com.founder</groupId>
+			<artifactId>jwzh-framework</artifactId>
+			<version>1.0.1</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

@@ -1,0 +1,9 @@
+import java.util.Map;
+
+rule "MainConfig"	
+    when 
+       	configMap:Map();
+    then
+    	configMap.put("MESSAGE_ZDRYGL", "D:/work/Git_syrk_sy/jwzh-rule/jwzh-rule/src/main/resources/drl/zdrygl/message.drl");
+    	
+end

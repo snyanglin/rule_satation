@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:aop="http://www.springframework.org/schema/aop"
-	xmlns:context="http://www.springframework.org/schema/context" 
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:jee="http://www.springframework.org/schema/jee" 
-	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-                     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
-                     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
-                     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
-                     http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
-                     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd" 
-    default-autowire="byName">
-    
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                     http://www.springframework.org/schema/beans/spring-beans.xsd
+                     http://www.springframework.org/schema/tx
+                     http://www.springframework.org/schema/tx/spring-tx.xsd
+                     http://www.springframework.org/schema/context 
+                     http://www.springframework.org/schema/context/spring-context.xsd
+                     http://www.springframework.org/schema/aop
+                     http://www.springframework.org/schema/aop/spring-aop.xsd
+                     http://www.springframework.org/schema/jee
+                     http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+                     http://www.springframework.org/schema/jdbc
+                     http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd" default-autowire="byName">
 	<!-- 配置文件路径定义 -->
-	<context:property-placeholder ignore-unresolvable="true"  local-override="true" 
-            location="classpath*:/resources.properties,classpath*:/resources.local.properties"/>
+	<context:property-placeholder location="classpath:resources.properties" />
 	
 	<context:component-scan base-package="com.founder" >
 		<context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
@@ -25,33 +25,23 @@
 	<!-- jndi配置
 	<jee:jndi-lookup id="dataSource" jndi-name="${PublicJNDI}" /> -->
 
-	<!-- druid 连接池配置-->
-	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close"> 
-      <property name="url" value="${jdbc.url}" />
-      <property name="username" value="${jdbc.username}" />
-      <property name="password" value="${jdbc.password}" />
-      <property name="initialSize" value="1" />
-      <property name="minIdle" value="1" /> 
-      <property name="maxActive" value="20" />
-      <property name="maxWait" value="60000" />
-      <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-      <property name="timeBetweenEvictionRunsMillis" value="60000" />
-
-      <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
-      <property name="minEvictableIdleTimeMillis" value="300000" />
-
-      <property name="validationQuery" value="${jdbc.test}" />
-      <property name="testWhileIdle" value="true" />
-      <property name="testOnBorrow" value="false" />
-      <property name="testOnReturn" value="false" />
-
-      <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
-      <property name="poolPreparedStatements" value="true" />
-      <property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
-
-      <!-- 配置监控统计拦截的filters -->
-      <property name="filters" value="stat" /> 
-  </bean>
+	<!-- c3p0 连接池配置-->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${oracle.driverClassName}"></property>
+		<property name="jdbcUrl" value="${oracle.url}"></property>
+		<property name="user" value="${oracle.username}"></property>
+		<property name="password" value="${oracle.password}"></property>
+		<property name="minPoolSize" value="5" />
+		<property name="maxPoolSize" value="20" />
+		<property name="maxIdleTime" value="1800" />
+		<property name="acquireIncrement" value="2" />
+		<property name="maxStatements" value="0" />
+		<property name="initialPoolSize" value="5" />
+		<property name="idleConnectionTestPeriod" value="1800" />
+		<property name="acquireRetryAttempts" value="30" />
+		<property name="breakAfterAcquireFailure" value="true" />
+		<property name="testConnectionOnCheckout" value="false" />
+	</bean>  
 
 	<!-- spring jdbc 事务管理 -->
 	<bean id="transactionManager"
@@ -75,14 +65,14 @@
 		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
 		<property name="configLocation" value="classpath:ehcache.xml" />
 	</bean>
-	<!-- 普通数据源 -->
+	<!-- 普通数据源 
 	<bean id="nativeJdbcExtractor"
 		class="org.springframework.jdbc.support.nativejdbc.CommonsDbcpNativeJdbcExtractor"
-		lazy-init="true" />
-	<!-- c3p0数据源 
+		lazy-init="true" />-->
+	<!-- c3p0数据源 -->
 	<bean id="nativeJdbcExtractor"
 		class="org.springframework.jdbc.support.nativejdbc.C3P0NativeJdbcExtractor"
-		lazy-init="true" />-->
+		lazy-init="true" />
 		
 	<bean id="oracleLobHandler" class="org.springframework.jdbc.support.lob.OracleLobHandler"
 		lazy-init="true">
@@ -96,7 +86,15 @@
 		</property>
 		<property name="mappingLocations">
 			<list>
-				<value>classpath:/com/founder/framework/**/sqlmap/*.xml</value>
+				<value>classpath:/com/founder/**/sqlmap/*.xml</value>
+				<value>classpath:/com/founder/framework/sqlmap/operationLog.xml</value>
+				<value>classpath:/com/founder/framework/sqlmap/system.xml</value>
+				<value>classpath:/com/founder/framework/sysManager/sqlmap/*.xml</value>
+				<value>classpath:/com/founder/framework/dictionary/sqlmap/*.xml</value>
+				<value>classpath:/com/founder/framework/organization/**/sqlmap/*.xml</value>
+				<value>classpath:/com/founder/framework/systemconfig/sqlmap/*.xml</value>
+				<value>classpath:/com/founder/framework/workflow/sqlmap/*.xml</value>
+				<value>classpath:/com/founder/framework/workflowtest/sqlmap/*.xml</value>
 			</list>
 		</property>
 		<property name="lobHandler" ref="oracleLobHandler"/>
@@ -105,37 +103,7 @@
 
 	<bean id="sqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
 		<property name="sqlMapClient">
-			<ref bean="sqlMapClient" />
+			<ref bean="sqlMapClient" /> 
 		</property>
-	</bean>
-	
-	<!-- Drools与Activity结合列子配置<bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>/WEB-INF/db.properties</value>
-			</list>
-		</property>
-	</bean>
-	
-    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">  
-        <property name="dataSource" ref="dataSource" />  
-        <property name="transactionManager" ref="transactionManager" />  
-        <property name="databaseSchemaUpdate" value="true" />  
-        <property name="customPostDeployers">  
-            <list>   
-                  <bean class="org.activiti.engine.impl.rules.RulesDeployer" />  
-            </list>   
-        </property>  
-    </bean>  
-  
-    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">  
-        <property name="processEngineConfiguration" ref="processEngineConfiguration" />  
-    </bean>  
-  
-    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService" />  
-    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService" />  
-    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService" />  
-    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService" />  
-    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService" />  --> 
-	
+	</bean>	
 </beans>

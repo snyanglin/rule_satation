@@ -16,7 +16,9 @@
 	<!-- 注销数据 -->
 	<sql id="zxjl"> xt_zxbz = '1' </sql>
 	<typeAlias alias="node" type="com.founder.framework.base.entity.TreeNode" />
+	<!-- 
 	<typeAlias alias="dict" type="com.founder.framework.base.entity.Dict" />
+	 -->
 	<typeAlias alias="sessionBean" type="com.founder.framework.base.entity.SessionBean" />
 	<typeAlias alias="operLog" type="com.founder.framework.entity.OperationLog" />
 	<typeAlias alias="manaLog" type="com.founder.framework.entity.ManagerLog" />
