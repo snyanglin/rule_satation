@@ -78,6 +78,7 @@ public class RuleServiceImpl implements RuleService {
 	        return true;
 		}catch(Exception e){
 			e.printStackTrace();
+			ruleBean.setResponse(e.toString());
 		}
 		
 		return false;
@@ -97,6 +98,54 @@ public class RuleServiceImpl implements RuleService {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	/**
+	 * 
+	 * @Title: testRule
+	 * @Description: TODO(新规则测试验证)
+	 * @param @param ruleFileName
+	 * @param @param ruleName
+	 * @param @param content
+	 * @param @param paramStr
+	 * @param @return    设定文件
+	 * @return RuleBean    返回类型
+	 * @throw
+	 */
+	public RuleBean testRule(RuleBean ruleBean,String paramStr){
+		try{
+			if(drlFilePath == null)
+				drlFilePath=SystemConfig.getString("DrlFilePath");
+			
+			RuleConfig ruleConfig = new RuleConfig(drlFilePath+"/test/"+ruleBean.getRuleFileName()+"_"+ruleBean.getRuleName()+"_TEST.drl");
+			StatefulKnowledgeSession ksession = ruleConfig.getKbase().newStatefulKnowledgeSession();
+			
+			ksession.insert(ruleBean);	
+			ksession.insert(Str2Map(paramStr));		
+			
+	        //触发规则引擎
+	        ksession.fireAllRules();
+	        ksession.dispose();
+		}catch(Exception e){
+			e.printStackTrace();
+			ruleBean.setResponse(e.toString());
+		}
+		return ruleBean;
+	}
+	private Map Str2Map(String paramStr){
+		//String paramStr="{p3=p3, p2=p2, p1=p1}";
+		paramStr=paramStr.replace("{", "");
+		paramStr=paramStr.replace("}", "");
+		Map map=new HashMap();
+		String keyAndValueAry[]=paramStr.split(",");
+		for(int i=0;i<keyAndValueAry.length;i++){
+			String keyAdnValue[] = keyAndValueAry[i].split("=");
+			if(keyAdnValue.length==2){
+				map.put(keyAdnValue[0].trim(), keyAdnValue[1].trim());
+			}
+		}
+		
+		return map;
 	}
 	
 }

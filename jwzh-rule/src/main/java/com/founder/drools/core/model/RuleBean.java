@@ -23,6 +23,7 @@ public class RuleBean {
 	private String ruleName;//规则名
 	private int resStatus=1;//0成功 1失败
 	private Object response;//返回对象
+	private Map paraMap;
 	
 	public String getRuleFileName() {
 		return ruleFileName;
@@ -48,7 +49,12 @@ public class RuleBean {
 	public void setResponse(Object response) {
 		this.response = response;
 	}
-	
+	public Map getParaMap() {
+		return paraMap;
+	}
+	public void setParaMap(Map paraMap) {
+		this.paraMap = paraMap;
+	}
 	/**
 	 * 
 	 * @Title: executeServiceByHttp

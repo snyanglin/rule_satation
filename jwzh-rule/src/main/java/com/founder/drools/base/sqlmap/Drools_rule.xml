@@ -10,11 +10,12 @@
        insert into DROOLS_RULE
        (
         id
+        <isNotEmpty prepend="," property="rulefilename"><![CDATA[ rulefilename]]></isNotEmpty>
 		<isNotEmpty prepend="," property="rulename"><![CDATA[ rulename]]></isNotEmpty>
 		<isNotEmpty prepend="," property="serviceid"><![CDATA[ serviceid]]></isNotEmpty>
 		<isNotEmpty prepend="," property="groupid"><![CDATA[ groupid]]></isNotEmpty>
 		<isNotEmpty prepend="," property="content"><![CDATA[ content]]></isNotEmpty>
-		<isNotEmpty prepend="," property="response"><![CDATA[ response]]></isNotEmpty>
+		<isNotEmpty prepend="," property="paramstr"><![CDATA[ paramstr]]></isNotEmpty>
 		<isNotEmpty prepend="," property="status"><![CDATA[ status]]></isNotEmpty>
 		<isNotEmpty prepend="," property="createtime"><![CDATA[ createtime]]></isNotEmpty>
 		<isNotEmpty prepend="," property="updatetime"><![CDATA[ updatetime]]></isNotEmpty>
@@ -22,12 +23,13 @@
 		<isNotEmpty prepend="," property="bz"><![CDATA[ bz]]></isNotEmpty>
 		<isNotEmpty prepend="," property="ruletype"><![CDATA[ ruletype]]></isNotEmpty>
        )VALUES(
-       	#id#       
+       	#id#
+       	<isNotEmpty prepend="," property="rulefilename"><![CDATA[#rulefilename#]]></isNotEmpty>       
 		<isNotEmpty prepend="," property="rulename"><![CDATA[#rulename#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="serviceid"><![CDATA[#serviceid#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="groupid"><![CDATA[ #groupid#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="content"><![CDATA[#content#]]></isNotEmpty>
-		<isNotEmpty prepend="," property="response"><![CDATA[#response#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="paramstr"><![CDATA[#paramstr#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="status"><![CDATA[#status#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="createtime"><![CDATA[#createtime#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="updatetime"><![CDATA[#updatetime#]]></isNotEmpty>
@@ -39,11 +41,12 @@
     
     <update id="updateRule" parameterClass="drools_rule">
     	<![CDATA[ update DROOLS_RULE ]]>	
-		<dynamic prepend="set">			
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="rulefilename"><![CDATA[ rulefilename = #rulefilename#]]></isNotNull>			
 			<isNotNull prepend="," property="rulename"><![CDATA[ rulename = #rulename#]]></isNotNull>
 			<isNotNull prepend="," property="groupid"><![CDATA[ groupid = #groupid#]]></isNotNull>
 			<isNotNull prepend="," property="content"><![CDATA[ content = #content#]]></isNotNull>
-			<isNotNull prepend="," property="response"><![CDATA[ response = #response#]]></isNotNull>
+			<isNotNull prepend="," property="paramstr"><![CDATA[ paramstr = #paramstr#]]></isNotNull>
 			<isNotNull prepend="," property="status"><![CDATA[ status = #status#]]></isNotNull>
 			<isNotNull prepend="," property="createtime"><![CDATA[ createtime = #createtime#]]></isNotNull>
 			<isNotNull prepend="," property="updatetime"><![CDATA[ updatetime = #updatetime#]]></isNotNull>
@@ -59,10 +62,11 @@
          from DROOLS_GROUP g,DROOLS_SERVICE s,DROOLS_RULE r
 		 where r.GROUPID=g.id and g.SERVICEID=s.id		  
 		<isNotEmpty prepend=" and " property="id">r.ID = #id#</isNotEmpty>
+		<isNotEmpty prepend=" and " property="rulefilename">r.RULEFILENAME = #rulefilename#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="rulename">r.RULENAME = #rulename#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="groupid">r.GROUPID = #groupid#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="content">r.CONTENT = #content#</isNotEmpty>
-		<isNotEmpty prepend=" and " property="response">r.RESPONSE = #response#</isNotEmpty>
+		<isNotEmpty prepend=" and " property="paramstr">r.paramstr = #paramstr#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="status">r.STATUS = #status#</isNotEmpty>
 		<isEmpty prepend=" and " property="status"><![CDATA[ r.STATUS != '9' ]]></isEmpty>
 		<isNotEmpty prepend=" and " property="createtime">r.CREATETIME = #createtime#</isNotEmpty>

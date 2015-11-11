@@ -42,4 +42,17 @@ public interface RuleService {
 	 */
 	public boolean reLoadOne(String ruleFileName);
 	
+	/**
+	 * 
+	 * @Title: testRule
+	 * @Description: TODO(新规则测试验证)
+	 * @param @param ruleFileName
+	 * @param @param ruleName	 
+	 * @param @param paramStr
+	 * @param @return    设定文件
+	 * @return RuleBean    返回类型
+	 * @throw
+	 */
+	public RuleBean testRule(RuleBean ruleBean,String paramStr);
+	
 }

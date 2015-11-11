@@ -51,17 +51,15 @@ public class RuleConfig {
 	 * @Description: TODO(获取KnowledgeBase，第一次调用的时候初始化)
 	 * @param @return    设定文件
 	 * @return KnowledgeBase    返回类型
+	 * @throws Exception 
 	 * @throw
 	 */
-	public KnowledgeBase getKbase() {
+	public KnowledgeBase getKbase() throws Exception {
 		if(kbase == null){
 			//kbase = DroolsUtils.buildKnowledgeBaseByUrl(url, userName, userPassword);
-			try {
+		
 				kbase = DroolsUtils.buildKnowledgeBaseByFile(url);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
 		}
 		return kbase;
 	}

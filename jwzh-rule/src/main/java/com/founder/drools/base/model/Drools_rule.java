@@ -14,10 +14,11 @@ public class Drools_rule extends BaseEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@FieldDesc("规则ID") private String id;
+	@FieldDesc("规则文件名称") private String rulefilename;
 	@FieldDesc("规则名称") private String rulename;
 	@FieldDesc("分组ID") private String groupid;
 	@FieldDesc("规则内容") private String content;
-	@FieldDesc("返回内容") private String response;
+	@FieldDesc("返回内容") private String paramstr;
 	@FieldDesc("状态：0正常，1未验证，3未发布，9历史版本") private String status;
 	@FieldDesc("创建时间") private Date createtime;
 	@FieldDesc("更新时间") private Date updatetime;
@@ -33,6 +34,12 @@ public class Drools_rule extends BaseEntity implements Serializable {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}	
+	public String getRulefilename() {
+		return rulefilename;
+	}
+	public void setRulefilename(String rulefilename) {
+		this.rulefilename = rulefilename;
 	}
 	public String getRulename() {
 		return rulename;
@@ -52,11 +59,11 @@ public class Drools_rule extends BaseEntity implements Serializable {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getResponse() {
-		return response;
+	public String getParamstr() {
+		return paramstr;
 	}
-	public void setResponse(String response) {
-		this.response = response;
+	public void setParamstr(String paramstr) {
+		this.paramstr = paramstr;
 	}
 	public String getStatus() {
 		return status;

@@ -17,7 +17,7 @@
 <!-- 隐藏区域 -->
 <input type="hidden" name="ruleFileName" id="ruleFileName" value="MESSAGE_ZDRY" />
 <input type="hidden" name="ruleName" id="ruleName" value="LGSQ" />
-<input type="hidden" name="paramObj" id="paramObj" value="" />
+<input type="hidden" name="paramStr" id="paramStr" value="{zdrygllx=02, p2=p2, p1=p1}" />
 <input type="hidden" name="globalParamMap" id="globalParamMap" value="" />
 
 <table>

@@ -36,16 +36,13 @@ public class DroolsRuleService{
 	
 	public void addRule(Drools_rule entity) {
 		
-		entity.setCreatetime(new Date());		
-		entity.setStatus("1");//未验证
+		entity.setCreatetime(new Date());				
 		entity.setId(getTimeString());
 		drools_ruleDao.insert(entity);
 	}
 	
 	public void updateRule(Drools_rule entity) {
-		
-		entity.setUpdatetime(new Date());
-		entity.setStatus("1");//未验证
+		entity.setUpdatetime(new Date());		
 		drools_ruleDao.update(entity);
 	}
 	
@@ -68,39 +65,85 @@ public class DroolsRuleService{
 		drools_ruleDao.delete(entity);
 	}
 
-	public void ruleRelease(String rulename) {
+	public void ruleRelease(String rulefilename) {
 		Drools_rule entity=new Drools_rule();
-		entity.setRulename(rulename);
+		entity.setRulefilename(rulefilename);
 		entity.setRuletype("0");
 		Drools_rule ruleHead = drools_ruleDao.queryByEntity(entity);
 		
 		entity.setRuletype("1");
-		List list = drools_ruleDao.queryListByEntity(entity);//查询所有未发布的rulename规则
+		List list = drools_ruleDao.queryListByEntity(entity);//查询所有未归档的rulefilename的规则
 		StringBuffer content=new StringBuffer();
 		content.append(ruleHead.getContent()).append("\r\n\r\n");
 		for(int i=0;i<list.size();i++){
-			content.append(((Drools_rule)list.get(i)).getContent()).append("\r\n\r\n");
+			content.append("rule \""+((Drools_rule)list.get(i)).getRulename()+"\"\r\n\r\n").append(((Drools_rule)list.get(i)).getContent()).append("\r\n\r\nend\r\n\r\n");
 		}
-		this.writeDrl(ruleHead.getRulename(), content.toString());
-		ruleService.reLoadOne(ruleHead.getRulename());
+		this.writeDrl(ruleHead.getRulefilename(), content.toString(),false);
+		ruleService.reLoadOne(ruleHead.getRulefilename());
+		
+		
+		list.add(ruleHead);		
+		
+		//记录版本
+		
+		//修改状态，添加版本号
+		String version=this.getTimeString();
+		for(int i=0;i<list.size();i++){
+			entity = (Drools_rule) list.get(i);
+			entity.setStatus("0");
+			entity.setVersion(version);
+			this.updateRule(entity);
+		}
 	}
 	
-	private void  writeDrl(String fileName,String content){		
+	/**
+	 * 
+	 * @Title: ruleTestRelease
+	 * @Description: TODO(发布测试验证的临时文件)
+	 * @param @param rulefilename
+	 * @param @param rulename    
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void ruleTestRelease(String rulefilename,String rulename) {
+		Drools_rule entity=new Drools_rule();
+		entity.setRulefilename(rulefilename);
+		entity.setRuletype("0");
+		Drools_rule ruleHead = drools_ruleDao.queryByEntity(entity);
+		
+		entity.setRuletype("1");
+		entity.setRulename(rulename);
+		List list = drools_ruleDao.queryListByEntity(entity);//查询所有未归档的rulename规则
+		StringBuffer content=new StringBuffer();
+		content.append(ruleHead.getContent()).append("\r\n\r\n");
+		for(int i=0;i<list.size();i++){
+			content.append("rule \""+((Drools_rule)list.get(i)).getRulename()+"\"\r\n\r\n").append(((Drools_rule)list.get(i)).getContent()).append("\r\n\r\nend\r\n\r\n");
+		}
+		
+		String testFileName=ruleHead.getRulefilename()+"_"+rulename+"_TEST";
+		this.writeDrl(testFileName, content.toString(),true);		
+	}
+	
+	private void  writeDrl(String fileName,String content,boolean isTest){		
 		if(filePath==null || filePath.length()==0)
 			filePath = SystemConfig.getString("DrlFilePath");
 		if(filePath==null || filePath.length()==0)
 			throw new RuntimeException("can not find \"DrlFilePath\" in systemconfig");
 		//创建文件夹
-		File dir = new File(filePath);
+		String testDir="";
+		if(isTest){
+			testDir="/test";
+		}
+		File dir = new File(filePath+testDir);
 		if(!dir.exists()){
 			dir.mkdir();
 		}
 		
 		if(!dir.exists()){
-			throw new RuntimeException("can not create path:"+filePath);
+			throw new RuntimeException("can not create path:"+filePath+testDir);
 		}
 		try{			
-			File file=new File(filePath+"/"+fileName+".drl");
+			File file=new File(filePath+testDir+"/"+fileName+".drl");
 			if(!file.exists()){
 				file.createNewFile();
 			}
