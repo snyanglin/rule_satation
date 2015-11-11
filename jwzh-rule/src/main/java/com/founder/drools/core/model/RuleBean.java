@@ -19,15 +19,16 @@ import org.apache.commons.httpclient.methods.GetMethod;
  * @Version:      [v1.0]
  */
 public class RuleBean {
-	private String ruleServerName;//规则分组名
+	private String ruleFileName;//规则文件名
 	private String ruleName;//规则名
 	private int resStatus=1;//0成功 1失败
 	private Object response;//返回对象
-	public String getRuleServerName() {
-		return ruleServerName;
+	
+	public String getRuleFileName() {
+		return ruleFileName;
 	}
-	public void setRuleServerName(String ruleServerName) {
-		this.ruleServerName = ruleServerName;
+	public void setRuleFileName(String ruleFileName) {
+		this.ruleFileName = ruleFileName;
 	}
 	public String getRuleName() {
 		return ruleName;

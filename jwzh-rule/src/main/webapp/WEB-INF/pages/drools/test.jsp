@@ -1,16 +1,39 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ page import="com.founder.framework.config.SystemConfig"%>
-<%
-	String contextPath = request.getContextPath();
-%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ include file="/WEB-INF/pages/commonInclude.jsp"%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+	function testRule(){
+		document.dataForm.submit();
+	}
+</script>
 </head>
 <body>
-test
+<form action="<%=basePath%>founderRule/executeRule"  id="dataForm" name="dataForm" method="post" >
+<!-- 隐藏区域 -->
+<input type="hidden" name="ruleFileName" id="ruleFileName" value="MESSAGE_ZDRY" />
+<input type="hidden" name="ruleName" id="ruleName" value="LGSQ" />
+<input type="hidden" name="paramObj" id="paramObj" value="" />
+<input type="hidden" name="globalParamMap" id="globalParamMap" value="" />
 
+<table>
+	<tr>
+		<th>规则</th><th>测试</th><th>结果</th>
+	</tr>
+	<tr>
+		<td>MESSAGE_ZDRY</td>
+		<td>
+			<input type="button" value="test"  onclick="testRule()"/>
+		</td>
+		<td>
+			${ruleRes }
+		</td>
+	</tr>
+</table>
+</form>
 </body>
 </html>

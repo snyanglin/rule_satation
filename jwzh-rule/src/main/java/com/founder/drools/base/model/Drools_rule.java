@@ -18,12 +18,12 @@ public class Drools_rule extends BaseEntity implements Serializable {
 	@FieldDesc("分组ID") private String groupid;
 	@FieldDesc("规则内容") private String content;
 	@FieldDesc("返回内容") private String response;
-	@FieldDesc("状态：0正常，1未验证，2历史版本") private int status;
+	@FieldDesc("状态：0正常，1未验证，3未发布，9历史版本") private String status;
 	@FieldDesc("创建时间") private Date createtime;
 	@FieldDesc("更新时间") private Date updatetime;
-	@FieldDesc("版本：新版本发布，老版本状态变成2的时间") private String version;
+	@FieldDesc("版本：新版本发布，老版本状态变成9的时间") private String version;
 	@FieldDesc("备注") private String bz;
-	@FieldDesc("规则类型：0规则头，1规则体") private int ruletype;
+	@FieldDesc("规则类型：0规则头，1规则体") private String ruletype;
 	
 	@FieldDesc("分组名") private String groupname;
 	@FieldDesc("服务ID") private String serviceid;
@@ -58,10 +58,10 @@ public class Drools_rule extends BaseEntity implements Serializable {
 	public void setResponse(String response) {
 		this.response = response;
 	}
-	public int getStatus() {
+	public String getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 	public Date getCreatetime() {
@@ -92,10 +92,10 @@ public class Drools_rule extends BaseEntity implements Serializable {
 	
 	
 	
-	public int getRuletype() {
+	public String getRuletype() {
 		return ruletype;
 	}
-	public void setRuletype(int ruletype) {
+	public void setRuletype(String ruletype) {
 		this.ruletype = ruletype;
 	}
 	public String getGroupname() {

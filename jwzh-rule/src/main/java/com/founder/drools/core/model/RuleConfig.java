@@ -17,10 +17,7 @@ import org.drools.KnowledgeBase;
 public class RuleConfig {
 	//规则服务URL	
 	private String url = null;
-	//规则服务用户名
-	private String userName = null;
-	//规则服务密码
-	private String userPassword = null;
+
 	//规则服务对象
 	private KnowledgeBase kbase = null;
 	
@@ -36,10 +33,8 @@ public class RuleConfig {
 	 * @param userName 规则服务器用户名
 	 * @param userPassword 规则服务器密码
 	 */
-	public RuleConfig(String url,String userName,String userPassword){
+	public RuleConfig(String url){
 		this.url=url;
-		this.userName=userName;
-		this.userPassword=userPassword;
 	}		
 
 	public String getUrl() {
@@ -48,22 +43,6 @@ public class RuleConfig {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getUserPassword() {
-		return userPassword;
-	}
-
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
 	}
 
 	/**

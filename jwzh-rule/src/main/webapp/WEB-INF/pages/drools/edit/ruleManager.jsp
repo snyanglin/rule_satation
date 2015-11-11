@@ -35,7 +35,7 @@
 	<tr><td><c:out value="${item.groupname }" /></td>
 	<td><c:out value="${item.rulename }" /></td>
 	<td><c:out value="${item.bz }" /></td>
-	<td><a href="<%=contextPath%>/ruleManager/ruleEditPre?ruleId=${item.id}">编辑</a></td></tr>
+	<td><a href="<%=contextPath%>/ruleManager/ruleEditPre?ruleName=${item.rulename}">编辑</a></td></tr>
 </c:forEach>
 </table>
 </body>

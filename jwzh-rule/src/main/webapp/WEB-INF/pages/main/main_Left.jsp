@@ -11,7 +11,7 @@
 </head>
 <body>
 <h2>系统管理</h2><br>
-<a href="<%=contextPath%>/ruleSys/test" target="main_center">test</a><br><br>
+<a href="<%=contextPath%>/founderRule/test" target="main_center">test</a><br><br>
 <a href="<%=contextPath%>/ruleSys/serviceManager" target="main_center">服务管理</a><br><br>
 <a href="<%=contextPath%>/ruleSys/groupManager" target="main_center">分组管理</a><br><br>
 <h2>规则管理</h2><br>

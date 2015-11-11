@@ -28,71 +28,23 @@ import com.founder.framework.config.SystemConfig;
 @Service
 public class RuleServiceImpl implements RuleService {		
 	private Logger logger = Logger.getLogger(this.getClass());
+	private String drlFilePath=null;
 	
 	//规则对应关系Map
-	private Map<String, RuleConfig> ruleConfigMap = null;
+	private Map<String, RuleConfig> ruleConfigMap = new HashMap<String, RuleConfig>();
 	
-	//主要的配置规则
-	private RuleConfig mainRuleConfig=new RuleConfig();	
-	
-	/**
-	 * 
-	 * @Title: init
-	 * @Description: TODO(初始化规则服务的对应关系)
-	 * @param     设定文件
-	 * @return void    返回类型
-	 * @throw
-	 */		
-	public boolean init(){
-		logger.info("Rule config init");
-		
-		
-		mainRuleConfig.setUrl("D:/work/Git_syrk_sy/jwzh-rule/jwzh-rule/src/main/resources/drl/main.drl");		
-		mainRuleConfig.setKbase(null);
-		ruleConfigMap = new HashMap<String, RuleConfig>();
-		ruleConfigMap.put("main", mainRuleConfig);
-		
-		Map<String,Object>	map = new HashMap<String,Object>();		
-		
-		RuleBean ruleBean = new RuleBean();
-		ruleBean.setRuleServerName("main");
-		
-		if(this.executeRule(ruleBean,map,null)){//获取所有的规则URL
-			Object[] keyAry = map.keySet().toArray();
-			String packageStr;
-			for(int i=0;i<keyAry.length;i++){
-				packageStr=(String) map.get(keyAry[i]);
-				RuleConfig ruleConfig = new RuleConfig(packageStr,null,null);
-				ruleConfig.getKbase();
-				ruleConfigMap.put(String.valueOf(keyAry[i]), ruleConfig);
-			}
-		}else{
-			ruleConfigMap=null;//下次使用的时候才能重新初始化
-			System.gc();//垃圾回收
-			return false;
-		}
-		
-		System.gc();//垃圾回收
-		return true;
-	}
-		
-
 	@Override
 	public boolean executeRule(RuleBean ruleBean, Object paramObj, Map globalParamMap) {
 		try{	
-			if(ruleConfigMap==null) init();
-			if(ruleConfigMap==null) 
-				throw new RuntimeException("Can not init rule server config!");
-			String ruleServerName=ruleBean.getRuleServerName();
-			//踏堪改为 每次都重建
-			this.reLoadOne(ruleServerName);
+			String ruleFileName=ruleBean.getRuleFileName();
+			logger.info("execute rule:"+ruleFileName);
 			
-			RuleConfig ruleConfig = (RuleConfig) ruleConfigMap.get(ruleServerName);
+			RuleConfig ruleConfig = (RuleConfig) ruleConfigMap.get(ruleFileName);
 			if(ruleConfig == null){
-				//this.reLoadOne(ruleServerName);
-				ruleConfig = (RuleConfig) ruleConfigMap.get(ruleServerName);
+				this.reLoadOne(ruleFileName);//重新加载
+				ruleConfig = (RuleConfig) ruleConfigMap.get(ruleFileName);
 				if(ruleConfig == null)
-					throw new RuntimeException("Can not find rule named \""+ruleServerName+"\"");
+					throw new RuntimeException("Can not find ruleFile named \""+ruleFileName+"\"");
 			}
 			
 			StatefulKnowledgeSession ksession = ruleConfig.getKbase().newStatefulKnowledgeSession();
@@ -131,22 +83,20 @@ public class RuleServiceImpl implements RuleService {
 		return false;
 	}
 	
-	public boolean reLoadOne(String str){
+	public boolean reLoadOne(String ruleFileName){
+		logger.info("reload rule:"+ruleFileName);
 		try{
-			RuleConfig ruleConfig = ruleConfigMap.get(str);
-			if(ruleConfig!=null){
-				ruleConfig.setKbase(null);
-				ruleConfig.getKbase();
-				return true;
-			}
+			if(drlFilePath == null)
+				drlFilePath=SystemConfig.getString("DrlFilePath");
+			
+			RuleConfig ruleConfig = new RuleConfig(drlFilePath+"/"+ruleFileName+".drl");
+			ruleConfig.getKbase();
+			ruleConfigMap.put(ruleFileName, ruleConfig);	
+			return true;
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return false;
 	}
 	
-	public Map getRuleConfigMap(){
-		return ruleConfigMap;
-	}
-
 }

@@ -24,7 +24,7 @@ public class Drools_ruleDao extends BaseDaoImpl {
 
 	
 	public void delete(Drools_rule entity) {
-		
+		super.delete("Drools_rule.deleteRule", entity);
 	}
 
 	

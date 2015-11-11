@@ -12,22 +12,28 @@
         id
 		<isNotEmpty prepend="," property="rulename"><![CDATA[ rulename]]></isNotEmpty>
 		<isNotEmpty prepend="," property="serviceid"><![CDATA[ serviceid]]></isNotEmpty>
+		<isNotEmpty prepend="," property="groupid"><![CDATA[ groupid]]></isNotEmpty>
 		<isNotEmpty prepend="," property="content"><![CDATA[ content]]></isNotEmpty>
 		<isNotEmpty prepend="," property="response"><![CDATA[ response]]></isNotEmpty>
 		<isNotEmpty prepend="," property="status"><![CDATA[ status]]></isNotEmpty>
 		<isNotEmpty prepend="," property="createtime"><![CDATA[ createtime]]></isNotEmpty>
 		<isNotEmpty prepend="," property="updatetime"><![CDATA[ updatetime]]></isNotEmpty>
 		<isNotEmpty prepend="," property="version"><![CDATA[ version]]></isNotEmpty>
+		<isNotEmpty prepend="," property="bz"><![CDATA[ bz]]></isNotEmpty>
+		<isNotEmpty prepend="," property="ruletype"><![CDATA[ ruletype]]></isNotEmpty>
        )VALUES(
        	#id#       
 		<isNotEmpty prepend="," property="rulename"><![CDATA[#rulename#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="serviceid"><![CDATA[#serviceid#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="groupid"><![CDATA[ #groupid#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="content"><![CDATA[#content#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="response"><![CDATA[#response#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="status"><![CDATA[#status#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="createtime"><![CDATA[#createtime#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="updatetime"><![CDATA[#updatetime#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="version"><![CDATA[#version#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="bz"><![CDATA[ #bz#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="ruletype"><![CDATA[ #ruletype#]]></isNotEmpty>
        )
     </insert>	
     
@@ -58,9 +64,14 @@
 		<isNotEmpty prepend=" and " property="content">r.CONTENT = #content#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="response">r.RESPONSE = #response#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="status">r.STATUS = #status#</isNotEmpty>
+		<isEmpty prepend=" and " property="status"><![CDATA[ r.STATUS != '9' ]]></isEmpty>
 		<isNotEmpty prepend=" and " property="createtime">r.CREATETIME = #createtime#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="updatetime">r.UPDATETIME = #updatetime#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="version">r.VERSION = #version#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="ruletype">r.RULETYPE = #ruletype#</isNotEmpty>
     </select>
+    
+    <delete id="deleteRule" parameterClass="drools_rule">
+    	delete from DROOLS_RULE where id = #id#
+    </delete>
 </sqlMap>

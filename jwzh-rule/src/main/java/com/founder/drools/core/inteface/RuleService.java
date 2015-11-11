@@ -20,16 +20,6 @@ public interface RuleService {
 	
 	/**
 	 * 
-	 * @Title: init
-	 * @Description: TODO(初始化规则服务的对应关系)
-	 * @param     设定文件
-	 * @return void    返回类型
-	 * @throw
-	 */
-	public boolean init();
-	
-	/**
-	 * 
 	 * @Title: executeRule
 	 * @Description: TODO(规则执行)
 	 * @param @param ruleBean 规则对象
@@ -45,13 +35,11 @@ public interface RuleService {
 	 * 
 	 * @Title: reLoadOne
 	 * @Description: TODO(重新加载一个)
-	 * @param @param str
+	 * @param @param ruleFileName
 	 * @param @return    设定文件
 	 * @return boolean    返回类型
 	 * @throw
 	 */
-	public boolean reLoadOne(String str);
+	public boolean reLoadOne(String ruleFileName);
 	
-	
-	public Map getRuleConfigMap();
 }

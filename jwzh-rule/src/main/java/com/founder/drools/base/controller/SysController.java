@@ -1,16 +1,11 @@
 package com.founder.drools.base.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.founder.drools.core.inteface.RuleService;
-import com.founder.drools.core.model.RuleBean;
-import com.founder.framework.annotation.RestfulAnnotation;
 import com.founder.framework.base.controller.BaseController;
-import com.founder.framework.base.entity.SessionBean;
 /**
  * ****************************************************************************
  * @Package:      [com.founder.zdrygl.base.controller.RuleTestController.java]  
@@ -26,24 +21,6 @@ import com.founder.framework.base.entity.SessionBean;
 @Controller
 @RequestMapping("ruleSys")
 public class SysController extends BaseController {					
-	
-	@Autowired
-	private RuleService ruleService;
-	
-	@RequestMapping(value = "/test", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView test(){
-		ModelAndView mv = new ModelAndView("drools/test");
-		
-        RuleBean ruleBean = new RuleBean();
-        ruleBean.setRuleServerName("MESSAGE_ZDRYGL");
-        ruleBean.setRuleName("LGSQ");
-        //执行规则
-		ruleService.executeRule(ruleBean,null,null);
-		
-		System.out.println(ruleBean.getResponse());
-		return mv;
-	
-	}
 	
 	@RequestMapping(value = "/serviceManager", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView serviceManager(){

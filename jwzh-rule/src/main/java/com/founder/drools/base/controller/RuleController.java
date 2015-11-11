@@ -49,20 +49,39 @@ public class RuleController extends BaseController {
 	public ModelAndView ruleEditPre(String ruleName){
 		ModelAndView mv = new ModelAndView("drools/edit/ruleEdit");	
 		Drools_rule entity= new Drools_rule();
-		entity.setRulename(ruleName);
-		//entity.setStatus(0);
+		entity.setRulename(ruleName);//规则名
+		entity.setRuletype("0");//规则头
+		Drools_rule ruleHead = droolsRuleService.queryRuleByEntity(entity);
+		
+		entity.setRuletype("1");//规则体		
 		List<Drools_rule> list = droolsRuleService.queryRuleListByEntity(entity);
+		
+		mv.addObject("ruleHead",ruleHead);
 		mv.addObject("List",list);
 		return mv;
 	}	
 	
 	@RequestMapping(value = "/ruleEdit", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleEdit(Drools_rule entity){
-		ModelAndView mv = new ModelAndView("drools/edit/ruleManager");	
-		droolsRuleService.updateRule(entity);	
-		List<Drools_rule> list = droolsRuleService.queryRuleManagerList();
-		mv.addObject("List",list);
 		
-		return mv;		
-	}	
+		if("add".equals(entity.getId())){//新增规则体
+			entity.setRuletype("1");//规则体，规则头在新增规则的时候就有了
+			droolsRuleService.addRule(entity);
+		}else{
+			droolsRuleService.updateRule(entity);	
+		}
+		return this.ruleEditPre(entity.getRulename());
+	}
+	
+	@RequestMapping(value = "/ruleDelete", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView ruleDelete(Drools_rule entity){		
+		droolsRuleService.deleteRule(entity);
+		return this.ruleEditPre(entity.getRulename());		
+	}
+	
+	@RequestMapping(value = "/ruleRelease", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView ruleRelease(String rulename){		
+		droolsRuleService.ruleRelease(rulename);
+		return this.ruleEditPre(rulename);		
+	}
 }

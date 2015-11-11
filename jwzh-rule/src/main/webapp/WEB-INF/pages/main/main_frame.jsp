@@ -12,7 +12,7 @@
      <frameset id="kernel" cols="240,6,*">
      <frame id="main_left" src="<%=contextPath%>/forward/main|main_Left" noresize scrolling="no">
      <frame id="leftScroll" src="<%=contextPath%>/forward/main|main_leftScroll" noresize scrolling="no">
-     <frame id="main_center" name="main_center" src="<%=contextPath%>/forward/main|main_center" noresize scrolling="no">
+     <frame id="main_center" name="main_center" src="<%=contextPath%>/forward/main|main_center" noresize scrolling="yes">
   </frameset>
   <noframes>
     <body>
