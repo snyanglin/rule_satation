@@ -90,6 +90,13 @@
  	function showSaveButton(index){
  		$("#saveButton_"+index).show();
  	}
+ 	
+ 	function ruleFile(){
+ 		if(confirm("归档后规则将不可用，您确定要归档么？")){
+ 			document.dataForm.action="<%=basePath%>ruleManager/ruleFile";
+ 	 		document.dataForm.submit();
+ 		}
+ 	}
 </script>
 </head>
 <body>
@@ -207,7 +214,7 @@
 			
 				<input type="button" value="新增" id="addButton" onclick="shAdd(this)"/>				
 				<input type="button" value="发布" id="releaseButton" onclick="releaseRule()"/>
-				<input type="button" value="归档" id="delButton" onclick=""/>
+				<input type="button" value="归档" id="delButton" onclick="ruleFile()"/>
 			
 		</td>
 	</tr>

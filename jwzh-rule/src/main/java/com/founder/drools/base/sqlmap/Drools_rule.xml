@@ -56,26 +56,54 @@
 		<![CDATA[ where ID = #id#]]>
     </update>
     
+    <update id="updateRuleByRuleFileName" parameterClass="drools_rule">
+    	<![CDATA[ update DROOLS_RULE ]]>	
+		<dynamic prepend="set">			
+			<isNotNull prepend="," property="rulename"><![CDATA[ rulename = #rulename#]]></isNotNull>
+			<isNotNull prepend="," property="groupid"><![CDATA[ groupid = #groupid#]]></isNotNull>
+			<isNotNull prepend="," property="content"><![CDATA[ content = #content#]]></isNotNull>
+			<isNotNull prepend="," property="paramstr"><![CDATA[ paramstr = #paramstr#]]></isNotNull>
+			<isNotNull prepend="," property="status"><![CDATA[ status = #status#]]></isNotNull>
+			<isNotNull prepend="," property="createtime"><![CDATA[ createtime = #createtime#]]></isNotNull>
+			<isNotNull prepend="," property="updatetime"><![CDATA[ updatetime = #updatetime#]]></isNotNull>
+			<isNotNull prepend="," property="version"><![CDATA[ version = #version#]]></isNotNull>
+			<isNotNull prepend="," property="bz"><![CDATA[ bz = #bz#]]></isNotNull>				
+		</dynamic>
+		<![CDATA[ where rulefilename = #rulefilename#]]>
+    </update>
+    
     <!-- 查询规则平台规则表-->
     <select id="queryDroolsRule" parameterClass="drools_rule" resultClass="drools_rule">
          select r.*,g.GROUPNAME,g.SERVICEID,s.SERVICENAME 
          from DROOLS_GROUP g,DROOLS_SERVICE s,DROOLS_RULE r
 		 where r.GROUPID=g.id and g.SERVICEID=s.id		  
 		<isNotEmpty prepend=" and " property="id">r.ID = #id#</isNotEmpty>
-		<isNotEmpty prepend=" and " property="rulefilename">r.RULEFILENAME = #rulefilename#</isNotEmpty>
-		<isNotEmpty prepend=" and " property="rulename">r.RULENAME = #rulename#</isNotEmpty>
+		<isNotEmpty prepend=" and " property="rulefilename"><![CDATA[ r.RULEFILENAME like '%$rulefilename$%' ]]></isNotEmpty>
+		<isNotEmpty prepend=" and " property="rulename"><![CDATA[ r.RULENAME like '%$rulename$%' ]]></isNotEmpty>
 		<isNotEmpty prepend=" and " property="groupid">r.GROUPID = #groupid#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="content">r.CONTENT = #content#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="paramstr">r.paramstr = #paramstr#</isNotEmpty>
-		<isNotEmpty prepend=" and " property="status">r.STATUS = #status#</isNotEmpty>
-		<isEmpty prepend=" and " property="status"><![CDATA[ r.STATUS != '9' ]]></isEmpty>
+		<isNotEmpty prepend=" and " property="status">r.STATUS = #status#</isNotEmpty>		
 		<isNotEmpty prepend=" and " property="createtime">r.CREATETIME = #createtime#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="updatetime">r.UPDATETIME = #updatetime#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="version">r.VERSION = #version#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="ruletype">r.RULETYPE = #ruletype#</isNotEmpty>
     </select>
     
-    <delete id="deleteRule" parameterClass="drools_rule">
+    <!-- 查询规则执行时需要的服务和方法-->
+    <select id="queryService" parameterClass="String" resultClass="java.util.HashMap">
+         select s.SERVICENAME,s.SERVICEURL,g.SERVICEMETHOD,g.GROUPNAME
+	     from DROOLS_GROUP g,DROOLS_SERVICE s,DROOLS_RULE r
+		 where r.GROUPID=g.id and g.SERVICEID=s.id	
+			and r.RULEFILENAME=#ruleFileName#
+			and r.RULETYPE='0'
+    </select>
+    
+    <delete id="deleteRule" parameterClass="String">
     	delete from DROOLS_RULE where id = #id#
+    </delete>
+    
+    <delete id="deleteRuleByFileName" parameterClass="String">
+    	delete from DROOLS_RULE where RULEFILENAME = #rulefilename#
     </delete>
 </sqlMap>

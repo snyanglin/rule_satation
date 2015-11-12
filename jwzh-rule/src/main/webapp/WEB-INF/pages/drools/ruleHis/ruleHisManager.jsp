@@ -13,7 +13,7 @@
 </script>
 </head>
 <body>
-<form action="<%=basePath%>ruleManager/ruleManager"  id="dataForm" name="dataForm" method="post" >
+<form action="<%=basePath%>ruleManager/ruleHisManager"  id="dataForm" name="dataForm" method="post" >
 
 <table>
 	<tr>
@@ -26,20 +26,21 @@
 		<th>规则文件名称</th>
 		<td>
 			<input type="text" id="rulefilename" name="rulefilename" value="" maxlength="50" />
-			<input type="submit" value="查询" />
-			<input type="button"  value="新增" onclick="location.href='<%=contextPath%>/ruleManager/ruleAddPre'" />
+			<input type="submit" value="查询" />			
 		</td>
 		
 	</tr>
 </table>
 <hr>
 <table>
-<tr><th>规则分组</th><th>规则文件名称</th><th>备注</th><th>操作</th></tr>
+<tr><th>服务名</th><th>规则分组</th><th>规则文件名称</th><th>操作</th></tr>
 <c:forEach items="${List}" var="item" varStatus="status">
-	<tr><td><c:out value="${item.groupname }" /></td>
-	<td><c:out value="${item.rulefilename }" /></td>
-	<td><c:out value="${item.bz }" /></td>
-	<td><a href="<%=contextPath%>/ruleManager/ruleEditPre?rulefilename=${item.rulefilename}">编辑</a></td></tr>
+	<tr>
+	<td><c:out value="${item.servicename }" /></td>
+	<td><c:out value="${item.groupname }" /></td>
+	<td><c:out value="${item.rulefilename }" /></td>	
+	<td><a href="<%=contextPath%>/ruleManager/ruleHisListQuery?ruleid=${item.ruleid}">查看</a></td>
+	</tr>
 </c:forEach>
 </table>
 

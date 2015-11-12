@@ -1,8 +1,7 @@
 package com.founder.drools.base.controller;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.founder.drools.base.model.Drools_rule;
+import com.founder.drools.base.model.Drools_ruleHis;
+import com.founder.drools.base.service.DroolsRuleHisService;
 import com.founder.drools.base.service.DroolsRuleService;
 import com.founder.drools.core.inteface.RuleService;
 import com.founder.drools.core.model.RuleBean;
@@ -38,12 +39,15 @@ public class RuleController extends BaseController {
 	@Autowired
 	private DroolsRuleService droolsRuleService;
 	
+	@Autowired
+	private DroolsRuleHisService droolsRuleHisService;
+	
 	
 	@RequestMapping(value = "/ruleManager", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView ruleManager(){
+	public ModelAndView ruleManager(Drools_rule entity){
 		ModelAndView mv = new ModelAndView("drools/edit/ruleManager");	
 		
-		List<Drools_rule> list = droolsRuleService.queryRuleManagerList();
+		List<Drools_rule> list = droolsRuleService.queryRuleManagerList(entity);
 		mv.addObject("List",list);
 		
 		return mv;
@@ -66,8 +70,7 @@ public class RuleController extends BaseController {
 	}	
 	
 	@RequestMapping(value = "/ruleEdit", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView ruleEdit(Drools_rule entity){
-		entity.setStatus("1");
+	public ModelAndView ruleEdit(Drools_rule entity){		
 		if("add".equals(entity.getId())){//新增规则体
 			entity.setRuletype("1");//规则体，规则头在新增规则的时候就有了
 			droolsRuleService.addRule(entity);
@@ -79,7 +82,7 @@ public class RuleController extends BaseController {
 	
 	@RequestMapping(value = "/ruleDelete", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleDelete(Drools_rule entity){		
-		droolsRuleService.deleteRule(entity);
+		droolsRuleService.deleteRule(entity.getId());
 		return this.ruleEditPre(entity.getRulefilename());		
 	}
 	
@@ -94,6 +97,11 @@ public class RuleController extends BaseController {
 		RuleBean ruleBean = new RuleBean();
         ruleBean.setRuleFileName(ruleFileName);
         ruleBean.setRuleName(ruleName);
+        
+        Map map=droolsRuleService.queryService(ruleFileName);
+        ruleBean.setServiceUrl((String)map.get("SERVICEURL"));
+        ruleBean.setServiceMethod((String)map.get("SERVICEMETHOD"));
+        
         try{
         	droolsRuleService.ruleTestRelease(ruleFileName,ruleName);
         }catch(Exception e){
@@ -124,4 +132,96 @@ public class RuleController extends BaseController {
 		return ruleBean;
 	}
 	
+	
+	
+	@RequestMapping(value = "/ruleListQuery", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView ruleListQuery(Drools_rule entity){
+		ModelAndView mv = new ModelAndView("drools/query/ruleListQuery");	
+		
+		List<Drools_rule> list = droolsRuleService.queryRuleManagerList(entity);
+		mv.addObject("List",list);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/ruleQuery", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView ruleQuery(String rulefilename){
+		ModelAndView mv = new ModelAndView("drools/query/ruleQuery");	
+		Drools_rule entity= new Drools_rule();
+		entity.setRulefilename(rulefilename);//规则文件名
+		entity.setRuletype("0");//规则头
+		Drools_rule ruleHead = droolsRuleService.queryRuleByEntity(entity);
+		
+		entity.setRuletype("1");//规则体		
+		List<Drools_rule> list = droolsRuleService.queryRuleListByEntity(entity);
+		
+		//合并成一个规则显示
+		String content=ruleHead.getContent();
+		for(int i=0;i<list.size();i++){
+			content+="\r\n\r\nrule \""+list.get(i).getRulename()+"\"\r\n"+list.get(i).getContent()+"\r\nend";
+		}
+		ruleHead.setContent(content);
+		mv.addObject("ruleObj",ruleHead);		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/ruleAddPre", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView ruleAddPre(){
+		ModelAndView mv = new ModelAndView("drools/edit/ruleAdd");	
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/ruleAdd", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView ruleAdd(Drools_rule entity){
+		entity.setRuletype("0");//规则头		
+		droolsRuleService.addRule(entity);
+		
+		return this.ruleManager(null);
+	}
+	
+	/**
+	 * 
+	 * @Title: ruleFile
+	 * @Description: TODO(归档)
+	 * @param @param ruleFileName
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
+	@RequestMapping(value = "/ruleFile", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView ruleFile(String rulefilename){		
+		droolsRuleService.ruleFile(rulefilename);
+		return this.ruleManager(null);	
+	}
+	
+	@RequestMapping(value = "/ruleHisManager", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView ruleHisManager(Drools_ruleHis entity){
+		ModelAndView mv = new ModelAndView("drools/ruleHis/ruleHisManager");	
+		
+		List<Drools_ruleHis> list = droolsRuleHisService.queryRuleHisManagerList(entity);
+		mv.addObject("List",list);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/ruleHisListQuery", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView ruleHisListQuery(Drools_ruleHis entity){
+		ModelAndView mv = new ModelAndView("drools/ruleHis/ruleHisListQuery");	
+		
+		List<Drools_ruleHis> list = droolsRuleHisService.queryRuleHisList(entity);
+		mv.addObject("List",list);
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/ruleHisQuery", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView ruleHisQuery(Drools_ruleHis entity){
+		ModelAndView mv = new ModelAndView("drools/ruleHis/ruleHisQuery");	
+		
+		entity = droolsRuleHisService.queryRuleHis(entity);
+		mv.addObject("ruleHis",entity);
+		
+		return mv;
+	}
 }

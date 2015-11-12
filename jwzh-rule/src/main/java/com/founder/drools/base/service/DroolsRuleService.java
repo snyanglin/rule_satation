@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.founder.drools.base.dao.Drools_ruleDao;
 import com.founder.drools.base.model.Drools_rule;
+import com.founder.drools.base.model.Drools_ruleHis;
 import com.founder.drools.core.inteface.RuleService;
 import com.founder.framework.config.SystemConfig;
 
@@ -26,6 +28,9 @@ public class DroolsRuleService{
 	@Autowired
 	private RuleService ruleService;
 	
+	@Autowired
+	private DroolsRuleHisService droolsRuleHisService;
+	
 	public Drools_rule queryRuleById(String ID) {
 		return drools_ruleDao.queryById(ID);
 	}
@@ -35,19 +40,20 @@ public class DroolsRuleService{
 	}
 	
 	public void addRule(Drools_rule entity) {
-		
+		entity.setStatus("1");
 		entity.setCreatetime(new Date());				
 		entity.setId(getTimeString());
 		drools_ruleDao.insert(entity);
 	}
 	
 	public void updateRule(Drools_rule entity) {
+		entity.setStatus("1");
 		entity.setUpdatetime(new Date());		
 		drools_ruleDao.update(entity);
 	}
 	
-	public List<Drools_rule> queryRuleManagerList() {
-		Drools_rule entity = new Drools_rule();
+	public List<Drools_rule> queryRuleManagerList(Drools_rule entity) {	
+		if(entity == null) entity= new Drools_rule();
 		entity.setRuletype("0");//查询规则显示列表
 		return drools_ruleDao.queryListByEntity(entity);
 	}
@@ -61,39 +67,34 @@ public class DroolsRuleService{
 		return sdf.format(new Date());
 	}
 	
-	public void deleteRule(Drools_rule entity){
-		drools_ruleDao.delete(entity);
+	public void deleteRule(String id){
+		drools_ruleDao.delete(id);
 	}
 
+	/**
+	 * 
+	 * @Title: ruleRelease
+	 * @Description: TODO(发布规则)
+	 * @param @param rulefilename 规则文件名
+	 * @return void    返回类型
+	 * @throw
+	 */
 	public void ruleRelease(String rulefilename) {
-		Drools_rule entity=new Drools_rule();
-		entity.setRulefilename(rulefilename);
-		entity.setRuletype("0");
-		Drools_rule ruleHead = drools_ruleDao.queryByEntity(entity);
+		Drools_rule entity = this.getRule(rulefilename, null);
 		
-		entity.setRuletype("1");
-		List list = drools_ruleDao.queryListByEntity(entity);//查询所有未归档的rulefilename的规则
-		StringBuffer content=new StringBuffer();
-		content.append(ruleHead.getContent()).append("\r\n\r\n");
-		for(int i=0;i<list.size();i++){
-			content.append("rule \""+((Drools_rule)list.get(i)).getRulename()+"\"\r\n\r\n").append(((Drools_rule)list.get(i)).getContent()).append("\r\n\r\nend\r\n\r\n");
-		}
-		this.writeDrl(ruleHead.getRulefilename(), content.toString(),false);
-		ruleService.reLoadOne(ruleHead.getRulefilename());
-		
-		
-		list.add(ruleHead);		
+		this.writeDrl(entity.getRulefilename(), entity.getContent(),false);
+		ruleService.reLoadOne(entity.getRulefilename());
 		
 		//记录版本
+		Drools_rule ruleHead = new Drools_rule();
+		ruleHead.setRulefilename(rulefilename);
+		ruleHead.setVersion(this.getTimeString());
+		ruleHead.setStatus("0");
+		ruleHead.setUpdatetime(new Date());	
+		drools_ruleDao.updateByRuleFileName(ruleHead);
 		
-		//修改状态，添加版本号
-		String version=this.getTimeString();
-		for(int i=0;i<list.size();i++){
-			entity = (Drools_rule) list.get(i);
-			entity.setStatus("0");
-			entity.setVersion(version);
-			this.updateRule(entity);
-		}
+		//保存历史版本
+		this.writeRuleHistory(entity.getRulefilename());
 	}
 	
 	/**
@@ -106,22 +107,10 @@ public class DroolsRuleService{
 	 * @throw
 	 */
 	public void ruleTestRelease(String rulefilename,String rulename) {
-		Drools_rule entity=new Drools_rule();
-		entity.setRulefilename(rulefilename);
-		entity.setRuletype("0");
-		Drools_rule ruleHead = drools_ruleDao.queryByEntity(entity);
+		Drools_rule entity = this.getRule(rulefilename, rulename);
 		
-		entity.setRuletype("1");
-		entity.setRulename(rulename);
-		List list = drools_ruleDao.queryListByEntity(entity);//查询所有未归档的rulename规则
-		StringBuffer content=new StringBuffer();
-		content.append(ruleHead.getContent()).append("\r\n\r\n");
-		for(int i=0;i<list.size();i++){
-			content.append("rule \""+((Drools_rule)list.get(i)).getRulename()+"\"\r\n\r\n").append(((Drools_rule)list.get(i)).getContent()).append("\r\n\r\nend\r\n\r\n");
-		}
-		
-		String testFileName=ruleHead.getRulefilename()+"_"+rulename+"_TEST";
-		this.writeDrl(testFileName, content.toString(),true);		
+		String testFileName=entity.getRulefilename()+"_"+rulename+"_TEST";
+		this.writeDrl(testFileName, entity.getContent(),true);		
 	}
 	
 	private void  writeDrl(String fileName,String content,boolean isTest){		
@@ -154,5 +143,117 @@ public class DroolsRuleService{
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	private void deleteDrl(String fileName){
+		if(filePath==null || filePath.length()==0)
+			filePath = SystemConfig.getString("DrlFilePath");
+		if(filePath==null || filePath.length()==0)
+			throw new RuntimeException("can not find \"DrlFilePath\" in systemconfig");
+		
+		File file=new File(filePath+"/"+fileName+".drl");
+		
+		file.deleteOnExit();
+		
+	}
+	
+	/**
+	 * 
+	 * @Title: getRule
+	 * @Description: TODO(获取完整的规则文件对象)
+	 * @param @param ruleFileName 规则文件
+	 * @param @param rulename 指定的规则名，获取全部的时候传 null
+	 * @param @return    设定文件
+	 * @return Drools_rule    返回类型
+	 * @throw
+	 */
+	public Drools_rule getRule(String ruleFileName,String rulename){
+		//查询规则头
+		Drools_rule entity=new Drools_rule();
+		entity.setRulefilename(ruleFileName);
+		entity.setRuletype("0");
+		Drools_rule ruleHead = drools_ruleDao.queryByEntity(entity);
+		
+		//查询规则体
+		entity.setRuletype("1");
+		entity.setRulename(rulename);
+		List list = drools_ruleDao.queryListByEntity(entity);
+		StringBuffer content=new StringBuffer();
+		if(ruleHead.getContent()!=null)
+			content.append(ruleHead.getContent()).append("\r\n\r\n");
+		
+		for(int i=0;i<list.size();i++){
+			entity =((Drools_rule)list.get(i));
+			content.append("rule \""+entity.getRulename()+"\"\r\n\r\n");
+			if(entity.getContent()!=null)
+				content.append(entity.getContent());
+			content.append("\r\n\r\nend\r\n\r\n");
+		}
+		
+		ruleHead.setContent(content.toString());
+		
+		return ruleHead;
+	}
+	
+	/**
+	 * 
+	 * @Title: ruleFile
+	 * @Description: TODO(规则归档)
+	 * @param @param ruleFileName    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void ruleFile(String ruleFileName){
+		//记录版本
+		Drools_rule ruleHead = new Drools_rule();
+		ruleHead.setRulefilename(ruleFileName);
+		ruleHead.setVersion(this.getTimeString());
+		ruleHead.setStatus("0");
+		ruleHead.setUpdatetime(new Date());	
+		drools_ruleDao.updateByRuleFileName(ruleHead);
+		
+		this.writeRuleHistory(ruleFileName);//记录历史
+		
+		drools_ruleDao.deleteByRuleFileName(ruleFileName);//删除正在使用的规则
+		
+		deleteDrl(ruleFileName);//删除文件
+	}
+	
+	
+	/**
+	 * 
+	 * @Title: writeRuleHistory
+	 * @Description: TODO(记录规则历史表)
+	 * @param @param ruleFileName    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void writeRuleHistory(String ruleFileName){
+		Drools_rule drools_rule = this.getRule(ruleFileName, null);
+		
+		String version = drools_rule.getVersion();
+		if(version == null || version.length()==0)
+			version = this.getTimeString();
+		
+		Drools_ruleHis ruleHis=new Drools_ruleHis();
+		ruleHis.setVersion(version);
+		ruleHis.setContent(drools_rule.getContent());		
+		ruleHis.setRulefilename(drools_rule.getRulefilename());
+		ruleHis.setRuleid(drools_rule.getId());
+		
+		ruleHis.setGroupid(drools_rule.getGroupid());
+		ruleHis.setServiceid(drools_rule.getServiceid());	
+		
+		Map map=this.queryService(ruleFileName);
+		ruleHis.setServicename((String)map.get("SERVICENAME"));
+		ruleHis.setServiceurl((String)map.get("SERVICEURL"));
+		ruleHis.setServicemethod((String)map.get("SERVICEMETHOD"));
+		ruleHis.setGroupname((String)map.get("GROUPNAME"));
+		
+		droolsRuleHisService.insert(ruleHis);
+	}
+
+	public Map queryService(String ruleFileName) {
+		return drools_ruleDao.queryService(ruleFileName);				
 	}
 }

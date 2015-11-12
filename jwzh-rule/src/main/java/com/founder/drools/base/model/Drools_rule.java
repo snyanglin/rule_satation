@@ -8,7 +8,7 @@ import com.founder.framework.annotation.FieldDesc;
 import com.founder.framework.base.entity.BaseEntity;
 
 
-@DBInfoAnnotation(tableName = "ZDRY_DTJS_SDZDXXB", pk = "id")
+@DBInfoAnnotation(tableName = "DROOLS_RULE", pk = "id")
 public class Drools_rule extends BaseEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;

@@ -2,6 +2,7 @@ package com.founder.drools.base.dao;
 
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -22,11 +23,17 @@ public class Drools_ruleDao extends BaseDaoImpl {
 		super.update("Drools_rule.updateRule", entity);
 	}
 
+	public void updateByRuleFileName(Drools_rule entity) {
+		super.update("Drools_rule.updateRuleByRuleFileName", entity);
+	}
 	
-	public void delete(Drools_rule entity) {
-		super.delete("Drools_rule.deleteRule", entity);
+	public void delete(String id) {
+		super.delete("Drools_rule.deleteRule", id);
 	}
 
+	public void deleteByRuleFileName(String rulefilename) {
+		super.delete("Drools_rule.deleteRuleByFileName", rulefilename);
+	}
 	
 	public Drools_rule queryById(String entityId) {
 		Drools_rule entity=new Drools_rule();
@@ -40,6 +47,12 @@ public class Drools_ruleDao extends BaseDaoImpl {
 	
 	public List<Drools_rule> queryListByEntity(Drools_rule entity) {
 		return (List<Drools_rule>)super.queryForList("Drools_rule.queryDroolsRule", entity);
+	}
+
+
+	public Map queryService(String ruleFileName) {
+		return (Map) super.queryForObject("Drools_rule.queryService", ruleFileName);
+		
 	}
 
 }

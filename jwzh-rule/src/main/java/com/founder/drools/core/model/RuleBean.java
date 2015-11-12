@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.log4j.Logger;
 /**
  * ****************************************************************************
  * @Package:      [com.founder.drools.core.model.RuleBean.java]  
@@ -19,12 +20,29 @@ import org.apache.commons.httpclient.methods.GetMethod;
  * @Version:      [v1.0]
  */
 public class RuleBean {
+	private Logger logger = Logger.getLogger(this.getClass());
+	
 	private String ruleFileName;//规则文件名
 	private String ruleName;//规则名
+	private String serviceUrl;//服务地址
+	private String serviceMethod;//服务方法
 	private int resStatus=1;//0成功 1失败
 	private Object response;//返回对象
 	private Map paraMap;
 	
+	
+	public String getServiceMethod() {
+		return serviceMethod;
+	}
+	public void setServiceMethod(String serviceMethod) {
+		this.serviceMethod = serviceMethod;
+	}
+	public String getServiceUrl() {
+		return serviceUrl;
+	}
+	public void setServiceUrl(String serviceUrl) {
+		this.serviceUrl = serviceUrl;
+	}
 	public String getRuleFileName() {
 		return ruleFileName;
 	}
@@ -68,11 +86,24 @@ public class RuleBean {
 	public Map executeServiceByHttp(String methodName,String params){
 		Map map=new HashMap();
 		map.put("status", "fail");
-		
-		
 		map.put("errorMessage", "no error info");
-		String url="http://192.168.1.161:8080/syrk/ruleSys/"+methodName+"?"+params;
-		System.out.println(url);
+		
+		String url=this.getServiceUrl();
+		if(url==null){
+			map.put("errorMessage", "ServiceUrl can not be null!");
+			return map;
+		}
+		
+		if(this.getServiceMethod() == null){
+			map.put("errorMessage", "ServiceMethod can not be null!");
+			return map;
+		}
+		
+		if(!"/".equals(url.substring(url.length()-1)))
+			url+="/";
+		
+		url +=this.getServiceMethod()+"/"+methodName+"?"+params;
+		logger.info("rule request from:"+url);
 		String resStr=null;
 		GetMethod method = new GetMethod(url);		
 
