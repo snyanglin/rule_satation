@@ -5,9 +5,9 @@ import com.founder.framework.utils.EasyUIPage;
 
 public interface DroolsGroupService {
 
-	public void save(DroolsGroup entity);
+	public DroolsGroup save(DroolsGroup entity);
 	
-	public void update(DroolsGroup entity);
+	public DroolsGroup update(DroolsGroup entity);
 	
 	public EasyUIPage queryPageList(EasyUIPage page,DroolsGroup entity);
 	

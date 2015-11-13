@@ -36,11 +36,17 @@ public class GroupManagerController extends BaseController {
 	@Resource(name="droolsGroupService")
 	private DroolsGroupService droolsGroupService;
 	
-	@RequestMapping(value = "/groupManager", method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/groupManager", method = {RequestMethod.GET})
 	public ModelAndView groupManager(){
 		ModelAndView mv = new ModelAndView("groupManager/groupList");		        
 		return mv;
-	}	
+	}
+	
+	@RequestMapping(value = "/viewAdd", method = {RequestMethod.GET})
+	public ModelAndView viewAdd(){
+		ModelAndView mv = new ModelAndView("groupManager/groupAdd");		        
+		return mv;
+	}
 	
 	@RequestMapping(value = "/list", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody EasyUIPage list(EasyUIPage page,
@@ -62,5 +68,10 @@ public class GroupManagerController extends BaseController {
 		
 		return this.droolsGroupService.queryPageList(page, entity);
 	}	
+	
+	@RequestMapping(value = "/save", method = {RequestMethod.POST})
+	public @ResponseBody DroolsGroup save(DroolsGroup entity){
+		return this.droolsGroupService.save(entity);
+	}
 	
 }

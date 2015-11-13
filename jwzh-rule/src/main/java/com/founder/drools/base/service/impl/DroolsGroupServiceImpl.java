@@ -18,13 +18,15 @@ public class DroolsGroupServiceImpl implements DroolsGroupService {
 	private DroolsGroupDao droolsGroupDao;
 	
 	@Override
-	public void save(DroolsGroup entity) {
+	public DroolsGroup save(DroolsGroup entity) {
 		this.droolsGroupDao.insert(entity);
+		return entity;
 	}
 
 	@Override
-	public void update(DroolsGroup entity) {
+	public DroolsGroup update(DroolsGroup entity) {
 		this.droolsGroupDao.update(entity);
+		return entity;
 	}
 
 	@Transactional(readOnly=true)
