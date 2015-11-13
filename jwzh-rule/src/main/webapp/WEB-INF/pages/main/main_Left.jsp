@@ -12,7 +12,7 @@
 <body>
 <h2>系统管理</h2><br/>
 <a href="<%=contextPath%>/ruleSys/serviceManager" target="main_center">服务管理</a><br><br>
-<a href="<%=contextPath%>/ruleSys/groupManager" target="main_center">分组管理</a><br><br>
+<a href="<%=contextPath%>/groupManager/groupManager" target="main_center">分组管理</a><br><br>
 <h2>规则管理</h2><br>
 <a href="<%=contextPath%>/ruleManager/ruleListQuery" target="main_center">规则查询</a><br><br>
 <a href="<%=contextPath%>/ruleManager/ruleManager" target="main_center">规则编缉</a><br><br>
