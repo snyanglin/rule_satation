@@ -55,4 +55,6 @@ public interface RuleService {
 	 */
 	public RuleBean testRule(RuleBean ruleBean,String paramStr);
 	
+	public Map Str2Map(String paramStr);
+	
 }

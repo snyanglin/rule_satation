@@ -132,7 +132,7 @@ public class RuleServiceImpl implements RuleService {
 		}
 		return ruleBean;
 	}
-	private Map Str2Map(String paramStr){
+	public Map Str2Map(String paramStr){
 		//String paramStr="{p3=p3, p2=p2, p1=p1}";
 		paramStr=paramStr.replace("{", "");
 		paramStr=paramStr.replace("}", "");
