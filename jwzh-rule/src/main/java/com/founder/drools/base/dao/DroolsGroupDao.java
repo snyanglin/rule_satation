@@ -6,11 +6,13 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import com.founder.drools.base.common.BaseModelUtils;
 import com.founder.drools.base.model.DroolsGroup;
 import com.founder.drools.base.model.DroolsGroup;
 import com.founder.framework.base.dao.BaseDaoImpl;
 import com.founder.framework.utils.EasyUIPage;
 import com.founder.framework.utils.StringUtils;
+import com.founder.framework.utils.UUID;
 
 
 @Repository("droolsGroupDao")
@@ -18,11 +20,16 @@ public class DroolsGroupDao extends BaseDaoImpl {
 	
 	
 	public void insert(DroolsGroup entity) {
+		if(StringUtils.isBlank(entity.getId())){
+			entity.setId(UUID.create());
+		}
+		BaseModelUtils.setSaveProperty(entity);
 		super.insert("DroolsGroup.save", entity);
 	}
 
 	
 	public void update(DroolsGroup entity) {
+		BaseModelUtils.setUpdateProperty(entity);
 		super.update("DroolsGroup.update", entity);
 	}
 

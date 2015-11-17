@@ -1,24 +1,26 @@
 package com.founder.drools.base.model;
 
+import java.util.Date;
+
 public class BaseModle {
 
-	private String createtime;
+	private Date createtime;
 	
-	private String updatetime;
+	private Date updatetime;
 
-	public String getCreateTime() {
+	public Date getCreateTime() {
 		return createtime;
 	}
 
-	public void setCreateTime(String createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createtime = createTime;
 	}
 
-	public String getUpdateTime() {
+	public Date getUpdateTime() {
 		return updatetime;
 	}
 
-	public void setUpdateTime(String updateTime) {
+	public void setUpdateTime(Date updateTime) {
 		this.updatetime = updateTime;
 	}
 	

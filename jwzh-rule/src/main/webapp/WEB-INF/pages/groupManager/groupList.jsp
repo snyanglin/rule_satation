@@ -11,5 +11,11 @@
 	</head>
 	<body>
 		<table id="dg" style="width: 300px"></table>
+		
+		<div id="dg_tools">
+			<a href="#" class="easyui-linkbutton" onclick="GroupList.doAdd()" data-options="iconCls:'icon-add'">新增 </a>
+		</div>
+		
+		<div id="win_add" />
 	</body>
 </html>
