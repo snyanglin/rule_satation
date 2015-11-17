@@ -29,7 +29,7 @@ public interface RuleService {
 	 * @return boolean    返回类型
 	 * @throw
 	 */
-	public boolean executeRule(RuleBean ruleBean, Object paramObj, Map globalParamMap);
+	public boolean executeRule(RuleBean ruleBean);
 	
 	/**
 	 * 
@@ -38,9 +38,10 @@ public interface RuleService {
 	 * @param @param ruleFileName
 	 * @param @return    设定文件
 	 * @return boolean    返回类型
+	 * @throws Exception 
 	 * @throw
 	 */
-	public boolean reLoadOne(String ruleFileName);
+	public boolean reLoadOne(String ruleFileName) throws Exception;
 	
 	/**
 	 * 

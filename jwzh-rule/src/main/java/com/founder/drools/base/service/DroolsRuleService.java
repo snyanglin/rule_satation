@@ -83,7 +83,11 @@ public class DroolsRuleService{
 		Drools_rule entity = this.getRule(rulefilename, null);
 		
 		this.writeDrl(entity.getRulefilename(), entity.getContent(),false);
-		ruleService.reLoadOne(entity.getRulefilename());
+		try{
+			ruleService.reLoadOne(entity.getRulefilename());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		
 		//记录版本
 		Drools_rule ruleHead = new Drools_rule();

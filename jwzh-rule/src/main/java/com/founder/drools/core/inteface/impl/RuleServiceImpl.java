@@ -34,7 +34,7 @@ public class RuleServiceImpl implements RuleService {
 	private Map<String, RuleConfig> ruleConfigMap = new HashMap<String, RuleConfig>();
 	
 	@Override
-	public boolean executeRule(RuleBean ruleBean, Object paramObj, Map globalParamMap) {
+	public boolean executeRule(RuleBean ruleBean) {
 		try{	
 			String ruleFileName=ruleBean.getRuleFileName();
 			logger.info("execute rule:"+ruleFileName);
@@ -50,24 +50,24 @@ public class RuleServiceImpl implements RuleService {
 			StatefulKnowledgeSession ksession = ruleConfig.getKbase().newStatefulKnowledgeSession();
 			
 			//循环设置全局变量
-			if(globalParamMap!=null){
-				Object[] keyAry = globalParamMap.keySet().toArray();
+			if(ruleBean.getGlobalParamMap()!=null){
+				Object[] keyAry = ruleBean.getGlobalParamMap().keySet().toArray();
 				for(int i=0;i<keyAry.length;i++){
-					ksession.setGlobal((String)keyAry[i], globalParamMap.get(keyAry[i]));					
+					ksession.setGlobal((String)keyAry[i], ruleBean.getGlobalParamMap().get(keyAry[i]));					
 				}
 				
 			}
 			
 			//循环设置参数
 			ksession.insert(ruleBean);
-			if(paramObj!=null){
-				if(paramObj instanceof List){		
-					List list=(List)paramObj;
+			if(ruleBean.getParamObj()!=null){
+				if(ruleBean.getParamObj() instanceof List){		
+					List list=(List)ruleBean.getParamObj();
 					for(int i=0;i<list.size();i++){
 						ksession.insert(list.get(i));					
 					}
 				}else{
-					ksession.insert(paramObj);		
+					ksession.insert(ruleBean.getParamObj());		
 				}
 				
 			}
@@ -84,20 +84,17 @@ public class RuleServiceImpl implements RuleService {
 		return false;
 	}
 	
-	public boolean reLoadOne(String ruleFileName){
-		logger.info("reload rule:"+ruleFileName);
-		try{
-			if(drlFilePath == null)
-				drlFilePath=SystemConfig.getString("DrlFilePath");
+	public boolean reLoadOne(String ruleFileName) throws Exception{
+		System.out.println("reload rule:"+ruleFileName);
+		if(drlFilePath == null)
+			drlFilePath=SystemConfig.getString("DrlFilePath");
+		
+		RuleConfig ruleConfig = new RuleConfig(drlFilePath+"/"+ruleFileName+".drl");
+		ruleConfig.getKbase();
+		ruleConfigMap.put(ruleFileName, ruleConfig);	
+		return true;
 			
-			RuleConfig ruleConfig = new RuleConfig(drlFilePath+"/"+ruleFileName+".drl");
-			ruleConfig.getKbase();
-			ruleConfigMap.put(ruleFileName, ruleConfig);	
-			return true;
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return false;
+		
 	}
 	
 	/**
@@ -139,9 +136,9 @@ public class RuleServiceImpl implements RuleService {
 		Map map=new HashMap();
 		String keyAndValueAry[]=paramStr.split(",");
 		for(int i=0;i<keyAndValueAry.length;i++){
-			String keyAdnValue[] = keyAndValueAry[i].split("=");
+			String keyAdnValue[] = keyAndValueAry[i].split(":");
 			if(keyAdnValue.length==2){
-				map.put(keyAdnValue[0].trim(), keyAdnValue[1].trim());
+				map.put(keyAdnValue[0].substring(1, keyAdnValue[0].length()-1), keyAdnValue[1].trim());
 			}
 		}
 		
