@@ -1,5 +1,6 @@
 package com.founder.drools.base.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,14 +71,22 @@ public class RuleController extends BaseController {
 	}	
 	
 	@RequestMapping(value = "/ruleEdit", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView ruleEdit(Drools_rule entity){		
-		if("add".equals(entity.getId())){//新增规则体
-			entity.setRuletype("1");//规则体，规则头在新增规则的时候就有了
-			droolsRuleService.addRule(entity);
-		}else{
-			droolsRuleService.updateRule(entity);	
+	public @ResponseBody Map ruleEdit(Drools_rule entity){
+		Map map = new HashMap();
+		map.put("resStatus", "0");//成功
+		try{
+			if("add".equals(entity.getId())){//新增规则体
+				entity.setRuletype("1");//规则体，规则头在新增规则的时候就有了
+				droolsRuleService.addRule(entity);
+			}else{
+				droolsRuleService.updateRule(entity);	
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			map.put("resStatus", "1");//失败
+			map.put("errorMsg", e.toString());//失败
 		}
-		return this.ruleEditPre(entity.getRulefilename());
+		return map;
 	}
 	
 	@RequestMapping(value = "/ruleDelete", method = {RequestMethod.GET,RequestMethod.POST})
@@ -87,9 +96,15 @@ public class RuleController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/ruleRelease", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView ruleRelease(String rulefilename){		
-		droolsRuleService.ruleRelease(rulefilename);
-		return this.ruleEditPre(rulefilename);		
+	public @ResponseBody Map ruleRelease(String rulefilename){	
+		Map map = new HashMap();
+		map.put("resStatus", "0");//成功
+		String res=droolsRuleService.ruleRelease(rulefilename);
+		if(res!=null){
+			map.put("resStatus", "1");//失败
+			map.put("errorMsg", res);//失败
+		}
+		return map;		
 	}
 	
 	@RequestMapping(value = "/testRule", method = {RequestMethod.GET,RequestMethod.POST})
@@ -104,18 +119,12 @@ public class RuleController extends BaseController {
         
         try{
         	droolsRuleService.ruleTestRelease(ruleFileName,ruleName);
+        	ruleService.testRule(ruleBean, paramStr);
         }catch(Exception e){
         	e.printStackTrace();
         	ruleBean.setResponse(e.toString());  
         	return ruleBean;
-        }
-		
-        try{
-        	ruleService.testRule(ruleBean, paramStr);
-        }catch(Exception e){
-        	e.printStackTrace();
-        	ruleBean.setResponse(e.toString());        	
-        }
+        }		       
         
         if(0==ruleBean.getResStatus()){//验证成功
         	Drools_rule entity=new Drools_rule();

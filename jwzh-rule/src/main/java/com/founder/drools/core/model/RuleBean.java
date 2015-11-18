@@ -1,8 +1,6 @@
 package com.founder.drools.core.model;
 
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 /**
  * ****************************************************************************
  * @Package:      [com.founder.drools.core.model.RuleBean.java]  
@@ -15,8 +13,7 @@ import org.apache.log4j.Logger;
  * @UpdateRemark: [说明本次修改内容,(如多次修改保留历史记录，增加修改记录)]  
  * @Version:      [v1.0]
  */
-public class RuleBean {
-	private Logger logger = Logger.getLogger(this.getClass());
+public class RuleBean {	
 	
 	private String ruleFileName;//规则文件名
 	private String ruleName;//规则名
@@ -26,7 +23,6 @@ public class RuleBean {
 	private Object response;//返回对象
 	private Object paramObj;
 	private Map globalParamMap;
-	
 	
 	
 	public String getServiceMethod() {

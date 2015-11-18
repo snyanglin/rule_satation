@@ -8,12 +8,32 @@
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="<%=contextPath%>/css/edit.css"></link>
 <script type="text/javascript">
- 	function saveRule(index,id){
- 		$("#content").val($("#content_"+index).val());
- 		$("#paramstr").val($("#paramstr_"+index).val());
- 		$("#rulename").val($("#rulename_"+index).val());
- 		$("#id").val(id);
- 		document.dataForm.submit();
+	var saveNum=0;//需要保存的数量
+
+ 	function saveRule(index,id){		 		
+ 		var content = $("#content_"+index).val();
+ 		content = content.replace(/\+/g,'%2B');//处理"+"号
+		
+ 		var paramPairs=[
+ 				new ParamPair("content",content),
+ 		 		new ParamPair("paramstr",$("#paramstr_"+index).val()),
+ 		 		new ParamPair("rulename",$("#rulename_"+index).val()),
+ 		 		new ParamPair("id",id),
+ 		];
+ 		var url="<%=basePath%>ruleManager/ruleEdit";
+ 		postToServer(paramPairs,url,function(data){ 			
+			if(data){
+				if(data.resStatus == '0'){
+					hideSaveButton(index);
+					alert("规则已保存");
+				}else{
+					alert("规则保存失败："+data.errorMsg);					
+				}				
+			}else{
+				alert("规则保存失败："+data);				
+			}		
+ 			 				
+ 		});
  	}
  	
  	function deleteRule(index,id){ 	
@@ -55,41 +75,69 @@
  	}
  	
  	function releaseRule(){
- 		document.dataForm.action="<%=basePath%>ruleManager/ruleRelease";
- 		document.dataForm.submit();
+ 		if(saveNum>0){
+ 			if(!confirm("您还有未保存的规则，您确认要发布么？")){
+ 				return;
+ 			}
+ 		}
+ 		
+ 		var paramPairs=[
+ 			new ParamPair("rulefilename",$("#rulefilename").val()) 		 		 		
+ 		];
+ 		var url="<%=basePath%>ruleManager/ruleRelease";
+ 		postToServer(paramPairs,url,function(data){ 			
+ 					if(data){
+ 						if(data.resStatus == '0'){
+ 							alert("规则已发布");
+ 							window.location.reload();
+ 						}else{
+ 							alert("规则发布失败："+data.errorMsg);					
+ 						}				
+ 					}else{
+ 						alert("规则发布失败："+data);				
+ 					}		
+ 		 			 				
+ 		 		});
+ 		 		 		
  	}
  	
  	function testRule(index,rulename){
  		$("#ruleRes_"+index).val("验证中……"); 		
  		var rulefilename=$("#rulefilename").val(); 		
  		var paramStr=$("#paramstr_"+index).val();
- 		$.ajax({
-			async:true,
-			type:"POST",
-			data:"ruleFileName="+rulefilename+"&ruleName="+rulename+"&paramStr="+paramStr,
-			dataType:"json",
-			url:"<%= basePath%>ruleManager/testRule",
-			success:function(data){
-				var res="验证失败！\r\n";
-				if(data){
-					if(data.resStatus == '0'){
-						res="验证成功！\r\n";
-						$("#title_"+index).attr("bgcolor","green");
-					}else{
-						$("#title_"+index).attr("bgcolor","red");
-					}
-					res += data.response;
+ 		
+ 		var paramPairs=[
+ 				new ParamPair("ruleFileName",rulefilename),
+ 				new ParamPair("ruleName",rulename),
+ 				new ParamPair("paramStr",paramStr)
+ 		];
+ 		var url="<%= basePath%>ruleManager/testRule";
+ 		postToServer(paramPairs,url,function(data){
+			var res="验证失败！\r\n";
+			if(data){
+				if(data.resStatus == '0'){
+					res="验证成功！\r\n";
+					$("#testTd_"+index).attr("bgcolor","green");
 				}else{
-					res += data;					
+					$("#testTd_"+index).attr("bgcolor","red");
 				}
-				$("#ruleRes_"+index).val(res);	
+				res += data.response;
+			}else{
+				res += data;					
 			}
+			$("#ruleRes_"+index).val(res);	
 		});
  		
  	}
  	
  	function showSaveButton(index){
  		$("#saveButton_"+index).show();
+ 		saveNum++;
+ 	}
+ 	
+ 	function hideSaveButton(index){
+ 		$("#saveButton_"+index).hide();
+ 		saveNum--;
  	}
  	
  	function ruleFile(){
@@ -120,14 +168,14 @@
 			<table class="editTab">
 			<tr>
 				<td colspan="2">
-					<div class="leftDiv"><input type="button" value="保存"  onclick="saveRule('head',${ruleHead.id})" class="button_normal" style="width:50px" /></div>
+					<div class="leftDiv"><input type="button" value="保存" id="saveButton_head" onclick="saveRule('head',${ruleHead.id})" class="button_normal" style="display:none;width:50px" /></div>
 					<div class="rightDiv"><a href="#" onclick="shRule('head',this)">收起</a></div>														
 				</td>				
 			</tr>
 			<tr id="shtr_head">					
 				<td align="center" width="60px">规则头</td>		
 				<td width="800px">
-					<textarea rows="10" cols="100" id="content_head" name="content_head">${ruleHead.content}</textarea>
+					<textarea rows="10" cols="100" id="content_head" name="content_head" onchange="showSaveButton('head')">${ruleHead.content}</textarea>
 				</td>
 			</tr>
 						
@@ -164,8 +212,8 @@
 							</td>
 						</tr>
 						<tr id="shtr2_${status.index}" <c:if test="${status.index != 0}" >style="display:none"</c:if>>
-							<td  align="center">
-								<input type="button" value="验证"  onclick="testRule(${status.index},'${item.rulename}')" class="button_normal" style="width:50px" />
+							<td  align="center" id="testTd_${status.index}">
+								<input type="button" value="测试"  onclick="testRule(${status.index},'${item.rulename}')" class="button_normal" style="width:50px" />
 							</td>
 							<td>
 								<div class="leftDiv" style="width:49%;border-right:1px solid #bebde3;">

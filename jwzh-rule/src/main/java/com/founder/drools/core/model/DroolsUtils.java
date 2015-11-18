@@ -23,6 +23,9 @@ public class DroolsUtils {
 	        	System.err.println("============  drl error message,start  =============");
 	            for (KnowledgeBuilderError error: errors) {
 	                System.err.println(error);
+	                System.err.println("============  drl error message,end  =============");
+	                throw new IllegalArgumentException("Could not parse knowledge:"+error);
+	                
 	            }
 	            System.err.println("============  drl error message,end  =============");
 	            throw new IllegalArgumentException("Could not parse knowledge.");

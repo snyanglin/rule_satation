@@ -100,7 +100,7 @@ public class RuleServiceImpl implements RuleService {
 	/**
 	 * 
 	 * @Title: testRule
-	 * @Description: TODO(新规则测试验证)
+	 * @Description: TODO(新规则测试验证，验证的时候规则名传validateRuleFile)
 	 * @param @param ruleFileName
 	 * @param @param ruleName
 	 * @param @param content
@@ -117,12 +117,17 @@ public class RuleServiceImpl implements RuleService {
 			RuleConfig ruleConfig = new RuleConfig(drlFilePath+"/test/"+ruleBean.getRuleFileName()+"_"+ruleBean.getRuleName()+"_TEST.drl");
 			StatefulKnowledgeSession ksession = ruleConfig.getKbase().newStatefulKnowledgeSession();
 			
-			ksession.insert(ruleBean);	
-			ksession.insert(Str2Map(paramStr));		
-			
-	        //触发规则引擎
-	        ksession.fireAllRules();
+			if(!"validateRuleFile".equals(ruleBean.getRuleName())){//测试，否则是验证语法是否正确
+				ksession.insert(ruleBean);	
+				ksession.insert(Str2Map(paramStr));		
+				
+		        //触发规则引擎
+		        ksession.fireAllRules();
+			}else{//验证的时候，只要不报错，说明规则没有语法错误，业务错误不在这验证
+				ruleBean.setResStatus(0);
+			}
 	        ksession.dispose();
+	        
 		}catch(Exception e){
 			e.printStackTrace();
 			ruleBean.setResponse(e.toString());

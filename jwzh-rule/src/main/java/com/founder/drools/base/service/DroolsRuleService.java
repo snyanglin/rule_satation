@@ -16,6 +16,7 @@ import com.founder.drools.base.dao.Drools_ruleDao;
 import com.founder.drools.base.model.Drools_rule;
 import com.founder.drools.base.model.Drools_ruleHis;
 import com.founder.drools.core.inteface.RuleService;
+import com.founder.drools.core.model.RuleBean;
 import com.founder.framework.config.SystemConfig;
 
 @Service
@@ -79,9 +80,29 @@ public class DroolsRuleService{
 	 * @return void    返回类型
 	 * @throw
 	 */
-	public void ruleRelease(String rulefilename) {
+	public String ruleRelease(String rulefilename) {
 		Drools_rule entity = this.getRule(rulefilename, null);
 		
+		//验证语法是否正确
+		RuleBean ruleBean = new RuleBean();
+		ruleBean.setRuleFileName(entity.getRulefilename());
+        ruleBean.setRuleName("validateRuleFile");
+        Map map=this.queryService(entity.getRulefilename());
+        ruleBean.setServiceUrl((String)map.get("SERVICEURL"));
+        ruleBean.setServiceMethod((String)map.get("SERVICEMETHOD"));
+        
+        try{
+        	this.ruleTestRelease(rulefilename,"validateRuleFile");
+        	ruleService.testRule(ruleBean, null);
+        	if(ruleBean.getResStatus()!=0){
+        		return ruleBean.getResponse().toString();
+        	}
+        }catch(Exception e){
+        	e.printStackTrace();
+        	return e.toString();        	
+        }	
+       
+		//正式发布
 		this.writeDrl(entity.getRulefilename(), entity.getContent(),false);
 		try{
 			ruleService.reLoadOne(entity.getRulefilename());
@@ -99,6 +120,8 @@ public class DroolsRuleService{
 		
 		//保存历史版本
 		this.writeRuleHistory(entity.getRulefilename());
+		
+		return null;
 	}
 	
 	/**
@@ -111,7 +134,12 @@ public class DroolsRuleService{
 	 * @throw
 	 */
 	public void ruleTestRelease(String rulefilename,String rulename) {
-		Drools_rule entity = this.getRule(rulefilename, rulename);
+		Drools_rule entity;
+		if("validateRuleFile".equals(rulename)){//验证整个文件
+			entity = this.getRule(rulefilename, null);
+		}else{//测试某一个规则
+			entity = this.getRule(rulefilename, rulename);
+		}
 		
 		String testFileName=entity.getRulefilename()+"_"+rulename+"_TEST";
 		this.writeDrl(testFileName, entity.getContent(),true);		
