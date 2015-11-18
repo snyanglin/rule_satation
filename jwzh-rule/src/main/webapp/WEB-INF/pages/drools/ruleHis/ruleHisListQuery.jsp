@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/pages/commonInclude.jsp"%>
+<%@ include file="/WEB-INF/pages/include.jsp"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -11,10 +11,11 @@
 </script>
 </head>
 <body>
-<table width="90%">	
-	<tr>
-		<td align="center">
-			<table>
+<div class="mainDiv">
+<div class="layoutDiv">
+
+
+			<table class="listTab">
 			<tr><th>服务名</th><th>规则分组</th><th>规则文件名称</th><th>版本号</th><th>操作</th></tr>
 			<c:forEach items="${List}" var="item" varStatus="status">
 				<tr>
@@ -26,9 +27,8 @@
 				</tr>
 			</c:forEach>
 			</table>
-		</td>		
-	</tr>
-</table>
-
+		
+</div>
+</div>
 </body>
 </html>

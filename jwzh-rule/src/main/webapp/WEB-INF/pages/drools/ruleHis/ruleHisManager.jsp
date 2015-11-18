@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/pages/commonInclude.jsp"%>
+<%@ include file="/WEB-INF/pages/include.jsp"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -13,26 +13,31 @@
 </script>
 </head>
 <body>
+<div class="mainDiv">
+<div class="layoutDiv">
 <form action="<%=basePath%>ruleManager/ruleHisManager"  id="dataForm" name="dataForm" method="post" >
 
-<table>
+<table  class="queryTab">
 	<tr>
-		<th>规则分组</th>
-		<td>
-			<select id="groupid" name="groupid">
+		<th width="20%">规则分组</th>
+		<td width="30%">
+			<select id="groupid" name="groupid" class="inputText">
 				<option value="20151109145800">重点人员</option>
 			</select>
 		</td>
-		<th>规则文件名称</th>
+		<th  width="20%">规则文件名称</th>
 		<td>
-			<input type="text" id="rulefilename" name="rulefilename" value="" maxlength="50" />
-			<input type="submit" value="查询" />			
+			<input type="text" id="rulefilename" name="rulefilename" value="" maxlength="50" class="inputText" />			
 		</td>
 		
 	</tr>
 </table>
-<hr>
-<table>
+
+<div class="queryButtonDiv">
+	<input type="submit" value="查询" />	
+</div>
+
+<table class="listTab">
 <tr><th>服务名</th><th>规则分组</th><th>规则文件名称</th><th>操作</th></tr>
 <c:forEach items="${List}" var="item" varStatus="status">
 	<tr>
@@ -45,5 +50,7 @@
 </table>
 
 </form>
+</div>
+</div>
 </body>
 </html>

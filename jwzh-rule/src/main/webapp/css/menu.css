@@ -1,0 +1,41 @@
+@charset "utf-8";
+/*页面布局*/
+body{
+	width:100%; 
+	margin:0; 
+	padding:0;
+	background:url(../images/main_bg.png);	
+}
+
+a{
+	color:#0080ff;
+	text-decoration:none;
+}
+
+ul{
+	
+}
+ul li{
+	list-style:none;	
+	padding:5px;
+}
+
+.menuf{
+	text-align:left;					
+	height:30px;	
+	font-size:20px;
+	background-color:#cfd1e2;
+}
+
+.menu{
+	text-align:center;			
+	width:160px;
+	height:20px;	
+}
+.menu_click{			
+	background-color:#ffffff;	
+}
+
+.menu_mouseover{
+	background-color:#cfd1e2;
+}

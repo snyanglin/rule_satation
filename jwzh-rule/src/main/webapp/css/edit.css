@@ -1,0 +1,38 @@
+@charset "utf-8";
+/*页面布局*/
+.editTab{
+	width:90%;
+	border:solid #000; 
+	border-width:1px 0px 0px 1px;
+	border-collapse:collapse;	
+	margin:0 auto;	
+	text-align:center;
+}
+
+.editTab td{	
+	border:solid #000; 
+	border-width:0px 1px 1px 0px;
+	padding-left:10px;
+	padding-right:10px;
+}
+
+.leftDiv{
+	text-align:left;	
+	float:left;
+}
+
+.centerDiv{
+	text-align:left;	
+	float:left;
+}
+
+.rightDiv{	
+	text-align:right;	
+	float:right;
+}
+
+textarea{
+	border:1px;
+	width:98%;
+	font-size:13px;
+}

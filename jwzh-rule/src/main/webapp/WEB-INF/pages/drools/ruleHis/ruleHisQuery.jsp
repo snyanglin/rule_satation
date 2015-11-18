@@ -1,30 +1,32 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/pages/commonInclude.jsp"%>
+<%@ include file="/WEB-INF/pages/include.jsp"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="<%=contextPath%>/css/edit.css"></link>
 <script type="text/javascript">
  	
 </script>
 </head>
 <body>
-<table width="90%">	
-	<tr>
-		<td align="center">
-			<table border="1" width="500">
+
+<div class="mainDiv">
+<div class="layoutDiv">
+
+			<table class="queryTab">
 				<tr>
-					<th width="40%" align="right">服务名：</th>
+					<th>服务名：</th>
 					<td>${ruleHis.servicename}</td>
 				</tr>
 				<tr>
-					<th width="40%" align="right">服务地址：</th>
+					<th>服务地址：</th>
 					<td>${ruleHis.serviceurl}</td>
 				</tr>
 				<tr>
-					<th width="40%" align="right">服务方法：</th>
+					<th>服务方法：</th>
 					<td>${ruleHis.servicemethod}</td>
 				</tr>
 				<tr>
@@ -49,5 +51,7 @@
 	</tr>
 </table>
 
+</div>
+</div>
 </body>
 </html>
