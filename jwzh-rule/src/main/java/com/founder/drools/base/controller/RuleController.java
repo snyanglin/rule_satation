@@ -155,6 +155,8 @@ public class RuleController extends BaseController {
 	
 	@RequestMapping(value = "/ruleQuery", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleQuery(String rulefilename){
+		rulefilename=rulefilename.trim();
+		
 		ModelAndView mv = new ModelAndView("drools/query/ruleQuery");	
 		Drools_rule entity= new Drools_rule();
 		entity.setRulefilename(rulefilename);//规则文件名

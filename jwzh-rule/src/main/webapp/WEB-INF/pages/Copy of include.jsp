@@ -19,9 +19,7 @@
 </script>
 
 <script type="text/javascript" src="<%=contextPath%>/js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" src="<%=contextPath%>/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/js/common.js"></script>
 
-<link rel="stylesheet" type="text/css" href="<%=contextPath%>/bootstrap/css/bootstrap.min.css"></link>
 <link rel="stylesheet" type="text/css" href="<%=contextPath%>/css/main.css"></link>
 

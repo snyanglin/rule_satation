@@ -15,8 +15,11 @@
 
 <div class="mainDiv">
 <div class="layoutDiv">
+<div class="well well-lg">
 
-			<table class="queryTab">
+<div class="panel panel-default">
+   <div class="panel-heading">规则详情</div>
+	<table class="table">
 				<tr>
 					<th>服务名：</th>
 					<td>${ruleHis.servicename}</td>
@@ -42,15 +45,17 @@
 					<td>${ruleHis.version}</td>
 				</tr>				
 				<tr>
-					<td align="center" colspan="2">
-						<textarea rows="30" cols="100" readonly="readonly">${ruleHis.content}</textarea>
+					<td colspan="2">
+						<pre class="pre-scrollable">${ruleHis.content}</pre>						
 					</td>
 				</tr>
 			</table>
 		</td>		
 	</tr>
-</table>
+	</table>
+</div>
 
+</div>
 </div>
 </div>
 </body>

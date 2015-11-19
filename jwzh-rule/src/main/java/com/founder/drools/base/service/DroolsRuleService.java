@@ -44,6 +44,9 @@ public class DroolsRuleService{
 		entity.setStatus("1");
 		entity.setCreatetime(new Date());				
 		entity.setId(getTimeString());
+		if("undefined".equals(entity.getParamstr())){
+			entity.setParamstr(null);
+		}
 		drools_ruleDao.insert(entity);
 	}
 	

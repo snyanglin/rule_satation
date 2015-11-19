@@ -15,38 +15,53 @@
 <body>
 <div class="mainDiv">
 <div class="layoutDiv">
-<form action="<%=basePath%>ruleManager/ruleListQuery"  id="dataForm" name="dataForm" method="post" >
-<table class="queryTab">
-	<tr>
-		<th width="20%">规则分组</th>
-		<td width="30%">
-			<select id="groupid" name="groupid" class="inputText">
+<div class="well well-lg">
+
+<form action="<%=basePath%>ruleManager/ruleListQuery"  id="dataForm" name="dataForm" method="post">
+
+<div class="panel panel-default">
+   <div class="panel-heading">查询条件</div>
+	<table class="table table-bordered">
+	<tr>		
+		<td width="50%">
+			<div class="input-group">			
+			<span class="input-group-addon">规则分组</span>
+			<select id="groupid" name="groupid" class="form-control">
 				<option value="20151109145800">重点人员</option>
 			</select>
-		</td>
-		<th  width="20%">规则文件名称</th>
+			</div>
+		</td>		
 		<td>
-			<input type="text" id="rulefilename" name="rulefilename" value="" maxlength="50" class="inputText" />				
+			<div class="input-group">			
+			<span class="input-group-addon">规则文件名称</span>	
+			<input type="text" id="rulefilename" name="rulefilename" value="" maxlength="50" class="form-control" />	
+			</div>			
 		</td>
 		
 	</tr>
-</table>
-
-<div class="queryButtonDiv">
-<input type="submit" class="button_normal" value="查询" />	
+	</table>
 </div>
 
-<table class="listTab">
-<tr><th>规则分组</th><th>规则文件名称</th><th>备注</th><th>操作</th></tr>
-<c:forEach items="${List}" var="item" varStatus="status">
-	<tr><td><c:out value="${item.groupname }" /></td>
-	<td><c:out value="${item.rulefilename }" /></td>
-	<td><c:out value="${item.bz }" /></td>
-	<td><a href="<%=contextPath%>/ruleManager/ruleQuery?rulefilename=${item.rulefilename}">详情</a></td></tr>
-</c:forEach>
-</table>
+<div align="center">
+	<button type="submit" class="btn btn-default">查 询</button>	
+</div>
+<br />
+
+<div class="panel panel-default">
+   <div class="panel-heading">查询结果</div>
+	<table class="table">	
+	<tr><th>规则分组</th><th>规则文件名称</th><th>备注</th><th>操作</th></tr>
+	<c:forEach items="${List}" var="item" varStatus="status">
+		<tr><td><c:out value="${item.groupname }" /></td>
+		<td><c:out value="${item.rulefilename }" /></td>
+		<td><c:out value="${item.bz }" /></td>
+		<td><a href="<%=contextPath%>/ruleManager/ruleQuery?rulefilename=${item.rulefilename}">详情</a></td></tr>
+	</c:forEach>
+	</table>
+</div>
 
 </form>
+</div>
 </div>
 </div>
 </body>

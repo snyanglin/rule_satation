@@ -13,9 +13,11 @@
 <body>
 <div class="mainDiv">
 <div class="layoutDiv">
+<div class="well well-lg">
 
-
-			<table class="listTab">
+<div class="panel panel-default">
+   <div class="panel-heading">规则版本列表</div>
+	<table class="table">				
 			<tr><th>服务名</th><th>规则分组</th><th>规则文件名称</th><th>版本号</th><th>操作</th></tr>
 			<c:forEach items="${List}" var="item" varStatus="status">
 				<tr>
@@ -26,8 +28,10 @@
 				<td><a href="<%=contextPath%>/ruleManager/ruleHisQuery?version=${item.version}">详情</a></td>
 				</tr>
 			</c:forEach>
-			</table>
+	</table>
+</div>
 		
+</div>
 </div>
 </div>
 </body>

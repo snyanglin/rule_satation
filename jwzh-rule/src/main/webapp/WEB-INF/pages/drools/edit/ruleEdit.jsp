@@ -18,7 +18,9 @@
  				new ParamPair("content",content),
  		 		new ParamPair("paramstr",$("#paramstr_"+index).val()),
  		 		new ParamPair("rulename",$("#rulename_"+index).val()),
- 		 		new ParamPair("id",id),
+ 		 		new ParamPair("rulefilename",$("#rulefilename").val()),
+ 		 		new ParamPair("groupid",$("#groupid").val()),
+ 		 		new ParamPair("id",id)
  		];
  		var url="<%=basePath%>ruleManager/ruleEdit";
  		postToServer(paramPairs,url,function(data){ 			
@@ -35,6 +37,14 @@
  			 				
  		});
  	}
+	function saveRuleCancel(){
+ 		$("#addTab").hide();
+		$("#releaseButton").show();
+		$("#delButton").show();
+		$("#addButton").show();
+		$("#content_add").val(""); 	
+		$("#rulename_add").val("");
+	}
  	
  	function deleteRule(index,id){ 	
  		if(confirm("您确定要删除此规则么？")){
@@ -59,19 +69,10 @@
  	}
  	
  	function shAdd(obj){
- 		if(obj.value=="新增"){
- 			obj.value="取消"
- 			$("#addTab").show();	
- 			$("#releaseButton").hide();
- 			$("#delButton").hide();
- 		}else{
- 			obj.value="新增"
- 	 		$("#addTab").hide();
- 			$("#releaseButton").show();
- 			$("#delButton").show();
- 			$("#content_add").val(""); 			
- 		}
- 		
+		$("#addTab").show();	
+		$("#releaseButton").hide();
+		$("#delButton").hide();
+		$("#addButton").hide();
  	}
  	
  	function releaseRule(){
@@ -151,6 +152,7 @@
 <body>
 <div class="mainDiv">
 <div class="layoutDiv">
+<div class="well well-lg">
 
 <form action="<%=basePath%>ruleManager/ruleEdit"  id="dataForm" name="dataForm" method="post" >
 <!-- 隐藏区域 -->
@@ -163,24 +165,29 @@
 
 <table width="100%">	
 	<tr>
-		<td align="center">
-			
-			<table class="editTab">
-			<tr>
-				<td colspan="2">
-					<div class="leftDiv"><input type="button" value="保存" id="saveButton_head" onclick="saveRule('head',${ruleHead.id})" class="button_normal" style="display:none;width:50px" /></div>
-					<div class="rightDiv"><a href="#" onclick="shRule('head',this)">收起</a></div>														
-				</td>				
-			</tr>
-			<tr id="shtr_head">					
-				<td align="center" width="60px">规则头</td>		
-				<td width="800px">
-					<textarea rows="10" cols="100" id="content_head" name="content_head" onchange="showSaveButton('head')">${ruleHead.content}</textarea>
-				</td>
-			</tr>
-						
-			</table>
-					
+		<td>
+			<div class="panel panel-default">
+   				<div class="panel-heading">
+   					<table width="100%">	
+						<tr>
+							<td align="left" width="50%">
+   								<button type="button" class="btn btn-info btn-sm" onclick="saveRule('head',${ruleHead.id})" style="display:none;" id="saveButton_head" >保存</button>  						
+							</td>
+							
+							<td align="right">
+								<a href="#" onclick="shRule('head',this)">收起</a>
+							</td>
+						</tr>
+						</table>
+   				</div>
+				<table class="table table-bordered">				
+				<tr id="shtr_head">										
+					<td align="center">
+						<textarea rows="8" cols="100" id="content_head" name="content_head" onchange="showSaveButton('head')">${ruleHead.content}</textarea>
+					</td>
+				</tr>
+				</table>
+			</div>		
 		</td>		
 	</tr>
 	
@@ -188,83 +195,96 @@
 			
 			<c:forEach items="${List}" var="item" varStatus="status">
 			<tr>
-			<td align="center">	
-						<table class="editTab">
+			<td>
+				<div class="panel panel-default">
+   					<div class="panel-heading" id="title_${status.index}">
+   						<table width="100%">	
 						<tr>
-							<td id="title_${status.index}" colspan="2" <c:if test="${item.status == '1'}" >bgcolor="red"</c:if><c:if test="${item.status == '3'}" >bgcolor="green"</c:if>>								
-								<div class="leftDiv" style="width:33%">
-									<input type="button" value="保存" id="saveButton_${status.index}" style="display:none;width:50px" onclick="saveRule(${status.index},${item.id})" class="button_normal" />
-									<input type="button" value=" 删除"  onclick="deleteRule(${status.index},${item.id})" class="button_normal" style="width:50px" />
-								</div>
-								<div class="centerDiv">
-									<input type="hidden" id="rulename_${status.index}" name="rulename_${status.index}" value="${item.rulename}" />
-										${item.rulename}
-								</div>
-								<div class="rightDiv"  style="width:33%">
-									<a href="#" onclick="shRule('${status.index}',this)"><c:if test="${status.index == 0}" >收起</c:if><c:if test="${status.index != 0}" >展开</c:if></a>
-								</div>														
+							<td align="left" width="30%">
+   								<button type="button" class="btn btn-info btn-sm" id="saveButton_${status.index}" style="display:none;" onclick="saveRule(${status.index},${item.id})" >保存</button>
+   								<button type="button" class="btn btn-info btn-sm" onclick="deleteRule(${status.index},${item.id})" >删除</button>   						
+							</td>
+							<td align="center">
+								<input type="hidden" id="rulename_${status.index}" name="rulename_${status.index}" value="${item.rulename}" />
+								${item.rulename}
+							</td>
+							<td align="right" width="30%">
+								<a href="#" onclick="shRule('${status.index}',this)"><c:if test="${status.index == 0}" >收起</c:if><c:if test="${status.index != 0}" >展开</c:if></a>
 							</td>
 						</tr>
-						<tr id="shtr_${status.index}" <c:if test="${status.index != 0}" >style="display:none"</c:if>>
-							<td align="center" width="60px">规则</td>
-							<td>
+						</table>
+					</div>
+					
+					<table class="table table-bordered">						
+						<tr id="shtr_${status.index}" <c:if test="${status.index != 0}" >style="display:none"</c:if>>							
+							<td colspan="2" align="center">
 								<textarea rows="20" cols="100" id="content_${status.index}" name="content_${status.index}" onchange="showSaveButton(${status.index})">${item.content}</textarea>
 							</td>
 						</tr>
 						<tr id="shtr2_${status.index}" <c:if test="${status.index != 0}" >style="display:none"</c:if>>
 							<td  align="center" id="testTd_${status.index}">
-								<input type="button" value="测试"  onclick="testRule(${status.index},'${item.rulename}')" class="button_normal" style="width:50px" />
+								<input type="button" value="测试"  onclick="testRule(${status.index},'${item.rulename}')" class="btn btn-default" style="width:50px" />
 							</td>
 							<td>
-								<div class="leftDiv" style="width:49%;border-right:1px solid #bebde3;">
+								<div style="width:49%;border-right:1px solid #bebde3;float:left">
 								<textarea rows="5" cols="48" id="paramstr_${status.index}" name="paramstr_${status.index}">${item.paramstr}</textarea>
 								</div>	
-								<div class="rightDiv" style="width:49%">	
+								<div class="rightDiv" style="width:49%;float:right">	
 								<textarea rows="5" cols="48" id="ruleRes_${status.index}" name="ruleRes_${status.index}" readonly="readonly">验证结果</textarea>	
 								</div>									
 							</td>
 						</tr>
 						
-						</table>
+					</table>
+					</div>
 			</td>
 			</tr>
 			</c:forEach>
 			<tr>
-			<td align="center" style="display:none" id="addTab">
-						<table class="editTab">				
+			<td style="display:none" id="addTab">
+				<div class="panel panel-default">
+   					<div class="panel-heading" id="title_${status.index}">
+   						<table width="100%">	
 						<tr>
-							<td colspan="2">
-								<div class="leftDiv" style="width:33%">
-									<input type="button" value="确定"  onclick="saveRule('add','add')" class="button_normal" style="width:50px"/>
+							<td align="left" width="30%">
+   								<button type="button" class="btn btn-info btn-sm" onclick="saveRule('add','add')" >保存</button>
+   								<button type="button" class="btn btn-default btn-sm" onclick="saveRuleCancel()" >取消</button>   								  						
+							</td>
+							<td align="center">
+								<div class="input-group">			
+								<span class="input-group-addon">请输入规则名</span>	
+								 <input type="text" id="rulename_add" name="rulename_add" class="form-control" value="" />
 								</div>
-								<div class="centerDiv">
-									请输入规则名 <input type="text" id="rulename_add" name="rulename_add" class="inputText" value="" />
-								</div>
-								<div class="rightDiv"  style="width:33%">
-									<a href="#" onclick="shRule('add',this)">收起</a></a>
-								</div>																
+							</td>
+							<td align="right" width="30%">
+								<a href="#" onclick="shRule('add',this)">收起</a></a>
 							</td>
 						</tr>
-						<tr id="shtr_add">
-							<td align="center" width="60px">规则</td>
-							<td>
+						</table>
+   					</div>
+						<table class="table table-bordered">				
+						
+						<tr id="shtr_add">							
+							<td align="center">
 								<textarea rows="20" cols="100" id="content_add" name="content_add" ></textarea>
 							</td>
 						</tr>
 						</table>
+			</div>
 		</td>
 	</tr>
 	
 </table>
 
-	<div class="queryButtonDiv">
-		<input type="button" value="新增" id="addButton" class="button_normal" onclick="shAdd(this)"/>				
-		<input type="button" value="发布" id="releaseButton" class="button_normal" onclick="releaseRule()"/>
-		<input type="button" value="归档" id="delButton" class="button_normal" onclick="ruleFile()"/>
-	</div>
+<div align="center">
+	<button type="button" class="btn btn-default" id="addButton" onclick="shAdd(this)">新 增</button>
+	<button type="button" class="btn btn-default" id="releaseButton" onclick="releaseRule()">发 布</button>
+	<button type="button" class="btn btn-default" id="delButton" onclick="ruleFile()">归 档</button>	
+</div>
 
 </form>
 
+</div>
 </div>
 </div>
 </body>

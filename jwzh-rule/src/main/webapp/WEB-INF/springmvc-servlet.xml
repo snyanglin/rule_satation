@@ -117,6 +117,7 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
 	<mvc:resources location="/css/" mapping="/css/**" />
 	<mvc:resources location="/plugin/" mapping="/plugin/**" />
 	<mvc:resources location="/WEB-INF/pages/" mapping="/pages/**" />
+	<mvc:resources location="/bootstrap/" mapping="/bootstrap/**" />
 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/pages/" />
