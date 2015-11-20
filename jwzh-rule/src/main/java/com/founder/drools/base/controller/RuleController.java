@@ -16,6 +16,7 @@ import com.founder.drools.base.model.Drools_ruleHis;
 import com.founder.drools.base.service.DroolsRuleHisService;
 import com.founder.drools.base.service.DroolsRuleService;
 import com.founder.drools.core.inteface.RuleService;
+import com.founder.drools.core.model.Paginator;
 import com.founder.drools.core.model.RuleBean;
 import com.founder.framework.base.controller.BaseController;
 /**
@@ -48,11 +49,22 @@ public class RuleController extends BaseController {
 	public ModelAndView ruleManager(Drools_rule entity){
 		ModelAndView mv = new ModelAndView("drools/edit/ruleManager");	
 		
-		List<Drools_rule> list = droolsRuleService.queryRuleManagerList(entity);
-		mv.addObject("List",list);
+		mv.addObject("Entity",entity);
 		
 		return mv;
-	}		
+	}
+	
+	@RequestMapping(value = "/getRuleManagerList", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView getRuleManagerList(Drools_rule entity,Paginator paginator){
+		ModelAndView mv = new ModelAndView("drools/edit/ruleManagerList");	
+		entity.setRulefilename(entity.getRulefilename().trim());
+		List<Drools_rule> list = droolsRuleService.queryRuleManagerList(entity);
+		paginator.setList(list);
+		mv.addObject("Paginator",paginator);	
+		mv.addObject("Entity",entity);
+		
+		return mv;
+	}
 	
 	@RequestMapping(value = "/ruleEditPre", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleEditPre(String rulefilename){
@@ -147,8 +159,18 @@ public class RuleController extends BaseController {
 	public ModelAndView ruleListQuery(Drools_rule entity){
 		ModelAndView mv = new ModelAndView("drools/query/ruleListQuery");	
 		
+		mv.addObject("Entity",entity);;
+		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/getRuleList", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView getRuleList(Drools_rule entity,Paginator paginator){
+		ModelAndView mv = new ModelAndView("drools/query/ruleList");	
+		entity.setRulefilename(entity.getRulefilename().trim());
 		List<Drools_rule> list = droolsRuleService.queryRuleManagerList(entity);
-		mv.addObject("List",list);
+		paginator.setList(list);
+		mv.addObject("Paginator",paginator);
 		
 		return mv;
 	}
@@ -208,11 +230,17 @@ public class RuleController extends BaseController {
 	
 	@RequestMapping(value = "/ruleHisManager", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleHisManager(Drools_ruleHis entity){
-		ModelAndView mv = new ModelAndView("drools/ruleHis/ruleHisManager");	
-		
+		ModelAndView mv = new ModelAndView("drools/ruleHis/ruleHisManager");		
+		mv.addObject("Entity",entity);
+		return mv;
+	}
+	@RequestMapping(value = "/getRuleHisManagerList", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView getRuleHisManagerList(Drools_ruleHis entity,Paginator paginator){
+		ModelAndView mv = new ModelAndView("drools/ruleHis/ruleHisManagerList");
+		entity.setRulefilename(entity.getRulefilename().trim());
 		List<Drools_ruleHis> list = droolsRuleHisService.queryRuleHisManagerList(entity);
-		mv.addObject("List",list);
-		
+		paginator.setList(list);
+		mv.addObject("Paginator",paginator);
 		return mv;
 	}
 	
@@ -220,9 +248,18 @@ public class RuleController extends BaseController {
 	public ModelAndView ruleHisListQuery(Drools_ruleHis entity){
 		ModelAndView mv = new ModelAndView("drools/ruleHis/ruleHisListQuery");	
 		
-		List<Drools_ruleHis> list = droolsRuleHisService.queryRuleHisList(entity);
-		mv.addObject("List",list);
+		mv.addObject("Entity",entity);
 		
+		return mv;
+	}
+	@RequestMapping(value = "/getRuleHisList", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView getRuleHisList(Drools_ruleHis entity,Paginator paginator){
+		ModelAndView mv = new ModelAndView("drools/ruleHis/ruleHisList");	
+		
+		List<Drools_ruleHis> list = droolsRuleHisService.queryRuleHisList(entity);
+		paginator.setList(list);
+		mv.addObject("Paginator",paginator);	
+		mv.addObject("Entity",entity);
 		return mv;
 	}
 	

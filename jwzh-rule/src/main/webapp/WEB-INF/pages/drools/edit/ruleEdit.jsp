@@ -150,6 +150,16 @@
 </script>
 </head>
 <body>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="navbar-header">
+      <a class="navbar-brand" href="<%=contextPath%>/ruleManager/ruleManager">规则列表</a>
+   </div>
+   <div>
+      <ul class="nav navbar-nav">
+         <li class="active"><a href="#">规则编辑</a></li>           
+      </ul>
+   </div>
+</nav>
 <div class="mainDiv">
 <div class="layoutDiv">
 <div class="well well-lg">

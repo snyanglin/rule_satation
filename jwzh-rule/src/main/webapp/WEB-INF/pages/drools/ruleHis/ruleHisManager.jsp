@@ -7,15 +7,60 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript">
+var currentIndex=0;
+function onPageChange(pageNum){
+	//防止死循环
+	if(pageNum==currentIndex)
+		return;
+	currentIndex=pageNum;
+	
+	var groupid=$("#groupid_old").val();
+	if(groupid == "")
+		groupid=$("#groupid").val();
+	
+	var rulefilename=$("#rulefilename_old").val();
+	if(rulefilename == "")
+		rulefilename=$("#rulefilename").val();
+	
+	var paramPairs=[
+	                
+	 				new ParamPair("pageIndex",pageNum),	 		 		
+	 		 		new ParamPair("rulefilename",rulefilename),
+	 		 		new ParamPair("groupid",groupid)	 		 		
+	];
+	var url="<%=basePath%>ruleManager/getRuleHisManagerList";
+	postToServer(paramPairs,url,function(data){ 			
+		if(data)
+			$("#resListTab").html(data);
+	}); 		
+			
+}
 
+function detail(ruleid){
+	window.location.href="<%=contextPath%>/ruleManager/ruleHisListQuery?ruleid="+ruleid;
+}
+
+function doIt(){
+	currentIndex=0;
+	$("#rulefilename_old").val("");
+	$("#groupid_old").val("");
+	onPageChange(1);
+}
 </script>
 </head>
-<body>
+<body onload="doIt()">
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="navbar-header">
+      <a class="navbar-brand" href="<%=contextPath%>/ruleManager/ruleHisManager">已归档规则列表</a>
+   </div>	
+</nav>
 <div class="mainDiv">
 <div class="layoutDiv">
 <div class="well well-lg">
 
 <form action="<%=basePath%>ruleManager/ruleHisManager"  id="dataForm" name="dataForm" method="post" >
+<input type="hidden" name="groupid_old" id="groupid_old" value="" />
+<input type="hidden" name="rulefilename_old" id="rulefilename_old" value="" />
 
 <div class="panel panel-default">
    <div class="panel-heading">查询条件</div>
@@ -41,24 +86,21 @@
 </div>
 
 <div align="center">
-	<button type="submit" class="btn btn-default">查 询</button>	
+	<button type="button" class="btn btn-default" onclick="doIt()">查 询</button>	
 </div>
 <br />
 
+<span id="resListTab">
 <div class="panel panel-default">
-   <div class="panel-heading">查询结果</div>
-    <table class="table">
+   <div class="panel-heading">查询结果</div>   
+   <table class="table" >
 	<tr><th>服务名</th><th>规则分组</th><th>规则文件名称</th><th>操作</th></tr>
-	<c:forEach items="${List}" var="item" varStatus="status">
-		<tr>
-		<td><c:out value="${item.servicename }" /></td>
-		<td><c:out value="${item.groupname }" /></td>
-		<td><c:out value="${item.rulefilename }" /></td>	
-		<td><a href="<%=contextPath%>/ruleManager/ruleHisListQuery?ruleid=${item.ruleid}">查看</a></td>
-		</tr>
-	</c:forEach>
+	
 	</table>
+   
 </div>
+</span>
+
 </form>
 
 </div>

@@ -39,7 +39,9 @@ function postToServer(paramPairs,url,calback){
 		success:calback,
 		error: function(data){
 			if(data){
-				if(data.statusText){
+				if(data.status==200){
+					calback(data.responseText);
+				}else if(data.statusText){
 					alert(data.statusText);
 				}else{
 					alert(data);
