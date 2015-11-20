@@ -88,9 +88,20 @@ public class RuleController extends BaseController {
 		map.put("resStatus", "0");//成功
 		try{
 			if("add".equals(entity.getId())){//新增规则体
+				Drools_rule query_Entity = new Drools_rule();
+				query_Entity.setRulefilename(entity.getRulefilename());
+				query_Entity.setRulename(entity.getRulename());
+				List list=droolsRuleService.queryRuleListByEntity(query_Entity);
+				if(list==null || list.size()>0){
+					map.put("resStatus", "1");//失败
+					map.put("errorMsg", entity.getRulename()+"已存在");//失败
+					return map;
+				}
+				
 				entity.setRuletype("1");//规则体，规则头在新增规则的时候就有了
 				droolsRuleService.addRule(entity);
 			}else{
+				entity.setStatus("1");
 				droolsRuleService.updateRule(entity);	
 			}
 		}catch(Exception e){
@@ -119,6 +130,40 @@ public class RuleController extends BaseController {
 		return map;		
 	}
 	
+	@RequestMapping(value = "/validateRule", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody RuleBean validateRule(String ruleFileName,String ruleName,String paramStr){
+		RuleBean ruleBean = new RuleBean();
+        ruleBean.setRuleFileName(ruleFileName);
+        ruleBean.setRuleName(ruleName);
+        
+        Map map=droolsRuleService.queryService(ruleFileName);
+        ruleBean.setServiceUrl((String)map.get("SERVICEURL"));
+        ruleBean.setServiceMethod((String)map.get("SERVICEMETHOD"));
+        
+        try{
+        	droolsRuleService.ruleTestRelease(ruleFileName,ruleName);
+        	ruleService.validateRule(ruleBean);
+        }catch(Exception e){
+        	e.printStackTrace();
+        	ruleBean.setResponse(e.toString());  
+        	return ruleBean;
+        }		       
+        
+        if(0==ruleBean.getResStatus()){//验证成功
+        	Drools_rule entity=new Drools_rule();
+        	entity.setRulefilename(ruleFileName);
+        	entity.setRulename(ruleName);
+        	entity.setRuletype("1");
+        	entity = droolsRuleService.queryRuleByEntity(entity);
+        	
+        	Drools_rule entity2=new Drools_rule();
+        	entity2.setStatus("3");//已验证，未发布
+        	entity2.setId(entity.getId());
+        	droolsRuleService.updateRule(entity2);        	        	
+        }
+		return ruleBean;
+	}
+	
 	@RequestMapping(value = "/testRule", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody RuleBean testRule(String ruleFileName,String ruleName,String paramStr){
 		RuleBean ruleBean = new RuleBean();
@@ -138,18 +183,6 @@ public class RuleController extends BaseController {
         	return ruleBean;
         }		       
         
-        if(0==ruleBean.getResStatus()){//验证成功
-        	Drools_rule entity=new Drools_rule();
-        	entity.setRulefilename(ruleFileName);
-        	entity.setRulename(ruleName);
-        	entity.setRuletype("1");
-        	entity = droolsRuleService.queryRuleByEntity(entity);
-        	if("1".equals(entity.getStatus())){//未验证        		
-        		entity.setStatus("3");//未发布
-        		droolsRuleService.updateRule(entity);
-        	}
-        	
-        }
 		return ruleBean;
 	}
 	
@@ -206,11 +239,26 @@ public class RuleController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/ruleAdd", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView ruleAdd(Drools_rule entity){
-		entity.setRuletype("0");//规则头		
-		droolsRuleService.addRule(entity);
+	public @ResponseBody Map ruleAdd(Drools_rule entity){
+		Map map = new HashMap();
+		map.put("resStatus", "0");//成功
+		try{
+			entity.setRuletype("0");//规则头	
+			Drools_rule query_Entity = new Drools_rule();
+			query_Entity.setRulefilename(entity.getRulefilename());
+			List list=droolsRuleService.queryRuleListByEntity(query_Entity);
+			if(list==null || list.size()>0){
+				map.put("resStatus", "1");//失败
+				map.put("errorMsg", entity.getRulefilename()+"已存在");//失败
+				return map;
+			}
+			droolsRuleService.addRule(entity);
+		}catch(Exception e){
+			map.put("resStatus", "1");//失败
+			map.put("errorMsg", e.toString());//失败
+		}
 		
-		return this.ruleManager(null);
+		return map;
 	}
 	
 	/**

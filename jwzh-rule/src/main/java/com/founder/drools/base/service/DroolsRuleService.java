@@ -50,8 +50,7 @@ public class DroolsRuleService{
 		drools_ruleDao.insert(entity);
 	}
 	
-	public void updateRule(Drools_rule entity) {
-		entity.setStatus("1");
+	public void updateRule(Drools_rule entity) {		
 		entity.setUpdatetime(new Date());		
 		drools_ruleDao.update(entity);
 	}
@@ -96,7 +95,7 @@ public class DroolsRuleService{
         
         try{
         	this.ruleTestRelease(rulefilename,"validateRuleFile");
-        	ruleService.testRule(ruleBean, null);
+        	ruleService.validateRule(ruleBean);
         	if(ruleBean.getResStatus()!=0){
         		return ruleBean.getResponse().toString();
         	}

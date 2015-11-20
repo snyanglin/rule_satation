@@ -7,7 +7,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript">
- 	
+	function saveRule(){		 		
+		var paramPairs=[			
+		 		new ParamPair("bz",$("#bz").val()),
+		 		new ParamPair("rulefilename",$("#rulefilename").val()),
+		 		new ParamPair("groupid",$("#groupid").val())		 		
+		];
+		var url="<%=basePath%>ruleManager/ruleAdd";
+		postToServer(paramPairs,url,function(data){ 			
+		if(data){
+			if(data.resStatus == '0'){				
+				alert("规则已保存");				
+				window.location.href="<%=basePath%>ruleManager/ruleManager";				
+			}else{
+				alert("规则保存失败："+data.errorMsg);					
+			}				
+		}else{
+			alert("规则保存失败："+data);				
+		}		
+			 				
+		});
+	} 	
 </script>
 </head>
 <body>
@@ -55,7 +75,7 @@
 </div>
 
 <div align="center">
-	<button type="submit" class="btn btn-default">新 增</button>	
+	<button type="button" class="btn btn-default" onclick="saveRule()">新 增</button>	
 </div>
 </form>
 

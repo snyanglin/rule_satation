@@ -13,21 +13,42 @@
  	function saveRule(index,id){		 		
  		var content = $("#content_"+index).val();
  		content = content.replace(/\+/g,'%2B');//处理"+"号
+ 		
+ 		var paramstr =$("#paramstr_"+index).val();
+ 		var rulename = $("#rulename_"+index).val();
+ 		var bz = $("#bz_"+index).val();
 		
  		var paramPairs=[
  				new ParamPair("content",content),
- 		 		new ParamPair("paramstr",$("#paramstr_"+index).val()),
- 		 		new ParamPair("rulename",$("#rulename_"+index).val()),
  		 		new ParamPair("rulefilename",$("#rulefilename").val()),
  		 		new ParamPair("groupid",$("#groupid").val()),
  		 		new ParamPair("id",id)
  		];
+ 		
+ 		if(paramstr!=undefined && paramstr != ""){
+ 			paramPairs[paramPairs.length]=new ParamPair("paramstr",paramstr);
+ 		}
+ 		
+ 		if(rulename!=undefined && rulename != ""){
+ 			paramPairs[paramPairs.length]=new ParamPair("rulename",rulename);
+ 		}
+ 		
+ 		if(bz!=undefined && bz != ""){
+ 			paramPairs[paramPairs.length]=new ParamPair("bz",bz);
+ 		}
+ 		
  		var url="<%=basePath%>ruleManager/ruleEdit";
  		postToServer(paramPairs,url,function(data){ 			
 			if(data){
 				if(data.resStatus == '0'){
 					hideSaveButton(index);
 					alert("规则已保存");
+					if(index=="add"){
+						window.location.href="<%=basePath%>ruleManager/ruleEditPre?rulefilename="+$("#rulefilename").val();
+					}else{
+						$("#title_"+index).css("background-color","red");
+						shTest(index,"validate");
+					}
 				}else{
 					alert("规则保存失败："+data.errorMsg);					
 				}				
@@ -75,11 +96,19 @@
 		$("#addButton").hide();
  	}
  	
+ 	function shTest(index,shType){
+ 		if(shType=="test"){//测试按钮
+ 			$("#validateButton_"+index).hide();	
+ 			$("#testButton_"+index).show();	
+ 		}else{
+ 			$("#validateButton_"+index).show();	
+ 			$("#testButton_"+index).hide();	
+ 		}
+ 	}
+ 	
  	function releaseRule(){
  		if(saveNum>0){
- 			if(!confirm("您还有未保存的规则，您确认要发布么？")){
- 				return;
- 			}
+ 			alert("您还有未保存的规则，请先保存"); 			
  		}
  		
  		var paramPairs=[
@@ -89,8 +118,8 @@
  		postToServer(paramPairs,url,function(data){ 			
  					if(data){
  						if(data.resStatus == '0'){
- 							alert("规则已发布");
- 							window.location.reload();
+ 							alert("规则已发布"); 					
+ 							window.location.href="<%=basePath%>ruleManager/ruleEditPre?rulefilename="+$("#rulefilename").val();
  						}else{
  							alert("规则发布失败："+data.errorMsg);					
  						}				
@@ -102,6 +131,37 @@
  		 		 		
  	}
  	
+ 	//验证
+ 	function validateRule(index,rulename){
+ 		$("#ruleRes_"+index).val("验证中……"); 		
+ 		var rulefilename=$("#rulefilename").val(); 		 		
+ 		
+ 		var paramPairs=[
+ 				new ParamPair("ruleFileName",rulefilename),
+ 				new ParamPair("ruleName",rulename)
+ 		];
+ 		var url="<%= basePath%>ruleManager/validateRule";
+ 		postToServer(paramPairs,url,function(data){
+			var res="验证失败！\r\n";
+			if(data){
+				if(data.resStatus == '0'){
+					res="验证成功！\r\n";
+					$("#title_"+index).css("background-color","green");
+					shTest(index,"test");
+				}else{
+					$("#title_"+index).css("background-color","red");
+					res += data.response;
+				}
+				
+			}else{
+				res += data;					
+			}
+			$("#ruleRes_"+index).val(res);	
+		});
+ 		
+ 	}
+ 	
+ 	//测试
  	function testRule(index,rulename){
  		$("#ruleRes_"+index).val("验证中……"); 		
  		var rulefilename=$("#rulefilename").val(); 		
@@ -114,17 +174,17 @@
  		];
  		var url="<%= basePath%>ruleManager/testRule";
  		postToServer(paramPairs,url,function(data){
-			var res="验证失败！\r\n";
+			var res="测试结果：失败！\r\n";
 			if(data){
 				if(data.resStatus == '0'){
-					res="验证成功！\r\n";
-					$("#testTd_"+index).attr("bgcolor","green");
+					res="测试结果：成功！\r\n";
+					$("#ruleRes_"+index).css("background-color","green");
 				}else{
-					$("#testTd_"+index).attr("bgcolor","red");
+					$("#ruleRes_"+index).css("background-color","red");
 				}
-				res += data.response;
+				res += "返回信息："+data.response;
 			}else{
-				res += data;					
+				res += "返回信息："+data;					
 			}
 			$("#ruleRes_"+index).val(res);	
 		});
@@ -180,15 +240,20 @@
    				<div class="panel-heading">
    					<table width="100%">	
 						<tr>
-							<td align="left" width="50%">
+							<td align="left" width="30%">
    								<button type="button" class="btn btn-info btn-sm" onclick="saveRule('head',${ruleHead.id})" style="display:none;" id="saveButton_head" >保存</button>  						
 							</td>
-							
-							<td align="right">
+							<td align="center">
+								<div class="input-group">			
+								<span class="input-group-addon">备注</span>	
+								 <input type="text" id="bz_head" name="bz_head" class="form-control" onchange="showSaveButton('head')" value="${ruleHead.bz}" />
+								</div>
+							</td>
+							<td align="right" width="30%">
 								<a href="#" onclick="shRule('head',this)">收起</a>
 							</td>
 						</tr>
-						</table>
+					</table>
    				</div>
 				<table class="table table-bordered">				
 				<tr id="shtr_head">										
@@ -207,40 +272,44 @@
 			<tr>
 			<td>
 				<div class="panel panel-default">
-   					<div class="panel-heading" id="title_${status.index}">
+   					<div class="panel-heading" id="title_${status.index}" <c:if test="${item.status == '1' }">style="background-color:red"</c:if><c:if test="${item.status == '3' }">style="background-color:green"</c:if>>
    						<table width="100%">	
 						<tr>
 							<td align="left" width="30%">
    								<button type="button" class="btn btn-info btn-sm" id="saveButton_${status.index}" style="display:none;" onclick="saveRule(${status.index},${item.id})" >保存</button>
-   								<button type="button" class="btn btn-info btn-sm" onclick="deleteRule(${status.index},${item.id})" >删除</button>   						
+   								<button type="button" class="btn btn-default btn-sm" onclick="deleteRule(${status.index},${item.id})" >删除</button>   						
 							</td>
 							<td align="center">
 								<input type="hidden" id="rulename_${status.index}" name="rulename_${status.index}" value="${item.rulename}" />
 								${item.rulename}
 							</td>
 							<td align="right" width="30%">
-								<a href="#" onclick="shRule('${status.index}',this)"><c:if test="${status.index == 0}" >收起</c:if><c:if test="${status.index != 0}" >展开</c:if></a>
+								<a href="#" onclick="shRule('${status.index}',this)">展开</a>
 							</td>
 						</tr>
 						</table>
 					</div>
 					
 					<table class="table table-bordered">						
-						<tr id="shtr_${status.index}" <c:if test="${status.index != 0}" >style="display:none"</c:if>>							
+						<tr id="shtr_${status.index}" style="display:none">							
 							<td colspan="2" align="center">
 								<textarea rows="20" cols="100" id="content_${status.index}" name="content_${status.index}" onchange="showSaveButton(${status.index})">${item.content}</textarea>
 							</td>
 						</tr>
-						<tr id="shtr2_${status.index}" <c:if test="${status.index != 0}" >style="display:none"</c:if>>
+						<tr id="shtr2_${status.index}" style="display:none">
 							<td  align="center" id="testTd_${status.index}">
-								<input type="button" value="测试"  onclick="testRule(${status.index},'${item.rulename}')" class="btn btn-default" style="width:50px" />
+								
+									<input type="button" value="验证" id="validateButton_${status.index}" onclick="validateRule(${status.index},'${item.rulename}')" class="btn btn-default" <c:if test="${item.status == '3' || item.status == '0' }">style="display:none"</c:if> />
+																
+									<input type="button" value="测试" id="testButton_${status.index}" onclick="testRule(${status.index},'${item.rulename}')" class="btn btn-default" <c:if test="${item.status == '1' }">style="display:none"</c:if> />																
+								
 							</td>
 							<td>
 								<div style="width:49%;border-right:1px solid #bebde3;float:left">
 								<textarea rows="5" cols="48" id="paramstr_${status.index}" name="paramstr_${status.index}">${item.paramstr}</textarea>
 								</div>	
 								<div class="rightDiv" style="width:49%;float:right">	
-								<textarea rows="5" cols="48" id="ruleRes_${status.index}" name="ruleRes_${status.index}" readonly="readonly">验证结果</textarea>	
+								<textarea rows="5" cols="48" id="ruleRes_${status.index}" name="ruleRes_${status.index}" readonly="readonly">验证/测试结果</textarea>	
 								</div>									
 							</td>
 						</tr>

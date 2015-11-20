@@ -45,6 +45,17 @@ public interface RuleService {
 	
 	/**
 	 * 
+	 * @Title: validateRule
+	 * @Description: TODO(验证规则语法是否正确)
+	 * @param @param ruleBean
+	 * @param @return    设定文件
+	 * @return RuleBean    返回类型
+	 * @throw
+	 */
+	public RuleBean validateRule(RuleBean ruleBean);
+	
+	/**
+	 * 
 	 * @Title: testRule
 	 * @Description: TODO(新规则测试验证)
 	 * @param @param ruleFileName
