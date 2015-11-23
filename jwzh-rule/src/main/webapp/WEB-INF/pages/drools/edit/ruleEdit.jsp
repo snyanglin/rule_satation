@@ -9,7 +9,9 @@
 <link rel="stylesheet" type="text/css" href="<%=contextPath%>/css/edit.css"></link>
 <script type="text/javascript">
 	var saveNum=0;//需要保存的数量
-
+	var color_NotValidate = "#febc81";//未验证或者验证失败的颜色 
+	var color_NotRelease = 	"#d0d7d2";//未发布活验证通过的颜色
+	
  	function saveRule(index,id){		 		
  		var content = $("#content_"+index).val();
  		content = content.replace(/\+/g,'%2B');//处理"+"号
@@ -46,7 +48,7 @@
 					if(index=="add"){
 						window.location.href="<%=basePath%>ruleManager/ruleEditPre?rulefilename="+$("#rulefilename").val();
 					}else{
-						$("#title_"+index).css("background-color","red");
+						$("#title_"+index).css("background-color",color_NotValidate);
 						shTest(index,"validate");
 					}
 				}else{
@@ -146,10 +148,10 @@
 			if(data){
 				if(data.resStatus == '0'){
 					res="验证成功！\r\n";
-					$("#title_"+index).css("background-color","green");
+					$("#title_"+index).css("background-color",color_NotRelease);
 					shTest(index,"test");
 				}else{
-					$("#title_"+index).css("background-color","red");
+					$("#title_"+index).css("background-color",color_NotValidate);
 					res += data.response;
 				}
 				
@@ -178,9 +180,9 @@
 			if(data){
 				if(data.resStatus == '0'){
 					res="测试结果：成功！\r\n";
-					$("#ruleRes_"+index).css("background-color","green");
+					$("#ruleRes_"+index).css("background-color",color_NotRelease);
 				}else{
-					$("#ruleRes_"+index).css("background-color","red");
+					$("#ruleRes_"+index).css("background-color",color_NotValidate);
 				}
 				res += "返回信息："+data.response;
 			}else{
@@ -235,6 +237,12 @@
 
 <table width="100%">	
 	<tr>
+		<td align="right">
+			<div style="background:#febc81;height:12px;width:150px;font-size:10px" >未验证或者验证失败</div><br/>
+			<div style="background:#d0d7d2;height:12px;width:150px;font-size:10px" >未发布或者验证通过</div><br/>
+		</td>
+	</tr>
+	<tr>
 		<td>
 			<div class="panel panel-default">
    				<div class="panel-heading">
@@ -272,7 +280,7 @@
 			<tr>
 			<td>
 				<div class="panel panel-default">
-   					<div class="panel-heading" id="title_${status.index}" <c:if test="${item.status == '1' }">style="background-color:red"</c:if><c:if test="${item.status == '3' }">style="background-color:green"</c:if>>
+   					<div class="panel-heading" id="title_${status.index}" <c:if test="${item.status == '1' }">style="background-color:#febc81"</c:if><c:if test="${item.status == '3' }">style="background-color:#d0d7d2"</c:if>>
    						<table width="100%">	
 						<tr>
 							<td align="left" width="30%">

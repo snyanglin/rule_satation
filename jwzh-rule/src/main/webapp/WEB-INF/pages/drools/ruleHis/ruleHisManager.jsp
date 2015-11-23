@@ -70,7 +70,8 @@ function doIt(){
 			<div class="input-group">			
 			<span class="input-group-addon">规则分组</span>
 			<select id="groupid" name="groupid" class="form-control">
-				<option value="20151109145800">重点人员</option>
+				<option value="20151109145800">20151109145800|重点人员</option>
+				<option value="20151109145801">20151109145801|重点人员</option>
 			</select>
 			</div>
 		</td>		

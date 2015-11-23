@@ -9,7 +9,7 @@
 </head>
 <frameset id="main_system" rows="80,*,0" border="0" frameborder="0">
    <frame id="main_top" src="<%=contextPath%>/forward/main|main_top" noresize scrolling="no">
-     <frameset id="kernel" cols="240,6,*">
+   <frameset id="kernel" cols="240,6,*">
      <frame id="main_left" src="<%=contextPath%>/forward/main|main_Left" noresize scrolling="no">
      <frame id="leftScroll" src="<%=contextPath%>/forward/main|main_leftScroll" noresize scrolling="no">
      <frame id="main_center" name="main_center" src="<%=contextPath%>/forward/main|main_center" noresize scrolling="yes">

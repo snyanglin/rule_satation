@@ -13,3 +13,9 @@ function init(){
 		$(this).removeClass("menu_mouseover");	         
 	}); 
 }
+
+var main_center = window.parent.frames["main_center"];
+
+function menuClick(url){
+	main_center.location=url;
+}

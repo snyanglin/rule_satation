@@ -11,32 +11,37 @@
 <link rel="stylesheet" type="text/css" href="<%=contextPath%>/css/menu.css"></link>
 <script type="text/javascript" src="<%=contextPath%>/js/jquery-1.10.1.min.js"></script>
 <script type="text/javascript" src="<%=contextPath%>/js/menu.js"></script>
+<script type="text/javascript" >
+
+</script>
 </head>
 <body onload="init()">
 <ul>
 <li class="menuf">系统管理</li>
 <li>
 	<ul>
-<li class="menu">
-<a href="<%=contextPath%>/ruleSys/serviceManager" target="main_center">服务管理</a>
-</li>
-<li class="menu">
-<a href="<%=contextPath%>/groupManager/groupManager" target="main_center">分组管理</a>
-</li>
+		<li class="menu" onclick="menuClick('<%=contextPath%>/ruleSys/serviceManager')">
+			服务管理
+		</li>
+		<li class="menu" onclick="menuClick('<%=contextPath%>/groupManager/groupManager')">
+			分组管理
+		</li>
 	</ul>
 </li>
 <li class="menuf">规则管理</li>
 <li>
 	<ul>
-<li class="menu">
-<a href="<%=contextPath%>/ruleManager/ruleListQuery" target="main_center">规则查询</a>
+		<li class="menu" onclick="menuClick('<%=contextPath%>/ruleManager/ruleListQuery')">
+			规则查询
+		</li>
+		<li class="menu" onclick="menuClick('<%=contextPath%>/ruleManager/ruleManager')">
+			规则编缉
+		</li>
+		<li class="menu" onclick="menuClick('<%=contextPath%>/ruleManager/ruleHisManager')">
+			已归档规则
+		</li>
+	</ul>
 </li>
-<li class="menu">
-<a href="<%=contextPath%>/ruleManager/ruleManager" target="main_center">规则编缉</a>
-</li>
-<li class="menu">
-<a href="<%=contextPath%>/ruleManager/ruleHisManager" target="main_center">已归档规则</a>
-</li>
-</div>
+</ul>
 </body>
 </html>

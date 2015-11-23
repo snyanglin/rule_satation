@@ -31,6 +31,8 @@ ul li{
 	text-align:center;			
 	width:160px;
 	height:20px;	
+	color:#0080ff;
+	cursor:pointer;
 }
 .menu_click{			
 	background-color:#ffffff;	

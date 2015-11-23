@@ -88,6 +88,15 @@ public class RuleController extends BaseController {
 		map.put("resStatus", "0");//成功
 		try{
 			if("add".equals(entity.getId())){//新增规则体
+				
+				//验证
+				if(entity.getRulename()==null || entity.getRulename().trim().length()==0){
+					map.put("resStatus", "1");//失败
+					map.put("errorMsg", "【规则名称】不能为空");//失败
+					return map;
+				}
+				
+				
 				Drools_rule query_Entity = new Drools_rule();
 				query_Entity.setRulefilename(entity.getRulefilename());
 				query_Entity.setRulename(entity.getRulename());
@@ -242,6 +251,14 @@ public class RuleController extends BaseController {
 	public @ResponseBody Map ruleAdd(Drools_rule entity){
 		Map map = new HashMap();
 		map.put("resStatus", "0");//成功
+		
+		//验证
+		if(entity.getRulefilename()==null || entity.getRulefilename().trim().length()==0){
+			map.put("resStatus", "1");//失败
+			map.put("errorMsg", "【规则文件名称】不能为空");//失败
+			return map;
+		}
+		
 		try{
 			entity.setRuletype("0");//规则头	
 			Drools_rule query_Entity = new Drools_rule();

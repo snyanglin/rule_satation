@@ -27,9 +27,9 @@ public class FounderRuleController extends BaseController {
 	private DroolsRuleService droolsRuleService;
 	
 	@RequestMapping(value = "/executeRule", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody String executeRule(String ruleFileName,String ruleName,String paramStr){
+	public @ResponseBody String executeRule(String ruleBeanXmlStr){
 		XStream xStream = new XStream(new DomDriver());
-		RuleBean ruleBean = (RuleBean) xStream.fromXML(paramStr);
+		RuleBean ruleBean = (RuleBean) xStream.fromXML(ruleBeanXmlStr);
 //		RuleBean ruleBean = new RuleBean();
 //        ruleBean.setRuleFileName(ruleFileName);
 //        ruleBean.setRuleName(ruleName);
