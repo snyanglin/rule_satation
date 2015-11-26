@@ -2,7 +2,7 @@ package com.founder.drools.core.inteface;
 
 import java.util.Map;
 
-import com.founder.drools.core.model.RuleBean;
+import com.founder.drools.core.request.RuleBean;
 
 /**
  * ****************************************************************************
@@ -60,13 +60,23 @@ public interface RuleService {
 	 * @Description: TODO(新规则测试验证)
 	 * @param @param ruleFileName
 	 * @param @param ruleName	 
-	 * @param @param paramStr
+	 * @param @param jsonParamStr
 	 * @param @return    设定文件
 	 * @return RuleBean    返回类型
 	 * @throw
 	 */
-	public RuleBean testRule(RuleBean ruleBean,String paramStr);
+	public RuleBean testRule(RuleBean ruleBean,String jsonParamStr);
 	
-	public Map Str2Map(String paramStr);
+	/**
+	 * 
+	 * @Title: jsonToMap
+	 * @Description: TODO(将json字符串转成Map,递归调用，如果不能转成Map，直接返回String)
+	 * @param @param jsonString
+	 * @param @return Map或者String
+	 * @param @throws JSONException    设定文件
+	 * @return Object    返回类型
+	 * @throw
+	 */
+	public Object jsonToMap(String jsonString);
 	
 }

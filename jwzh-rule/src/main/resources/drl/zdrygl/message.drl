@@ -4,7 +4,7 @@ package drl.zdrygl.message
 //list any import classes here.
 import java.lang.String
 import java.util.Map
-import com.founder.drools.core.model.RuleBean
+import com.founder.drools.core.request.RuleBean
 import org.apache.commons.httpclient.NameValuePair
 
 //declare any global variables here

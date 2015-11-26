@@ -1,6 +1,5 @@
-package com.founder.drools.core.model;
+package com.founder.drools.core.request;
 
-import java.util.Map;
 /**
  * ****************************************************************************
  * @Package:      [com.founder.drools.core.model.RuleBean.java]  
@@ -21,9 +20,7 @@ public class RuleBean {
 	private String serviceMethod;//服务方法
 	private int resStatus=1;//0成功 1失败
 	private Object response;//返回对象
-	private Object paramObj;
-	private Map globalParamMap;
-	
+	private String jsonParamStr;	
 	
 	public String getServiceMethod() {
 		return serviceMethod;
@@ -61,18 +58,10 @@ public class RuleBean {
 	public void setResponse(Object response) {
 		this.response = response;
 	}
-	public Object getParamObj() {
-		return paramObj;
+	public String getJsonParamStr() {
+		return jsonParamStr;
 	}
-	public void setParamObj(Object paramObj) {
-		this.paramObj = paramObj;
+	public void setJsonParamStr(String jsonParamStr) {
+		this.jsonParamStr = jsonParamStr;
 	}
-	public Map getGlobalParamMap() {
-		return globalParamMap;
-	}
-	public void setGlobalParamMap(Map globalParamMap) {
-		this.globalParamMap = globalParamMap;
-	}
-	
-	
 }

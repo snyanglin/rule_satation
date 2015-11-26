@@ -16,7 +16,7 @@ import com.founder.drools.base.dao.Drools_ruleDao;
 import com.founder.drools.base.model.Drools_rule;
 import com.founder.drools.base.model.Drools_ruleHis;
 import com.founder.drools.core.inteface.RuleService;
-import com.founder.drools.core.model.RuleBean;
+import com.founder.drools.core.request.RuleBean;
 import com.founder.framework.config.SystemConfig;
 
 @Service

@@ -17,7 +17,7 @@ import com.founder.drools.base.service.DroolsRuleHisService;
 import com.founder.drools.base.service.DroolsRuleService;
 import com.founder.drools.core.inteface.RuleService;
 import com.founder.drools.core.model.Paginator;
-import com.founder.drools.core.model.RuleBean;
+import com.founder.drools.core.request.RuleBean;
 import com.founder.framework.base.controller.BaseController;
 /**
  * ****************************************************************************

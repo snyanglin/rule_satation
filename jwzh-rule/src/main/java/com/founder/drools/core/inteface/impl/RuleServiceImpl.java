@@ -1,16 +1,20 @@
 package com.founder.drools.core.inteface.impl;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
 import org.drools.runtime.StatefulKnowledgeSession;
 import org.springframework.stereotype.Service;
 
 import com.founder.drools.core.inteface.RuleService;
-import com.founder.drools.core.model.RuleBean;
 import com.founder.drools.core.model.RuleConfig;
+import com.founder.drools.core.request.RuleBean;
 import com.founder.framework.config.SystemConfig;
 
 /**
@@ -50,28 +54,17 @@ public class RuleServiceImpl implements RuleService {
 			StatefulKnowledgeSession ksession = ruleConfig.getKbase().newStatefulKnowledgeSession();
 			
 			//循环设置全局变量
-			if(ruleBean.getGlobalParamMap()!=null){
-				Object[] keyAry = ruleBean.getGlobalParamMap().keySet().toArray();
-				for(int i=0;i<keyAry.length;i++){
-					ksession.setGlobal((String)keyAry[i], ruleBean.getGlobalParamMap().get(keyAry[i]));					
-				}
-				
-			}
+//			if(ruleBean.getGlobalParamMap()!=null){
+//				Object[] keyAry = ruleBean.getGlobalParamMap().keySet().toArray();
+//				for(int i=0;i<keyAry.length;i++){
+//					ksession.setGlobal((String)keyAry[i], ruleBean.getGlobalParamMap().get(keyAry[i]));					
+//				}
+//				
+//			}
 			
 			//循环设置参数
 			ksession.insert(ruleBean);
-			if(ruleBean.getParamObj()!=null){
-				if(ruleBean.getParamObj() instanceof List){		
-					List list=(List)ruleBean.getParamObj();
-					for(int i=0;i<list.size();i++){
-						ksession.insert(list.get(i));					
-					}
-				}else{
-					ksession.insert(ruleBean.getParamObj());		
-				}
-				
-			}
-	
+			ksession.insert(this.jsonToMap(ruleBean.getJsonParamStr()));		
 	        //触发规则引擎
 	        ksession.fireAllRules();
 	        ksession.dispose();  
@@ -122,12 +115,12 @@ public class RuleServiceImpl implements RuleService {
 	 * @param @param ruleFileName
 	 * @param @param ruleName
 	 * @param @param content
-	 * @param @param paramStr
+	 * @param @param jsonParamStr
 	 * @param @return    设定文件
 	 * @return RuleBean    返回类型
 	 * @throw
 	 */
-	public RuleBean testRule(RuleBean ruleBean,String paramStr){
+	public RuleBean testRule(RuleBean ruleBean,String jsonParamStr){
 		try{
 			if(drlFilePath == null)
 				drlFilePath=SystemConfig.getString("DrlFilePath");
@@ -136,7 +129,7 @@ public class RuleServiceImpl implements RuleService {
 			StatefulKnowledgeSession ksession = ruleConfig.getKbase().newStatefulKnowledgeSession();
 			
 			ksession.insert(ruleBean);	
-			ksession.insert(Str2Map(paramStr));		
+			ksession.insert(jsonToMap(jsonParamStr));		
 		        //触发规则引擎
 		    ksession.fireAllRules();
 			
@@ -148,20 +141,40 @@ public class RuleServiceImpl implements RuleService {
 		}
 		return ruleBean;
 	}
-	public Map Str2Map(String paramStr){
-		//String paramStr="{p3=p3, p2=p2, p1=p1}";
-		paramStr=paramStr.replace("{", "");
-		paramStr=paramStr.replace("}", "");
-		Map map=new HashMap();
-		String keyAndValueAry[]=paramStr.split(",");
-		for(int i=0;i<keyAndValueAry.length;i++){
-			String keyAdnValue[] = keyAndValueAry[i].split(":");
-			if(keyAdnValue.length==2){
-				map.put(keyAdnValue[0].substring(1, keyAdnValue[0].length()-1), keyAdnValue[1].trim());
-			}
-		}
-		
-		return map;
-	}
+	
+	/**
+	 * 
+	 * @Title: jsonToMap
+	 * @Description: TODO(将json字符串转成Map,递归调用，如果不能转成Map，直接返回String)
+	 * @param @param jsonString
+	 * @param @return Map或者String
+	 * @param @throws JSONException    设定文件
+	 * @return Object    返回类型
+	 * @throw
+	 */
+	public Object jsonToMap(String jsonString) throws JSONException {
+
+    	try{
+	        JSONObject jsonObject = new JSONObject();
+	        jsonObject=jsonObject.fromObject(jsonString);
+	        
+	        Map result = new HashMap();
+	        Iterator iterator = jsonObject.keys();
+	        String key = null;
+	        String value = null;
+	        
+	        while (iterator.hasNext()) {
+	
+	            key = (String) iterator.next();
+	            value = jsonObject.getString(key);
+	            result.put(key, jsonToMap(value));
+	
+	        }
+	        return result;
+    	}catch(Exception e){
+    		return jsonString;
+    	}
+
+    }
 	
 }
