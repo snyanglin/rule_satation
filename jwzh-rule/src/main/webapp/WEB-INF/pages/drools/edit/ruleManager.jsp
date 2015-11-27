@@ -37,7 +37,7 @@ function onPageChange(pageNum){
 }
 
 function editRule(rulefilename){
-	window.location.href="<%=contextPath%>/ruleManager/ruleEditPre?rulefilename=${item.rulefilename}"+rulefilename;
+	window.location.href="<%=contextPath%>/ruleManager/ruleEditPre?rulefilename="+rulefilename;
 }
 
 function doIt(){

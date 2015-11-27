@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Drools_method">
+	
+	<typeAlias alias="drools_method" type="com.founder.drools.base.model.Drools_method" />
+		
+    <insert id="save" parameterClass="drools_method">
+       insert into drools_method
+       (
+        id        		
+		<isNotEmpty prepend="," property="serviceid"><![CDATA[ serviceid]]></isNotEmpty>
+		<isNotEmpty prepend="," property="methodname"><![CDATA[ methodname]]></isNotEmpty>
+		<isNotEmpty prepend="," property="methodresponse"><![CDATA[ methodresponse]]></isNotEmpty>
+		<isNotEmpty prepend="," property="bz"><![CDATA[ bz]]></isNotEmpty>
+		<isNotEmpty prepend="," property="createtime"><![CDATA[ createtime]]></isNotEmpty>
+		<isNotEmpty prepend="," property="updatetime"><![CDATA[ updatetime]]></isNotEmpty>
+       )VALUES(
+       	#id#       			
+		<isNotEmpty prepend="," property="serviceid"><![CDATA[#serviceid#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="methodname"><![CDATA[#methodname#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="methodresponse"><![CDATA[#methodresponse#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="bz"><![CDATA[#bz#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="createtime"><![CDATA[#createtime#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="updatetime"><![CDATA[#updatetime#]]></isNotEmpty>
+       )
+    </insert>	
+    
+    <update id="update" parameterClass="drools_method">
+    	<![CDATA[ update drools_method ]]>	
+		<dynamic prepend="set">						
+		<isNotNull prepend="," property="serviceid"><![CDATA[ serviceid = #serviceid#]]></isNotNull>
+		<isNotNull prepend="," property="methodname"><![CDATA[ methodname = #methodname#]]></isNotNull>
+		<isNotNull prepend="," property="bz"><![CDATA[ bz = #bz#]]></isNotNull>
+		<isNotNull prepend="," property="createtime"><![CDATA[ createtime = #createtime#]]></isNotNull>
+		<isNotNull prepend="," property="updatetime"><![CDATA[ updatetime = #updatetime#]]></isNotNull>
+		<isNotNull prepend="," property="methodresponse"><![CDATA[ methodresponse = #methodresponse#]]></isNotNull>
+		</dynamic>
+		<![CDATA[ where ID = #id#]]>
+    </update>
+    
+    <delete id="delete" parameterClass="String">
+    	delete from drools_method where id = #id#
+    </delete>
+    
+    <select id="queryDroolsMethod" parameterClass="drools_method" resultClass="drools_method">
+    	<![CDATA[ select m.*,s.SERVICENAME,u.id as URLID,u.URLNAME from DROOLS_METHOD m,DROOLS_SERVICE s,DROOLS_URL u
+				where s.id=m.SERVICEID and u.id= s.URLID
+		]]>
+		<isNotEmpty prepend="and" property="id"> m.ID = #id#</isNotEmpty>
+		<isNotEmpty prepend="and" property="serviceid"> m.SERVICEID = #serviceid#</isNotEmpty>
+		<isNotEmpty prepend="and" property="methodname"> m.METHODNAME = #methodname#</isNotEmpty>
+		<isNotEmpty prepend="and" property="bz"> m.BZ = #bz#</isNotEmpty>
+		<isNotEmpty prepend="and" property="createtime"> m.CREATETIME = #createtime#</isNotEmpty>
+		<isNotEmpty prepend="and" property="updatetime"> m.UPDATETIME = #updatetime#</isNotEmpty>
+		<isNotEmpty prepend="and" property="urlid"> u.id = #urlid#</isNotEmpty>
+		<![CDATA[ order by m.CREATETIME DESC ]]>
+    </select>        
+</sqlMap>

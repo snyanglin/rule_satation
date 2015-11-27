@@ -11,26 +11,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.founder.drools.base.model.Drools_rule;
 import com.founder.drools.base.model.Drools_url;
 import com.founder.drools.base.service.DroolsUrlService;
 import com.founder.drools.core.model.Paginator;
 import com.founder.framework.base.controller.BaseController;
+
 /**
  * ****************************************************************************
- * @Package:      [com.founder.zdrygl.base.controller.RuleTestController.java]  
- * @ClassName:    [RuleTestController]   
- * @Description:  [规则引擎测试控制器]   
+ * @Package:      [com.founder.drools.base.controller.urlController.java]  
+ * @ClassName:    [urlController]   
+ * @Description:  [地址管理 控制器]   
  * @Author:       [zhang.hai@founder.com.cn]  
- * @CreateDate:   [2015年10月14日 下午2:34:49]   
+ * @CreateDate:   [2015年11月27日 上午10:04:11]   
  * @UpdateUser:   [ZhangHai(如多次修改保留历史记录，增加修改记录)]   
- * @UpdateDate:   [2015年10月14日 下午2:34:49，(如多次修改保留历史记录，增加修改记录)]   
+ * @UpdateDate:   [2015年11月27日 上午10:04:11，(如多次修改保留历史记录，增加修改记录)]   
  * @UpdateRemark: [说明本次修改内容,(如多次修改保留历史记录，增加修改记录)]  
  * @Version:      [v1.0]
  */
 @Controller
-@RequestMapping("ruleSys")
-public class SysController extends BaseController {
+@RequestMapping("urlManager")
+public class UrlController extends BaseController {
 	@Autowired
 	private DroolsUrlService droolsUrlService;
 	
@@ -42,7 +42,7 @@ public class SysController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/getUrlManagerList", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView getServerManagerList(Drools_url entity,Paginator paginator){
+	public ModelAndView getUrlManagerList(Drools_url entity,Paginator paginator){
 		ModelAndView mv = new ModelAndView("system/url/urlManagerList");			
 		List<Drools_url> list = droolsUrlService.queryUrlList(entity);
 		paginator.setList(list);
@@ -60,8 +60,8 @@ public class SysController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/urlAdd", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody Map urlAdd(Drools_url entity){
-		Map map = new HashMap();
+	public @ResponseBody Map<String, String> urlAdd(Drools_url entity){
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("resStatus", "0");//成功
 		try{
 			Drools_url queryEntity = new Drools_url();
@@ -91,8 +91,8 @@ public class SysController extends BaseController {
 	}	
 	
 	@RequestMapping(value = "/urlEdit", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody Map urlEdit(Drools_url entity){
-		Map map = new HashMap();
+	public @ResponseBody Map<String, String> urlEdit(Drools_url entity){
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("resStatus", "0");//成功
 		try{
 			Drools_url queryEntity = new Drools_url();
@@ -115,8 +115,8 @@ public class SysController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/urlDelete", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody Map urlDelete(String id){
-		Map map = new HashMap();
+	public @ResponseBody Map<String, String> urlDelete(String id){
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("resStatus", "0");//成功
 		try{			
 			droolsUrlService.deleteUrl(id);
@@ -130,8 +130,8 @@ public class SysController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/urlValidate", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody Map urlValidate(String url){
-		Map map = new HashMap();
+	public @ResponseBody Map<String, String> urlValidate(String url){
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("resStatus", "0");//成功
 		try{
 			droolsUrlService.urlValidate(url);
@@ -142,27 +142,5 @@ public class SysController extends BaseController {
 		}
 		return map;
 	}
-	
-	@RequestMapping(value = "/serviceManager", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView serviceManager(){
-		ModelAndView mv = new ModelAndView("system/serviceManager");		        
-		return mv;
-	
-	}
-	
-	@RequestMapping(value = "/methodManager", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView methodManager(){
-		ModelAndView mv = new ModelAndView("system/methodManager");		        
-		return mv;
-	
-	}
-	
-	@RequestMapping(value = "/groupManager", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView groupManager(){
-		ModelAndView mv = new ModelAndView("system/groupManager");		        
-		return mv;
-	
-	}	
-	
 	
 }

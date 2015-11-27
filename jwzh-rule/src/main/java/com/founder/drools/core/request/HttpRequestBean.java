@@ -157,6 +157,14 @@ public class HttpRequestBean {
 	public void setHttpClient(HttpClient httpClient) {
 		this.httpClient = httpClient;
 	}
+
+	public String getServiceUrl() {
+		return serviceUrl;
+	}
+
+	public void setServiceUrl(String serviceUrl) {
+		this.serviceUrl = serviceUrl;
+	}
 	
 	
 	
