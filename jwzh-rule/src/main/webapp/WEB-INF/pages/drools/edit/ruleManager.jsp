@@ -79,7 +79,7 @@ function doIt(){
 		<td>
 			<div class="input-group">			
 			<span class="input-group-addon">规则文件名称</span>			
-			<input type="text" id="rulefilename" name="rulefilename" value="" maxlength="50" class="form-control" />
+			<input type="text" id="rulefilename" name="rulefilename" value="" maxlength="50" class="form-control" placeholder="最长50个字符" />
 			</div>
 		</td>
 		
@@ -88,9 +88,9 @@ function doIt(){
 </div>
 
 <div align="center">
-	<button type="button" class="btn btn-default" onclick="doIt()">查 询</button>	
+	<button type="button" class="btn btn-info" onclick="doIt()">查 询</button>	
 	
-	<button type="button" class="btn btn-default" onclick="location.href='<%=contextPath%>/ruleManager/ruleAddPre'" >新 增</button>
+	<button type="button" class="btn btn-success" onclick="location.href='<%=contextPath%>/ruleManager/ruleAddPre'" >新 增</button>
 </div>
 <br />
 

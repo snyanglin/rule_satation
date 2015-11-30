@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.founder.drools.base.dao.Drools_groupDao;
 import com.founder.drools.base.model.Drools_group;
+import com.founder.drools.core.model.DroolsUtils;
 
 @Service
 public class DroolsGroupService {
@@ -18,7 +19,7 @@ public class DroolsGroupService {
 
 	public void save(Drools_group entity){
 		entity.setCreateTime(new Date());
-		entity.setId(getTimeString());
+		entity.setId(DroolsUtils.getTimeString());
 		drools_groupDao.insert(entity);
 	}
 	
@@ -27,9 +28,32 @@ public class DroolsGroupService {
 		drools_groupDao.update(entity);
 	}
 	
+	/**
+	 * 
+	 * @Title: queryListByEntity
+	 * @Description: TODO(精确查询List)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return List<Drools_group>    返回类型
+	 * @throw
+	 */
 	public List<Drools_group> queryListByEntity(Drools_group entity){
 		if(entity==null) entity= new Drools_group();
 		return drools_groupDao.queryListByEntity(entity);
+	}
+	
+	/**
+	 * 
+	 * @Title: queryListByEntityFuzzy
+	 * @Description: TODO(模糊查询List)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return List<Drools_group>    返回类型
+	 * @throw
+	 */
+	public List<Drools_group> queryListByEntityFuzzy(Drools_group entity){
+		if(entity==null) entity= new Drools_group();
+		return drools_groupDao.queryListByEntityFuzzy(entity);
 	}
 	
 	public Drools_group queryById(String id){
@@ -42,8 +66,4 @@ public class DroolsGroupService {
 		drools_groupDao.delete(id);
 	}
 	
-	public String getTimeString(){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		return sdf.format(new Date());
-	}
 }

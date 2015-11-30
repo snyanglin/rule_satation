@@ -35,9 +35,6 @@ public class FounderRuleController extends BaseController {
 //        ruleBean.setRuleName(ruleName);
 		
         
-        Map map=droolsRuleService.queryService(ruleBean.getRuleFileName());
-        ruleBean.setServiceUrl((String)map.get("SERVICEURL"));
-        ruleBean.setServiceMethod((String)map.get("SERVICEMETHOD"));
         
         //执行规则
         try{        	

@@ -70,8 +70,9 @@ function doIt(){
 			<div class="input-group">			
 			<span class="input-group-addon">规则分组</span>
 			<select id="groupid" name="groupid" class="form-control">
-				<option value="20151109145800">20151109145800|重点人员</option>
-				<option value="20151109145801">20151109145801|重点人员</option>
+				<c:forEach items="${GroupList}" var="item" varStatus="status">
+				<option value="<c:out value="${item.groupid }" />"><c:out value="${item.groupid }" />|<c:out value="${item.groupname }" /></option>
+				</c:forEach>
 			</select>
 			</div>
 		</td>		
@@ -87,7 +88,7 @@ function doIt(){
 </div>
 
 <div align="center">
-	<button type="button" class="btn btn-default" onclick="doIt()">查 询</button>	
+	<button type="button" class="btn btn-info" onclick="doIt()">查 询</button>	
 </div>
 <br />
 
@@ -95,7 +96,7 @@ function doIt(){
 <div class="panel panel-default">
    <div class="panel-heading">查询结果</div>   
    <table class="table" >
-	<tr><th>服务名</th><th>规则分组</th><th>规则文件名称</th><th>操作</th></tr>
+	<tr><th>规则分组</th><th>规则文件名称</th><th>操作</th></tr>
 	
 	</table>
    
@@ -103,6 +104,11 @@ function doIt(){
 </span>
 
 </form>
+
+<div class="Hint">
+<p>1.查询条件中的“规则分组”是按分组id来查的，所以如果某个分组改过组名，可能会出现两个相同id不同组名，但是查询结果相同的情况。</p>
+<p>2.“查看”可列出选择的规则文件的历史版本。</p>
+</div>
 
 </div>
 </div>

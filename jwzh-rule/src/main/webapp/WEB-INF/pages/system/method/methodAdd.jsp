@@ -104,35 +104,41 @@
 		<tr>
 			<th>方法名称</th>
 			<td>
-				<input type="text" id="methodname" name="methodname" value="" maxlength="50" class="form-control"  />
+				<input type="text" id="methodname" name="methodname" value="" maxlength="50" class="form-control" placeholder="最长50个字符" />
 			</td>
 		</tr>
 		<tr>
 			<th>返回结果</th>
 			<td>
-				<input type="text" id="methodresponse" name="methodresponse" value="" maxlength="100" class="form-control"  />
+				<input type="text" id="methodresponse" name="methodresponse" value="" maxlength="100" class="form-control" placeholder="最长100个字符或50个汉字" />
 			</td>
 		</tr>
 		<tr>
 			<th>备注</th>
 			<td>
-				<input type="text" id="bz" name="bz" value="" maxlength="100" class="form-control"  />
+				<input type="text" id="bz" name="bz" value="" maxlength="100" class="form-control" placeholder="最长100个字符或50个汉字" />
 			</td>
 		</tr>
 		
 	</table>	
 </div>
 <div class="panel panel-default">
-   <div class="panel-heading">方法参数 <a href="#" onclick="addParam()">ADD</a></div>
+   <div class="panel-heading">方法参数 <button type="button" class="btn btn-sm btn-success" onclick="addParam()">添加</button></div>
 	<table class="table" id="paramTable">
 		<tr><th>参数名称</th><th>参数类型</th><th>参数说明</th><th>操作</th></tr>
 	</table>	
 </div>
 
 <div align="center">
-	<button type="button" class="btn btn-default" onclick="save()">保 存</button>	
+	<button type="button" class="btn btn-success" onclick="save()">保 存</button>	
 </div>
 </form>
+
+<div class="Hint">
+<p>1.请先选择“服务地址”和“服务名称”。</p>
+<p>2.“方法名称”不可重复，会和“服务地址”、“服务名称”拼接成请求的地址。</p>
+<p>3.“返回结果”请描述清楚返回的结果和类型，如果比较多，可在备注中补充说明。</p>
+</div>
 
 </div>
 </div>

@@ -62,12 +62,12 @@ function doIt(){
 		<td width="50%">
 			<div class="input-group">			
 			<span class="input-group-addon">分组名称</span>			
-			<input type="text" id="groupname" name="groupname" value="" maxlength="100" class="form-control" />
+			<input type="text" id="groupname" name="groupname" value="" maxlength="100" class="form-control" placeholder="最长100个字符或50个汉字" />
 			</div>
 		</td>
 		<td>
-			<button type="button" class="btn btn-default" onclick="doIt()">查 询</button>	
-			<button type="button" class="btn btn-default" onclick="location.href='<%=contextPath%>/groupManager/groupAddPre'" >新 增</button>
+			<button type="button" class="btn btn-info" onclick="doIt()">查 询</button>	
+			<button type="button" class="btn btn-success" onclick="location.href='<%=contextPath%>/groupManager/groupAddPre'" >新 增</button>
 		</td>
 		
 	</tr>
@@ -87,6 +87,12 @@ function doIt(){
 </span>
 
 </form>
+
+<div class="Hint">
+<p>1.所有的规则，必然在某一个分组下，所以请将具有共性的规则放置在同一个分组下，便于管理。</p>
+<p>2.“分组名称”支持模糊查询。</p>
+</div>
+
 </div>
 </div>
 </div>

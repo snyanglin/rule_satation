@@ -31,7 +31,12 @@
 		});
 	} 	
 	
-	function del(){		 		
+	function del(){		 
+		
+		if(!confirm("您确定要删除该分组么？")){
+			return;
+		}
+		
 		var paramPairs=[
 				new ParamPair("id",$("#id").val())		 		
 		];
@@ -77,24 +82,30 @@
 		<tr>
 			<th>方法名称</th>
 			<td>
-				<input type="text" id="groupname" name="groupname" value="${entity.groupname }" maxlength="100" class="form-control"  />
+				<input type="text" id="groupname" name="groupname" value="${entity.groupname }" maxlength="100" class="form-control" placeholder="最长100个字符或50个汉字" />
 			</td>
 		</tr>
 		<tr>
 			<th>备注</th>
 			<td>
-				<input type="text" id="bz" name="bz"  maxlength="100" class="form-control" value="${entity.bz }"  />
+				<input type="text" id="bz" name="bz"  maxlength="100" class="form-control" value="${entity.bz }" placeholder="最长100个字符或50个汉字" />
 			</td>
 		</tr>
 	</table>	
 </div>
 
 <div align="center">
-	<button type="button" class="btn btn-default" onclick="save()">保存</button>
+	<button type="button" class="btn btn-success" onclick="save()">保存</button>
 	
-	<button type="button" class="btn btn-default" onclick="del()">删除</button>	
+	<button type="button" class="btn btn-danger" onclick="del()">删除</button>	
 </div>
 </form>
+
+<div class="Hint">
+<p>1.“规则分组不可重复”。</p>
+<p>2.“删除”后不可再找回，所以删除前请确认不再使用再删除。</p>
+<p>3.如果某分组下有规则，是不能删除的，要删除分组，请先删除分组下的所有规则。</p>
+</div>
 
 </div>
 </div>

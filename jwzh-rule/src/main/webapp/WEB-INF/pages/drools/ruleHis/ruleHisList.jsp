@@ -6,10 +6,9 @@
 <div class="panel panel-default">
    <div class="panel-heading">规则版本列表</div>   	
 	<table class="table">				
-		<tr><th>服务名</th><th>规则分组</th><th>规则文件名称</th><th>版本号</th><th>操作</th></tr>
+		<tr><th>规则分组</th><th>规则文件名称</th><th>版本号</th><th>操作</th></tr>
 			<c:forEach items="${Paginator.list}" var="item" varStatus="status">
-				<tr>
-				<td><c:out value="${item.servicename }" /></td>
+				<tr>				
 				<td><c:out value="${item.groupname }" /></td>
 				<td><c:out value="${item.rulefilename }" /></td>
 				<td><c:out value="${item.version }" /></td>	

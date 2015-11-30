@@ -8,12 +8,11 @@
    <div class="panel-heading">查询结果</div>
    
    <table class="table">
-	<tr><th>服务名</th><th>规则分组</th><th>规则文件名称</th><th>操作</th></tr>
+	<tr><th>规则分组</th><th>规则文件名称</th><th>操作</th></tr>
 	<c:forEach items="${Paginator.list}" var="item" varStatus="status">
-		<tr>
-		<td width="25%"><c:out value="${item.servicename }" /></td>
-		<td width="25%"><c:out value="${item.groupname }" /></td>
-		<td width="25%"><c:out value="${item.rulefilename }" /></td>	
+		<tr>		
+		<td><c:out value="${item.groupname }" /></td>
+		<td><c:out value="${item.rulefilename }" /></td>	
 		<td><a href="#" onclick="detail('${item.ruleid}')">查看</a></td>
 		</tr>
 	</c:forEach>

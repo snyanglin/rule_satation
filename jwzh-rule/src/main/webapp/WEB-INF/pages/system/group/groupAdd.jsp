@@ -59,14 +59,14 @@
 		<tr>
 			<th>分组名称</th>
 			<td>
-				<input type="text" id="groupname" name="groupname" value="" maxlength="100" class="form-control"  />
+				<input type="text" id="groupname" name="groupname" value="" maxlength="100" class="form-control" placeholder="最长100个字符或50个汉字" />
 			</td>
 		</tr>
 		
 		<tr>
 			<th>备注</th>
 			<td>
-				<input type="text" id="bz" name="bz" value="" maxlength="100" class="form-control"  />
+				<input type="text" id="bz" name="bz" value="" maxlength="100" class="form-control" placeholder="最长100个字符或50个汉字" />
 			</td>
 		</tr>
 		
@@ -74,9 +74,13 @@
 </div>
 
 <div align="center">
-	<button type="button" class="btn btn-default" onclick="save()">保 存</button>	
+	<button type="button" class="btn btn-success" onclick="save()">保 存</button>	
 </div>
 </form>
+
+<div class="Hint">
+<p>1.“规则分组不可重复”。</p>
+</div>
 
 </div>
 </div>

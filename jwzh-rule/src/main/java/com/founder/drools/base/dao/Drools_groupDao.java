@@ -41,4 +41,9 @@ public class Drools_groupDao extends BaseDaoImpl {
 		if(entity.getGroupname()!=null)
 			entity.setGroupname(entity.getGroupname().trim());
 	}
+
+	public List<Drools_group> queryListByEntityFuzzy(Drools_group entity) {
+		trimEntity(entity);
+		return (List<Drools_group>)super.queryForList("Drools_group.queryDroolsGroupFuzzy", entity);
+	}
 }

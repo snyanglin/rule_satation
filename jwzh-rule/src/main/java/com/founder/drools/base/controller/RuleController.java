@@ -151,9 +151,6 @@ public class RuleController extends BaseController {
         ruleBean.setRuleFileName(ruleFileName);
         ruleBean.setRuleName(ruleName);
         
-        Map map=droolsRuleService.queryService(ruleFileName);
-        ruleBean.setServiceUrl((String)map.get("SERVICEURL"));
-        ruleBean.setServiceMethod((String)map.get("SERVICEMETHOD"));
         
         try{
         	droolsRuleService.ruleTestRelease(ruleFileName,ruleName);
@@ -185,9 +182,6 @@ public class RuleController extends BaseController {
         ruleBean.setRuleFileName(ruleFileName);
         ruleBean.setRuleName(ruleName);
         
-        Map map=droolsRuleService.queryService(ruleFileName);
-        ruleBean.setServiceUrl((String)map.get("SERVICEURL"));
-        ruleBean.setServiceMethod((String)map.get("SERVICEMETHOD"));
         
         try{
         	droolsRuleService.ruleTestRelease(ruleFileName,ruleName);
@@ -249,7 +243,8 @@ public class RuleController extends BaseController {
 	@RequestMapping(value = "/ruleAddPre", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleAddPre(){
 		ModelAndView mv = new ModelAndView("drools/edit/ruleAdd");	
-		
+		List<Drools_group> list=droolsGroupService.queryListByEntity(null);		
+		mv.addObject("GroupList",list);
 		return mv;
 	}
 	
@@ -302,7 +297,9 @@ public class RuleController extends BaseController {
 	@RequestMapping(value = "/ruleHisManager", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleHisManager(Drools_ruleHis entity){
 		ModelAndView mv = new ModelAndView("drools/ruleHis/ruleHisManager");		
+		List list = droolsRuleHisService.queryRuleHisGroup();
 		mv.addObject("Entity",entity);
+		mv.addObject("GroupList",list);
 		return mv;
 	}
 	@RequestMapping(value = "/getRuleHisManagerList", method = {RequestMethod.GET,RequestMethod.POST})

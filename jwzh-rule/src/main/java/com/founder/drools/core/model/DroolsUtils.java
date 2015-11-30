@@ -1,5 +1,8 @@
 package com.founder.drools.core.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
@@ -64,6 +67,19 @@ public class DroolsUtils {
 			urlResource.setPassword(passwrd);
 		}
 		return DroolsUtils.buildKnowledgeBase(urlResource, ResourceType.PKG);
+	}
+	
+	/**
+	 * 
+	 * @Title: getTimeString
+	 * @Description: TODO(获取yyyyMMddHHmmss字符串)
+	 * @param @return    设定文件
+	 * @return String    返回类型
+	 * @throw
+	 */
+	public static String getTimeString(){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		return sdf.format(new Date());
 	}
 	
 }

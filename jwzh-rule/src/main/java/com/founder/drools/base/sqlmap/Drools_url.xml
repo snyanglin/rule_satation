@@ -44,9 +44,18 @@
     <select id="queryDroolsUrl" parameterClass="drools_url" resultClass="drools_url">
     	<![CDATA[ select * from DROOLS_URL where 1=1]]>
 		<isNotEmpty prepend="and" property="id"> ID = #id#</isNotEmpty>
+		<isNotEmpty prepend="and" property="urlname"> URLNAME = #urlname# </isNotEmpty>
+		<isNotEmpty prepend="and" property="url"> URL = #url# </isNotEmpty>		
+		<isNotEmpty prepend="and" property="createtime"> CREATETIME = #createtime#</isNotEmpty>
+		<isNotEmpty prepend="and" property="updatetime"> UPDATETIME = #updatetime#</isNotEmpty>
+		<![CDATA[ order by CREATETIME DESC ]]>
+    </select>
+    
+    <select id="queryDroolsUrlFuzzy" parameterClass="drools_url" resultClass="drools_url">
+    	<![CDATA[ select * from DROOLS_URL where 1=1]]>
+		<isNotEmpty prepend="and" property="id"> ID = #id#</isNotEmpty>
 		<isNotEmpty prepend="and" property="urlname"> <![CDATA[URLNAME like '%$urlname$%' ]]> </isNotEmpty>
-		<isNotEmpty prepend="and" property="url"> <![CDATA[URL like '%$url$%' ]]></isNotEmpty>
-		<isNotEmpty prepend="and" property="bz"> BZ = #bz#</isNotEmpty>
+		<isNotEmpty prepend="and" property="url"> <![CDATA[URL like '%$url$%' ]]></isNotEmpty>		
 		<isNotEmpty prepend="and" property="createtime"> CREATETIME = #createtime#</isNotEmpty>
 		<isNotEmpty prepend="and" property="updatetime"> UPDATETIME = #updatetime#</isNotEmpty>
 		<![CDATA[ order by CREATETIME DESC ]]>

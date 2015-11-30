@@ -16,11 +16,6 @@ public class DroolsRuleHisService{
 	private Drools_ruleHisDao drools_ruleHisDao;
 	
 	public void insert(Drools_ruleHis entity){		
-		
-		//查询分组名
-		
-		//查询服务信息
-		
 		drools_ruleHisDao.insert(entity);
 	}
 	
@@ -34,5 +29,17 @@ public class DroolsRuleHisService{
 	
 	public List<Drools_ruleHis> queryRuleHisManagerList(Drools_ruleHis entity) {
 		return drools_ruleHisDao.queryDroolsRuleHisManagerList(entity);
+	}
+	
+	/**
+	 * 
+	 * @Title: queryRuleHisGroup
+	 * @Description: TODO(查询分组列表)
+	 * @param @return    设定文件
+	 * @return List<Drools_ruleHis>    返回类型
+	 * @throw
+	 */
+	public List<Drools_ruleHis> queryRuleHisGroup(){
+		return drools_ruleHisDao.queryRuleHisGroup();
 	}
 }

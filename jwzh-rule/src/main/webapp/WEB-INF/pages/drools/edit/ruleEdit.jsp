@@ -364,12 +364,18 @@
 </table>
 
 <div align="center">
-	<button type="button" class="btn btn-default" id="addButton" onclick="shAdd(this)">新 增</button>
-	<button type="button" class="btn btn-default" id="releaseButton" onclick="releaseRule()">发 布</button>
-	<button type="button" class="btn btn-default" id="delButton" onclick="ruleFile()">归 档</button>	
+	<button type="button" class="btn btn-success" id="addButton" onclick="shAdd(this)">新 增</button>
+	<button type="button" class="btn btn-warning" id="releaseButton" onclick="releaseRule()">发 布</button>
+	<button type="button" class="btn btn-danger" id="delButton" onclick="ruleFile()">归 档</button>	
 </div>
 
 </form>
+
+<div class="Hint">
+<p>1.“新增”是在当前规则文件中添加新的子规则。</p>
+<p>2.“发布”是将当前规则格式化并生成规则文件，规则马上生效，并在历史版本中生成历史版本。</p>
+<p>3.“归档”即删除，但是会在历史版本中生成版历史本。</p>
+</div>
 
 </div>
 </div>

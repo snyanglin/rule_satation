@@ -37,6 +37,12 @@
 	<select id="queryDroolsGroup" parameterClass="droolsGroup" resultClass="droolsGroup">
     	<![CDATA[ select * from drools_group where 1=1]]>
     	<isNotEmpty prepend="and" property="id"> ID = #id#</isNotEmpty>
+		<isNotEmpty prepend="and" property="groupname"> <![CDATA[groupname = #groupname# ]]></isNotEmpty>		
+		<![CDATA[ order by CREATETIME DESC ]]>
+    </select>
+    
+    <select id="queryDroolsGroupFuzzy" parameterClass="droolsGroup" resultClass="droolsGroup">
+    	<![CDATA[ select * from drools_group where 1=1]]>    	
 		<isNotEmpty prepend="and" property="groupname"> <![CDATA[groupname like '%$groupname$%' ]]></isNotEmpty>		
 		<![CDATA[ order by CREATETIME DESC ]]>
     </select>

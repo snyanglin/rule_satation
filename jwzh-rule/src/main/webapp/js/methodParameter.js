@@ -7,7 +7,7 @@ function addParam(){
 		var str="<tr><td><input type=\"text\"name=\"paramname\" value=\"\" maxlength=\"100\" class=\"form-control\"  /></td>"+
 			"<td><input type=\"text\" name=\"paramclass\" value=\"\" maxlength=\"100\" class=\"form-control\"  /></td>"+
 			"<td><input type=\"text\" name=\"parambz\" value=\"\" maxlength=\"100\" class=\"form-control\"  /></td>"+
-			"<td><button type=\"button\" class=\"btn btn-default\" onclick=\"delParam(this)\">删除</button></td></tr>";
+			"<td><button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"delParam(this)\">删除</button></td></tr>";
 		paramTable.append(str);
 }
 	

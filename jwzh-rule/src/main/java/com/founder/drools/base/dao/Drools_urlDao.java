@@ -38,13 +38,38 @@ public class Drools_urlDao extends BaseDaoImpl {
 		return (Drools_url)super.queryForObject("Drools_url.queryDroolsUrl", entity);		
 	}
 	
+	/**
+	 * 
+	 * @Title: queryListByEntity
+	 * @Description: TODO(精确查询)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return List<Drools_url>    返回类型
+	 * @throw
+	 */
 	public List<Drools_url> queryListByEntity(Drools_url entity) {
 		trimEntity(entity);
 		return (List<Drools_url>)super.queryForList("Drools_url.queryDroolsUrl", entity);
+	}
+	
+	/**
+	 * 
+	 * @Title: queryListByEntityFuzzy
+	 * @Description: TODO(urlname和url模糊查询)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return List<Drools_url>    返回类型
+	 * @throw
+	 */
+	public List<Drools_url> queryListByEntityFuzzy(Drools_url entity) {
+		trimEntity(entity);
+		return (List<Drools_url>)super.queryForList("Drools_url.queryDroolsUrlFuzzy", entity);
 	}
 
 	private void trimEntity(Drools_url entity){
 		if(entity.getUrlname()!=null)
 			entity.setUrlname(entity.getUrlname().trim());
+		if(entity.getUrl()!=null)
+			entity.setUrl(entity.getUrl().trim());
 	}
 }

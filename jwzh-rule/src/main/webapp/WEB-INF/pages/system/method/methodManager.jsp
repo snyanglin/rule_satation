@@ -104,9 +104,9 @@ function urlChange(urlid){
 </div>
 
 <div align="center">
-	<button type="button" class="btn btn-default" onclick="doIt()">查 询</button>	
-	
-	<button type="button" class="btn btn-default" onclick="location.href='<%=contextPath%>/methodManager/methodAddPre'" >新 增</button>
+	<button type="button" class="btn btn-info" onclick="doIt()">查 询</button>	
+	&nbsp;
+	<button type="button" class="btn btn-success" onclick="location.href='<%=contextPath%>/methodManager/methodAddPre'" >新 增</button>
 </div>
 <br />
 

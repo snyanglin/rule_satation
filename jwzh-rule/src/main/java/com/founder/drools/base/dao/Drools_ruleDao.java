@@ -2,7 +2,6 @@ package com.founder.drools.base.dao;
 
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -12,7 +11,6 @@ import com.founder.framework.base.dao.BaseDaoImpl;
 
 @Repository("drools_ruleDao")
 public class Drools_ruleDao extends BaseDaoImpl {
-	
 	
 	public void insert(Drools_rule entity) {
 		trimEntity(entity);
@@ -49,18 +47,34 @@ public class Drools_ruleDao extends BaseDaoImpl {
 		return (Drools_rule)super.queryForObject("Drools_rule.queryDroolsRule", entity);		
 	}
 	
+	/**
+	 * 
+	 * @Title: queryListByEntity
+	 * @Description: TODO(精确查询List)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return List<Drools_rule>    返回类型
+	 * @throw
+	 */
 	public List<Drools_rule> queryListByEntity(Drools_rule entity) {
 		trimEntity(entity);
-		
 		return (List<Drools_rule>)super.queryForList("Drools_rule.queryDroolsRule", entity);
 	}
-
-
-	public Map queryService(String ruleFileName) {
-		return (Map) super.queryForObject("Drools_rule.queryService", ruleFileName.trim());
-		
-	}
 	
+	/**
+	 * 
+	 * @Title: queryListByEntityFuzzy
+	 * @Description: TODO(模糊查询list)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return List<Drools_rule>    返回类型
+	 * @throw
+	 */
+	public List<Drools_rule> queryListByEntityFuzzy(Drools_rule entity) {
+		trimEntity(entity);
+		return (List<Drools_rule>)super.queryForList("Drools_rule.queryDroolsRuleFuzzy", entity);
+	}
+
 	private void trimEntity(Drools_rule entity){
 		if(entity.getRulefilename()!=null)
 			entity.setRulefilename(entity.getRulefilename().trim());

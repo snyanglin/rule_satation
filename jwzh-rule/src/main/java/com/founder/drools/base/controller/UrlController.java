@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.founder.drools.base.model.Drools_service;
 import com.founder.drools.base.model.Drools_url;
+import com.founder.drools.base.service.DroolsServiceService;
 import com.founder.drools.base.service.DroolsUrlService;
 import com.founder.drools.core.model.Paginator;
 import com.founder.framework.base.controller.BaseController;
@@ -34,21 +36,32 @@ public class UrlController extends BaseController {
 	@Autowired
 	private DroolsUrlService droolsUrlService;
 	
+	@Autowired
+	private DroolsServiceService droolsServiceService;
+	
 	@RequestMapping(value = "/urlManager", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView urlManager(){
 		ModelAndView mv = new ModelAndView("system/url/urlManager");		        
 		return mv;
-	
 	}
 	
+	/**
+	 * 
+	 * @Title: getUrlManagerList
+	 * @Description: TODO(模糊查询地址列表)
+	 * @param @param entity
+	 * @param @param paginator
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/getUrlManagerList", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView getUrlManagerList(Drools_url entity,Paginator paginator){
 		ModelAndView mv = new ModelAndView("system/url/urlManagerList");			
-		List<Drools_url> list = droolsUrlService.queryUrlList(entity);
+		List<Drools_url> list = droolsUrlService.queryUrlListFuzzy(entity);//模糊查询
 		paginator.setList(list);
 		mv.addObject("Paginator",paginator);	
 		mv.addObject("Entity",entity);
-		
 		return mv;
 	}
 	
@@ -66,7 +79,7 @@ public class UrlController extends BaseController {
 		try{
 			Drools_url queryEntity = new Drools_url();
 			queryEntity.setUrlname(entity.getUrlname());
-			List<Drools_url> list = droolsUrlService.queryUrlList(entity);
+			List<Drools_url> list = droolsUrlService.queryUrlList(queryEntity);//精确查询地址名称
 			if(list!=null && list.size()>0){
 				map.put("resStatus", "1");//失败
 				map.put("errorMsg", "地址名称已存在，请重新输入");//失败
@@ -97,7 +110,7 @@ public class UrlController extends BaseController {
 		try{
 			Drools_url queryEntity = new Drools_url();
 			queryEntity.setUrlname(entity.getUrlname());
-			List<Drools_url> list = droolsUrlService.queryUrlList(entity);
+			List<Drools_url> list = droolsUrlService.queryUrlList(queryEntity);
 			if(list!=null && list.size()>0){
 				if(!list.get(0).getId().equals(entity.getId())){
 					map.put("resStatus", "1");//失败
@@ -120,13 +133,22 @@ public class UrlController extends BaseController {
 	public @ResponseBody Map<String, String> urlDelete(String id){
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("resStatus", "0");//成功
-		try{			
-			droolsUrlService.deleteUrl(id);
+		try{		
+			Drools_service queryEntity=new Drools_service();
+			queryEntity.setUrlid(id);
+			List<Drools_service> list = droolsServiceService.queryServiceList(queryEntity);
+			if(list!=null && list.size()>0){
+				map.put("resStatus", "1");//失败
+				map.put("errorMsg", "该地址已被服务占用，如果要删除该地址，请先删除占用的服务！");
+				return map;
+			}
 			
+			droolsUrlService.deleteUrl(id);			
 		}catch(Exception e){
 			e.printStackTrace();
 			map.put("resStatus", "1");//失败
 			map.put("errorMsg", e.toString());//失败
+			return map;
 		}
 		return map;
 	}

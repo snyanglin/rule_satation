@@ -11,8 +11,7 @@
        (
         id
         <isNotEmpty prepend="," property="rulefilename"><![CDATA[ rulefilename]]></isNotEmpty>
-		<isNotEmpty prepend="," property="rulename"><![CDATA[ rulename]]></isNotEmpty>
-		<isNotEmpty prepend="," property="serviceid"><![CDATA[ serviceid]]></isNotEmpty>
+		<isNotEmpty prepend="," property="rulename"><![CDATA[ rulename]]></isNotEmpty>		
 		<isNotEmpty prepend="," property="groupid"><![CDATA[ groupid]]></isNotEmpty>
 		<isNotEmpty prepend="," property="content"><![CDATA[ content]]></isNotEmpty>
 		<isNotEmpty prepend="," property="paramstr"><![CDATA[ paramstr]]></isNotEmpty>
@@ -25,8 +24,7 @@
        )VALUES(
        	#id#
        	<isNotEmpty prepend="," property="rulefilename"><![CDATA[#rulefilename#]]></isNotEmpty>       
-		<isNotEmpty prepend="," property="rulename"><![CDATA[#rulename#]]></isNotEmpty>
-		<isNotEmpty prepend="," property="serviceid"><![CDATA[#serviceid#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="rulename"><![CDATA[#rulename#]]></isNotEmpty>		
 		<isNotEmpty prepend="," property="groupid"><![CDATA[ #groupid#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="content"><![CDATA[#content#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="paramstr"><![CDATA[#paramstr#]]></isNotEmpty>
@@ -47,8 +45,7 @@
 			<isNotNull prepend="," property="groupid"><![CDATA[ groupid = #groupid#]]></isNotNull>
 			<isNotNull prepend="," property="content"><![CDATA[ content = #content#]]></isNotNull>
 			<isNotNull prepend="," property="paramstr"><![CDATA[ paramstr = #paramstr#]]></isNotNull>
-			<isNotNull prepend="," property="status"><![CDATA[ status = #status#]]></isNotNull>
-			<isNotNull prepend="," property="createtime"><![CDATA[ createtime = #createtime#]]></isNotNull>
+			<isNotNull prepend="," property="status"><![CDATA[ status = #status#]]></isNotNull>			
 			<isNotNull prepend="," property="updatetime"><![CDATA[ updatetime = #updatetime#]]></isNotNull>
 			<isNotNull prepend="," property="version"><![CDATA[ version = #version#]]></isNotNull>
 			<isNotNull prepend="," property="bz"><![CDATA[ bz = #bz#]]></isNotNull>				
@@ -63,8 +60,7 @@
 			<isNotNull prepend="," property="groupid"><![CDATA[ groupid = #groupid#]]></isNotNull>
 			<isNotNull prepend="," property="content"><![CDATA[ content = #content#]]></isNotNull>
 			<isNotNull prepend="," property="paramstr"><![CDATA[ paramstr = #paramstr#]]></isNotNull>
-			<isNotNull prepend="," property="status"><![CDATA[ status = #status#]]></isNotNull>
-			<isNotNull prepend="," property="createtime"><![CDATA[ createtime = #createtime#]]></isNotNull>
+			<isNotNull prepend="," property="status"><![CDATA[ status = #status#]]></isNotNull>			
 			<isNotNull prepend="," property="updatetime"><![CDATA[ updatetime = #updatetime#]]></isNotNull>
 			<isNotNull prepend="," property="version"><![CDATA[ version = #version#]]></isNotNull>
 			<isNotNull prepend="," property="bz"><![CDATA[ bz = #bz#]]></isNotNull>				
@@ -74,29 +70,31 @@
     
     <!-- 查询规则平台规则表-->
     <select id="queryDroolsRule" parameterClass="drools_rule" resultClass="drools_rule">
-         select r.*,g.GROUPNAME,g.SERVICEID,s.SERVICENAME 
-         from DROOLS_GROUP g,DROOLS_SERVICE s,DROOLS_RULE r
-		 where r.GROUPID=g.id and g.SERVICEID=s.id		  
+         select r.*,g.GROUPNAME
+         from DROOLS_GROUP g,DROOLS_RULE r
+		 where r.GROUPID=g.id  
 		<isNotEmpty prepend=" and " property="id">r.ID = #id#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="rulefilename">r.RULEFILENAME = #rulefilename#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="rulename">r.RULENAME = #rulename#</isNotEmpty>
-		<isNotEmpty prepend=" and " property="groupid">r.GROUPID = #groupid#</isNotEmpty>
-		<isNotEmpty prepend=" and " property="content">r.CONTENT = #content#</isNotEmpty>
+		<isNotEmpty prepend=" and " property="groupid">r.GROUPID = #groupid#</isNotEmpty>		
 		<isNotEmpty prepend=" and " property="paramstr">r.paramstr = #paramstr#</isNotEmpty>
-		<isNotEmpty prepend=" and " property="status">r.STATUS = #status#</isNotEmpty>		
-		<isNotEmpty prepend=" and " property="createtime">r.CREATETIME = #createtime#</isNotEmpty>
+		<isNotEmpty prepend=" and " property="status">r.STATUS = #status#</isNotEmpty>				
 		<isNotEmpty prepend=" and " property="updatetime">r.UPDATETIME = #updatetime#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="version">r.VERSION = #version#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="ruletype">r.RULETYPE = #ruletype#</isNotEmpty>
     </select>
     
-    <!-- 查询规则执行时需要的服务和方法-->
-    <select id="queryService" parameterClass="String" resultClass="java.util.HashMap">
-         select s.SERVICENAME,s.SERVICEURL,g.SERVICEMETHOD,g.GROUPNAME
-	     from DROOLS_GROUP g,DROOLS_SERVICE s,DROOLS_RULE r
-		 where r.GROUPID=g.id and g.SERVICEID=s.id	
-			and r.RULEFILENAME=#ruleFileName#
-			and r.RULETYPE='0'
+    <select id="queryDroolsRuleFuzzy" parameterClass="drools_rule" resultClass="drools_rule">
+         select r.*,g.GROUPNAME
+         from DROOLS_GROUP g,DROOLS_RULE r
+		 where r.GROUPID=g.id  
+		<isNotEmpty prepend=" and " property="id">r.ID = #id#</isNotEmpty>
+		<isNotEmpty prepend=" and " property="rulefilename"><![CDATA[r.RULEFILENAME like '%$rulefilename$%' ]]></isNotEmpty>
+		<isNotEmpty prepend=" and " property="rulename"><![CDATA[r.RULENAME like '%$rulename$%' ]]></isNotEmpty>
+		<isNotEmpty prepend=" and " property="groupid">r.GROUPID = #groupid#</isNotEmpty>				
+		<isNotEmpty prepend=" and " property="status">r.STATUS = #status#</isNotEmpty>						
+		<isNotEmpty prepend=" and " property="version">r.VERSION = #version#</isNotEmpty>
+		<isNotEmpty prepend=" and " property="ruletype">r.RULETYPE = #ruletype#</isNotEmpty>
     </select>
     
     <delete id="deleteRule" parameterClass="String">

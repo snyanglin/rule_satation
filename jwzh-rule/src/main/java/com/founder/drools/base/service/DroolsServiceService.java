@@ -1,6 +1,5 @@
 package com.founder.drools.base.service;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.founder.drools.base.dao.Drools_serviceDao;
 import com.founder.drools.base.model.Drools_service;
+import com.founder.drools.core.model.DroolsUtils;
 
 @Service
 public class DroolsServiceService{
@@ -32,19 +32,13 @@ public class DroolsServiceService{
 	
 	public void addService(Drools_service entity) {		
 		entity.setCreatetime(new Date());				
-		entity.setId(getTimeString());
+		entity.setId(DroolsUtils.getTimeString());
 		drools_serviceDao.insert(entity);
 	}
 	
 	public void updateService(Drools_service entity) {		
 		entity.setUpdatetime(new Date());		
 		drools_serviceDao.update(entity);
-	}
-		
-
-	public String getTimeString(){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		return sdf.format(new Date());
 	}
 	
 	public void deleteService(String id){

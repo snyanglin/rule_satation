@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.founder.drools.base.model.Drools_method;
 import com.founder.drools.base.model.Drools_service;
 import com.founder.drools.base.model.Drools_url;
+import com.founder.drools.base.service.DroolsMethodService;
 import com.founder.drools.base.service.DroolsServiceService;
 import com.founder.drools.base.service.DroolsUrlService;
 import com.founder.drools.core.model.Paginator;
@@ -38,6 +40,9 @@ public class ServiceController extends BaseController {
 	
 	@Autowired
 	private DroolsUrlService droolsUrlService;
+	
+	@Autowired
+	private DroolsMethodService droolsMethodService;
 	
 	@RequestMapping(value = "/serviceManager", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView serviceManager(){
@@ -148,6 +153,14 @@ public class ServiceController extends BaseController {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("resStatus", "0");//成功
 		try{			
+			Drools_method queryEntity=new Drools_method();
+			queryEntity.setServiceid(id);
+			List<Drools_method> list= droolsMethodService.queryMethodList(queryEntity);
+			if(list!=null && list.size()>0){
+				map.put("resStatus", "1");//失败
+				map.put("errorMsg", "该服务已被地址占用，如果要删除该服务，请先删除占用的地址！");
+				return map;
+			}
 			droolsServiceService.deleteService(id);
 			
 		}catch(Exception e){

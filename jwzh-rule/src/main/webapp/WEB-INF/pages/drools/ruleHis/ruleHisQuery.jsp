@@ -33,18 +33,6 @@
    <div class="panel-heading">规则详情</div>
 	<table class="table">
 				<tr>
-					<th>服务名：</th>
-					<td>${ruleHis.servicename}</td>
-				</tr>
-				<tr>
-					<th>服务地址：</th>
-					<td>${ruleHis.serviceurl}</td>
-				</tr>
-				<tr>
-					<th>服务方法：</th>
-					<td>${ruleHis.servicemethod}</td>
-				</tr>
-				<tr>
 					<th align="right">规则分组：</th>
 					<td>${ruleHis.groupname}</td>
 				</tr>

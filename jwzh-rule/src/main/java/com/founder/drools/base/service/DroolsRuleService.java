@@ -58,7 +58,7 @@ public class DroolsRuleService{
 	public List<Drools_rule> queryRuleManagerList(Drools_rule entity) {	
 		if(entity == null) entity= new Drools_rule();
 		entity.setRuletype("0");//查询规则显示列表
-		return drools_ruleDao.queryListByEntity(entity);
+		return drools_ruleDao.queryListByEntityFuzzy(entity);
 	}
 	
 	public List<Drools_rule> queryRuleListByEntity(Drools_rule entity) {		 
@@ -89,9 +89,6 @@ public class DroolsRuleService{
 		RuleBean ruleBean = new RuleBean();
 		ruleBean.setRuleFileName(entity.getRulefilename());
         ruleBean.setRuleName("validateRuleFile");
-        Map map=this.queryService(entity.getRulefilename());
-        ruleBean.setServiceUrl((String)map.get("SERVICEURL"));
-        ruleBean.setServiceMethod((String)map.get("SERVICEMETHOD"));
         
         try{
         	this.ruleTestRelease(rulefilename,"validateRuleFile");
@@ -275,19 +272,11 @@ public class DroolsRuleService{
 		ruleHis.setRulefilename(drools_rule.getRulefilename());
 		ruleHis.setRuleid(drools_rule.getId());
 		
-		ruleHis.setGroupid(drools_rule.getGroupid());
-		ruleHis.setServiceid(drools_rule.getServiceid());	
+		ruleHis.setGroupid(drools_rule.getGroupid());		
 		
-		Map map=this.queryService(ruleFileName);
-		ruleHis.setServicename((String)map.get("SERVICENAME"));
-		ruleHis.setServiceurl((String)map.get("SERVICEURL"));
-		ruleHis.setServicemethod((String)map.get("SERVICEMETHOD"));
-		ruleHis.setGroupname((String)map.get("GROUPNAME"));
+		ruleHis.setGroupname(drools_rule.getGroupname());
 		
 		droolsRuleHisService.insert(ruleHis);
 	}
 
-	public Map queryService(String ruleFileName) {
-		return drools_ruleDao.queryService(ruleFileName);				
-	}
 }

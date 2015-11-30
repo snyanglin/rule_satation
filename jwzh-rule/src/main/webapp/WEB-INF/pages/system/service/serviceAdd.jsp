@@ -65,22 +65,27 @@
 		<tr>
 			<th>服务名称</th>
 			<td>
-				<input type="text" id="servicename" name="servicename" value="" maxlength="50"  class="form-control"  />
+				<input type="text" id="servicename" name="servicename" value="" maxlength="50"  class="form-control" placeholder="最长50个字符" />
 			</td>
 		</tr>		
 		<tr>
 			<th>备注</th>
 			<td>
-				<input type="text" id="bz" name="bz" value="" maxlength="100" class="form-control"  />
+				<input type="text" id="bz" name="bz" value="" maxlength="100" class="form-control" placeholder="最长100个字符或50个汉字" />
 			</td>
 		</tr>
 	</table>	
 </div>
 
 <div align="center">
-	<button type="button" class="btn btn-default" onclick="save()">新 增</button>	
+	<button type="button" class="btn btn-success" onclick="save()">新 增</button>	
 </div>
 </form>
+
+<div class="Hint">
+<p>1.如果没有“服务地址”可选，请在“地址管理”中添加地址。</p>
+<p>2.“服务名称”不可重复,会和“地址”中的“URL”拼接成请求地址。</p>
+</div>
 
 </div>
 </div>

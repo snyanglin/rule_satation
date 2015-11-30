@@ -27,8 +27,7 @@ public class Drools_rule extends BaseEntity implements Serializable {
 	@FieldDesc("规则类型：0规则头，1规则体") private String ruletype;
 	
 	@FieldDesc("分组名") private String groupname;
-	@FieldDesc("服务ID") private String serviceid;
-	@FieldDesc("服务名") private String servicename;
+		
 	public String getId() {
 		return id;
 	}
@@ -95,10 +94,6 @@ public class Drools_rule extends BaseEntity implements Serializable {
 	public void setBz(String bz) {
 		this.bz = bz;
 	}
-	
-	
-	
-	
 	public String getRuletype() {
 		return ruletype;
 	}
@@ -111,18 +106,5 @@ public class Drools_rule extends BaseEntity implements Serializable {
 	public void setGroupname(String groupname) {
 		this.groupname = groupname;
 	}
-	public String getServiceid() {
-		return serviceid;
-	}
-	public void setServiceid(String serviceid) {
-		this.serviceid = serviceid;
-	}
-	public String getServicename() {
-		return servicename;
-	}
-	public void setServicename(String servicename) {
-		this.servicename = servicename;
-	}
-	
 	
 }

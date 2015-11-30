@@ -54,28 +54,33 @@
 		<tr>
 			<th>地址名称</th>
 			<td>
-				<input type="text" id="urlname" name="urlname" value="" maxlength="100"  class="form-control"  />
+				<input type="text" id="urlname" name="urlname" value="" maxlength="100"  class="form-control" placeholder="最长100个字符或50个汉字" />
 			</td>
 		</tr>
 		<tr>
 			<th>URL</th>
 			<td>
-				<input type="text" id="url" name="url" value="" maxlength="50"  class="form-control"  />
+				<input type="text" id="url" name="url" value="" maxlength="50"  class="form-control" placeholder="最长50个字符" />
 			</td>
 		</tr>
 		<tr>
 			<th>备注</th>
 			<td>
-				<input type="text" id="bz" name="bz" value="" maxlength="100" class="form-control"  />
+				<input type="text" id="bz" name="bz" value="" maxlength="100" class="form-control" placeholder="最长100个字符或50个汉字" />
 			</td>
 		</tr>
 	</table>	
 </div>
 
 <div align="center">
-	<button type="button" class="btn btn-default" onclick="saveUrl()">新 增</button>	
+	<button type="button" class="btn btn-success" onclick="saveUrl()">保 存</button>	
 </div>
 </form>
+
+<div class="Hint">
+<p>1.“地址名称”不是地址的唯一标识，但是为了能方便区分，所以也不可重复。</p>
+<p>2.“URL”是服务的根地址，如“http://localhost:9080/jwzh-rule”。</p>
+</div>
 
 </div>
 </div>

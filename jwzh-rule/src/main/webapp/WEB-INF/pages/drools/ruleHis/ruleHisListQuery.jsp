@@ -54,7 +54,7 @@ function detail(version){
 <div class="panel panel-default">
    <div class="panel-heading">规则版本列表</div>   	
 	<table class="table">				
-			<tr><th>服务名</th><th>规则分组</th><th>规则文件名称</th><th>版本号</th><th>操作</th></tr>			
+			<tr><th>规则分组</th><th>规则文件名称</th><th>版本号</th><th>操作</th></tr>			
 	</table>
 </div>
 </span>

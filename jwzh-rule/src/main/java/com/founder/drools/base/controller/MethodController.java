@@ -80,7 +80,7 @@ public class MethodController extends BaseController {
 			Drools_method queryEntity = new Drools_method();
 			queryEntity.setMethodname(entity.getMethodname());
 			queryEntity.setServiceid(entity.getServiceid());
-			List<Drools_method> list = droolsMethodService.queryMethodList(entity);
+			List<Drools_method> list = droolsMethodService.queryMethodList(queryEntity);
 			if(list!=null && list.size()>0){
 				map.put("resStatus", "1");//失败
 				map.put("errorMsg", "方法已存在，请重新输入");//失败

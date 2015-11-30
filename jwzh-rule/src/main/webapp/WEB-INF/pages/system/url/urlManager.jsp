@@ -102,9 +102,9 @@ function validateUrl(url){
 </div>
 
 <div align="center">
-	<button type="button" class="btn btn-default" onclick="doIt()">查 询</button>	
-	
-	<button type="button" class="btn btn-default" onclick="location.href='<%=contextPath%>/urlManager/urlAddPre'" >新 增</button>
+	<button type="button" class="btn btn-info" onclick="doIt()">查 询</button>	
+	&nbsp;
+	<button type="button" class="btn btn-success" onclick="location.href='<%=contextPath%>/urlManager/urlAddPre'" >新 增</button>
 </div>
 <br />
 
@@ -119,6 +119,12 @@ function validateUrl(url){
 </span>
 
 </form>
+
+<div class="Hint">
+<p>1.“地址名称”和“URL”支持模糊查询。</p>
+<p>2.“验证”可验证连接是否可用。</p>
+</div>
+
 </div>
 </div>
 </div>

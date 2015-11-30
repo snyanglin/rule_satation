@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.founder.drools.base.model.Drools_group;
+import com.founder.drools.base.model.Drools_rule;
 import com.founder.drools.base.service.DroolsGroupService;
+import com.founder.drools.base.service.DroolsRuleService;
 import com.founder.drools.core.model.Paginator;
 import com.founder.framework.base.controller.BaseController;
 /**
@@ -35,6 +38,9 @@ public class GroupController extends BaseController {
 	@Resource(name="droolsGroupService")
 	private DroolsGroupService droolsGroupService;
 	
+	@Autowired
+	private DroolsRuleService droolsRuleService;
+	
 	@RequestMapping(value = "/groupManager", method = {RequestMethod.GET})
 	public ModelAndView groupManager(){
 		ModelAndView mv = new ModelAndView("system/group/groupManager");		        
@@ -44,7 +50,7 @@ public class GroupController extends BaseController {
 	@RequestMapping(value = "/getGroupManagerList", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView getGroupManagerList(Drools_group entity,Paginator paginator){
 		ModelAndView mv = new ModelAndView("system/group/groupManagerList");			
-		List<Drools_group> list = droolsGroupService.queryListByEntity(entity);
+		List<Drools_group> list = droolsGroupService.queryListByEntityFuzzy(entity);
 		paginator.setList(list);
 		mv.addObject("Paginator",paginator);	
 		mv.addObject("Entity",entity);
@@ -65,7 +71,7 @@ public class GroupController extends BaseController {
 		try{
 			Drools_group queryEntity = new Drools_group();
 			queryEntity.setGroupname(entity.getGroupname());			
-			List<Drools_group> list = droolsGroupService.queryListByEntity(entity);
+			List<Drools_group> list = droolsGroupService.queryListByEntity(queryEntity);
 			if(list!=null && list.size()>0){
 				map.put("resStatus", "1");//失败
 				map.put("errorMsg", "分组已存在，请重新输入");//失败
@@ -97,7 +103,7 @@ public class GroupController extends BaseController {
 		try{
 			Drools_group queryEntity = new Drools_group();
 			queryEntity.setGroupname(entity.getGroupname());			
-			List<Drools_group> list = droolsGroupService.queryListByEntity(entity);
+			List<Drools_group> list = droolsGroupService.queryListByEntity(queryEntity);
 			if(list!=null && list.size()>0){
 				if(!list.get(0).getId().equals(entity.getId())){
 					map.put("resStatus", "1");//失败
@@ -119,7 +125,15 @@ public class GroupController extends BaseController {
 	public @ResponseBody Map<String, String> groupDelete(String id){
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("resStatus", "0");//成功
-		try{			
+		try{		
+			Drools_rule queryEntity= new Drools_rule();
+			queryEntity.setGroupid(id);
+			List<Drools_rule> list = droolsRuleService.queryRuleListByEntity(queryEntity);
+			if(list!=null && list.size()>0){
+				map.put("resStatus", "1");//失败
+				map.put("errorMsg", "该分组中有规则，如果要删除该分组，请先删除分组下的所哟规则！");
+				return map;
+			}
 			droolsGroupService.deleteGroup(id);			
 		}catch(Exception e){
 			e.printStackTrace();

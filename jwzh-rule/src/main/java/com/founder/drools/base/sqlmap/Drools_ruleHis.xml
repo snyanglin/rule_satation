@@ -9,26 +9,18 @@
        insert into DROOLS_RULEHIS
        (
         version        
-		<isNotEmpty prepend="," property="serviceid"><![CDATA[ serviceid]]></isNotEmpty>
-		<isNotEmpty prepend="," property="servicename"><![CDATA[ servicename]]></isNotEmpty>
-		<isNotEmpty prepend="," property="serviceurl"><![CDATA[ serviceurl]]></isNotEmpty>
 		<isNotEmpty prepend="," property="groupid"><![CDATA[ groupid]]></isNotEmpty>
 		<isNotEmpty prepend="," property="groupname"><![CDATA[ groupname]]></isNotEmpty>
 		<isNotEmpty prepend="," property="rulefilename"><![CDATA[ rulefilename]]></isNotEmpty>
 		<isNotEmpty prepend="," property="content"><![CDATA[ content]]></isNotEmpty>
-		<isNotEmpty prepend="," property="ruleid"><![CDATA[ ruleid]]></isNotEmpty>
-		<isNotEmpty prepend="," property="servicemethod"><![CDATA[ servicemethod]]></isNotEmpty>
+		<isNotEmpty prepend="," property="ruleid"><![CDATA[ ruleid]]></isNotEmpty>		
        )VALUES(
        	#version#       	
-		<isNotEmpty prepend="," property="serviceid"><![CDATA[#serviceid#]]></isNotEmpty>
-		<isNotEmpty prepend="," property="servicename"><![CDATA[#servicename#]]></isNotEmpty>
-		<isNotEmpty prepend="," property="serviceurl"><![CDATA[#serviceurl#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="groupid"><![CDATA[#groupid#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="groupname"><![CDATA[#groupname#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="rulefilename"><![CDATA[#rulefilename#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="content"><![CDATA[#content#]]></isNotEmpty>
-		<isNotEmpty prepend="," property="ruleid"><![CDATA[#ruleid#]]></isNotEmpty>
-		<isNotEmpty prepend="," property="servicemethod"><![CDATA[ #servicemethod#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="ruleid"><![CDATA[#ruleid#]]></isNotEmpty>		
        )
     </insert>	
     
@@ -37,8 +29,6 @@
          select * from DROOLS_RULEHIS
 		 where 1=1	
 		 <isNotEmpty prepend=" and " property="version">VERSION = #version#</isNotEmpty>
-		<isNotEmpty prepend=" and " property="serviceid">SERVICEID = #serviceid#</isNotEmpty>
-		<isNotEmpty prepend=" and " property="servicename"><![CDATA[SERVICENAME like '%$servicename$%' ]]></isNotEmpty>		
 		<isNotEmpty prepend=" and " property="groupid">GROUPID = #groupid#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="groupname"><![CDATA[GROUPNAME like '%$groupname$%' ]]></isNotEmpty>
 		<isNotEmpty prepend=" and " property="rulefilename"><![CDATA[ RULEFILENAME like '%$rulefilename$%' ]]></isNotEmpty>
@@ -52,16 +42,18 @@
 	    select * from DROOLS_RULEHIS where VERSION in(
 			select max(VERSION) from DROOLS_RULEHIS group by RULEID
 		) 
-		
-		 <isNotEmpty prepend=" and " property="version">VERSION = #version#</isNotEmpty>
-		<isNotEmpty prepend=" and " property="serviceid">SERVICEID = #serviceid#</isNotEmpty>
-		<isNotEmpty prepend=" and " property="servicename"><![CDATA[SERVICENAME like '%$servicename$%' ]]></isNotEmpty>		
+		<isNotEmpty prepend=" and " property="version">VERSION = #version#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="groupid">GROUPID = #groupid#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="groupname"><![CDATA[GROUPNAME like '%$groupname$%' ]]></isNotEmpty>
 		<isNotEmpty prepend=" and " property="rulefilename"><![CDATA[ RULEFILENAME like '%$rulefilename$%' ]]></isNotEmpty>
 		<isNotEmpty prepend=" and " property="ruleid">RULEID = #ruleid#</isNotEmpty>	
 		
 		order by VERSION DESC
+    </select>
+    
+    <!-- 查询规则平台历史分组表-->
+    <select id="queryRuleHisGroup"  resultClass="drools_ruleHis">
+         select distinct GROUPID, GROUPNAME from DROOLS_RULEHIS  order by GROUPID	
     </select>
     
     <delete id="deleteRuleHis" parameterClass="drools_rule">

@@ -91,7 +91,7 @@ function doIt(){
 </div>
 
 <div align="center">
-	<button type="button" class="btn btn-default" onclick="doIt()">查 询</button>	
+	<button type="button" class="btn btn-info" onclick="doIt()">查 询</button>	
 </div>
 <br />
 

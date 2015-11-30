@@ -70,7 +70,7 @@ function doIt(){
 			</div>
 		</td>
 		<td>
-			<button type="button" class="btn btn-default" onclick="location.href='<%=contextPath%>/serviceManager/serviceAddPre'" >新 增</button>
+			<button type="button" class="btn btn-success" onclick="location.href='<%=contextPath%>/serviceManager/serviceAddPre'" >新 增</button>
 		</td>
 		
 	</tr>
@@ -89,6 +89,12 @@ function doIt(){
 </span>
 
 </form>
+
+<div class="Hint">
+<p>1.切换“服务地址”可自动查询该地址下的所有服务。</p>
+<p>2.如果没有“服务地址”可选，请在“地址管理”中添加地址。</p>
+</div>
+
 </div>
 </div>
 </div>

@@ -29,7 +29,12 @@
 		});
 	} 	
 	
-	function del(){		 		
+	function del(){		 	
+		
+		if(!confirm("您确定要删除该服务么？")){
+			return;
+		}
+		
 		var paramPairs=[
 				new ParamPair("id",$("#id").val())		 		
 		];
@@ -82,24 +87,30 @@
 		<tr>
 			<th>服务名称</th>
 			<td>
-				<input type="text" id="servicename" name="servicename" maxlength="50"  class="form-control"  value="${entity.servicename }"  />
+				<input type="text" id="servicename" name="servicename" maxlength="50"  class="form-control"  value="${entity.servicename }" placeholder="最长50个字符"  />
 			</td>
 		</tr>		
 		<tr>
 			<th>备注</th>
 			<td>
-				<input type="text" id="bz" name="bz"  maxlength="100" class="form-control" value="${entity.bz }"  />
+				<input type="text" id="bz" name="bz"  maxlength="100" class="form-control" value="${entity.bz }" placeholder="最长100个字符或50个汉字" />
 			</td>
 		</tr>
 	</table>	
 </div>
 
 <div align="center">
-	<button type="button" class="btn btn-default" onclick="save()">保存</button>
-	
-	<button type="button" class="btn btn-default" onclick="del()">删除</button>	
+	<button type="button" class="btn btn-success" onclick="save()">保 存</button>
+	&nbsp;
+	<button type="button" class="btn btn-danger" onclick="del()">删 除</button>	
 </div>
 </form>
+
+<div class="Hint">
+<p>1.“服务名称”不可重复,会和“地址”中的“URL”拼接成请求地址。</p>
+<p>2.“删除”后不可再找回，所以删除前请确认不再使用再删除。</p>
+<p>3.被“方法”占用的服务是不能删除的，如果要删除，请先删除占用的方法。</p>
+</div>
 
 </div>
 </div>
