@@ -6,24 +6,32 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="<%=contextPath%>/js/methodParameter.js"></script>
 <script type="text/javascript">
-	function save(){		 		
+	function save(){	
+		
+		getParam();
+		
 		var paramPairs=[
 				new ParamPair("id",$("#id").val()),
 		 		new ParamPair("bz",$("#bz").val()),
-		 		new ParamPair("servicename",$("#servicename").val())	 		
+		 		new ParamPair("methodname",$("#methodname").val()),
+		 		new ParamPair("methodresponse",$("#methodresponse").val()),
+		 		new ParamPair("paramname",paramnameAry),
+		 		new ParamPair("paramclass",paramclassAry),
+		 		new ParamPair("parambz",parambzAry)
 		];
 		var url="<%=basePath%>methodManager/methodEdit";
 		postToServer(paramPairs,url,function(data){ 			
 		if(data){
 			if(data.resStatus == '0'){				
-				alert("服务已保存");				
+				alert("方法已保存");				
 				window.location.href="<%=contextPath%>/methodManager/methodManager";				
 			}else{
-				alert("服务保存失败："+data.errorMsg);					
+				alert("方法保存失败："+data.errorMsg);					
 			}				
 		}else{
-			alert("服务保存失败："+data);				
+			alert("方法保存失败："+data);				
 		}		
 			 				
 		});
@@ -37,13 +45,13 @@
 		postToServer(paramPairs,url,function(data){ 			
 		if(data){
 			if(data.resStatus == '0'){				
-				alert("地址已删除");				
+				alert("方法已删除");				
 				window.location.href="<%=contextPath%>/methodManager/methodManager";				
 			}else{
-				alert("地址删除失败："+data.errorMsg);					
+				alert("方法删除失败："+data.errorMsg);					
 			}				
 		}else{
-			alert("地址删除失败："+data);				
+			alert("方法删除失败："+data);				
 		}		
 			 				
 		});
@@ -89,6 +97,12 @@
 			<td>
 				<input type="text" id="methodname" name="methodname" value="${entity.methodname }" maxlength="50" class="form-control"  />
 			</td>
+		</tr>
+		<tr>
+			<th>返回结果</th>
+			<td>
+				<input type="text" id="methodresponse" name="methodresponse" value="${entity.methodresponse }" maxlength="100" class="form-control"  />
+			</td>
 		</tr>	
 		<tr>
 			<th>备注</th>
@@ -96,6 +110,27 @@
 				<input type="text" id="bz" name="bz"  maxlength="100" class="form-control" value="${entity.bz }"  />
 			</td>
 		</tr>
+	</table>	
+</div>
+
+<div class="panel panel-default">
+   <div class="panel-heading">方法参数 <a href="#" onclick="addParam()">ADD</a></div>
+	<table class="table" id="paramTable">
+		<tr><th>参数名称</th><th>参数类型</th><th>参数说明</th><th>操作</th></tr>
+		<c:forEach items="${List}" var="item" varStatus="status">
+			<tr><td><c:out value="${item.paramname }" />
+				<input type="hidden"name="paramname" value="<c:out value="${item.paramname }" />" />
+			</td>
+			<td><c:out value="${item.paramclass }" />
+				<input type="hidden"name="paramclass" value="<c:out value="${item.paramclass }" />" />
+			</td>		
+			<td><c:out value="${item.bz }" />
+				<input type="hidden"name="parambz" value="<c:out value="${item.bz }" />" />
+			</td>
+			<td>
+				<button type="button" class="btn btn-default" onclick="delParam(this)">删除</button>		
+			</td></tr>
+		</c:forEach>
 	</table>	
 </div>
 

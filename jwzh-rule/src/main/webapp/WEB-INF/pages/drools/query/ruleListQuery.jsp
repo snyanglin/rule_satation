@@ -73,7 +73,9 @@ function doIt(){
 			<div class="input-group">			
 			<span class="input-group-addon">规则分组</span>
 			<select id="groupid" name="groupid" class="form-control">
-				<option value="20151109145800">重点人员</option>
+				<c:forEach items="${GroupList}" var="item" varStatus="status">
+				<option value="<c:out value="${item.id }" />"><c:out value="${item.groupname }" /></option>
+				</c:forEach>
 			</select>
 			</div>
 		</td>		

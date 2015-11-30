@@ -45,6 +45,10 @@
     	delete from drools_method_parameter where id = #id#
     </delete>
     
+    <delete id="deleteByMethodId" parameterClass="String">
+    	delete from drools_method_parameter where METHODID = #methodId#
+    </delete>
+    
     <select id="queryDroolsParameter" parameterClass="drools_method_parameter" resultClass="drools_method_parameter">
     	<![CDATA[ select * from drools_method_parameter where 1=1]]>
     	<isNotEmpty prepend="and" property="id"> ID = #id#</isNotEmpty>

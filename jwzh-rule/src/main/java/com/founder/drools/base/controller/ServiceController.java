@@ -83,7 +83,7 @@ public class ServiceController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/serviceAdd", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody Map<String, String> urlAdd(Drools_service entity){
+	public @ResponseBody Map<String, String> serviceAdd(Drools_service entity){
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("resStatus", "0");//成功
 		try{
@@ -126,9 +126,11 @@ public class ServiceController extends BaseController {
 			queryEntity.setUrlid(entity.getUrlid());
 			List<Drools_service> list = droolsServiceService.queryServiceList(entity);
 			if(list!=null && list.size()>0){
-				map.put("resStatus", "1");//失败
-				map.put("errorMsg", "服务已存在，请重新输入");//失败
-				return map;
+				if(!list.get(0).getId().equals(entity.getId())){
+					map.put("resStatus", "1");//失败
+					map.put("errorMsg", "服务已存在，请重新输入");//失败
+					return map;
+				}
 			}
 			
 			droolsServiceService.updateService(entity);

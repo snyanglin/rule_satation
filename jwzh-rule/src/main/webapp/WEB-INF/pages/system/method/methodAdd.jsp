@@ -6,10 +6,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="<%=contextPath%>/js/methodParameter.js"></script>
 <script type="text/javascript">
-	var paramnameAry="";
-	var paramclassAry="";
-	var parambzAry="";
+	
 
 	function save(){		 		
 		var serviceid = $("#serviceid").val();
@@ -24,21 +23,23 @@
 		 		new ParamPair("bz",$("#bz").val()),
 		 		new ParamPair("methodname",$("#methodname").val()),
 		 		new ParamPair("serviceid",serviceid),
+		 		new ParamPair("methodresponse",$("#methodresponse").val()),
 		 		new ParamPair("paramname",paramnameAry),
 		 		new ParamPair("paramclass",paramclassAry),
 		 		new ParamPair("parambz",parambzAry)
+		 		
 		];
 		var url="<%=basePath%>methodManager/methodAdd";
 		postToServer(paramPairs,url,function(data){ 			
 		if(data){
 			if(data.resStatus == '0'){				
-				alert("服务已保存");				
+				alert("方法已保存");				
 				window.location.href="<%=contextPath%>/methodManager/methodManager";				
 			}else{
-				alert("服务保存失败："+data.errorMsg);					
+				alert("方法保存失败："+data.errorMsg);					
 			}				
 		}else{
-			alert("服务保存失败："+data);				
+			alert("方法保存失败："+data);				
 		}		
 			 				
 		});
@@ -59,29 +60,7 @@
 		}
 	}
 	
-	function addParam(){
-		var paramTable=$("#paramTable");
-		var str="<tr><td><input type=\"text\"name=\"paramname\" value=\"\" maxlength=\"100\" class=\"form-control\"  /></td>"+
-			"<td><input type=\"text\" name=\"paramclass\" value=\"\" maxlength=\"100\" class=\"form-control\"  /></td>"+
-			"<td><input type=\"text\" name=\"parambz\" value=\"\" maxlength=\"100\" class=\"form-control\"  /></td>"+
-			"<td><button type=\"button\" class=\"btn btn-default\" onclick=\"delParam(this)\">删除</button></td></tr>";
-		paramTable.append(str);
-	}
 	
-	function delParam(obj){
-		var aTag=$(obj);
-		aTag.parent().parent().remove();
-	}
-	
-	function getParam(){
-		var paramTable=$("#paramTable");
-		var trAry=paramTable.find("tr");
-		for(var i=1;i<trAry.length;i++){
-			paramnameAry  +=$(trAry[i]).find("input[name='paramname']").val()+">>";
-			paramclassAry +=$(trAry[i]).find("input[name='paramclass']").val()+">>";
-			parambzAry    +=$(trAry[i]).find("input[name='parambz']").val()+">>";
-		}			
-	}
 </script>
 </head>
 <body>

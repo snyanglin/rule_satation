@@ -70,7 +70,6 @@ public class MethodController extends BaseController {
 		List<Drools_url> list= droolsUrlService.queryUrlList(null);
 		mv.addObject("UrlList",list);
 		return mv;
-	
 	}
 	
 	@RequestMapping(value = "/methodAdd", method = {RequestMethod.GET,RequestMethod.POST})
@@ -104,12 +103,14 @@ public class MethodController extends BaseController {
 	public ModelAndView methodEditPre(String id){
 		ModelAndView mv = new ModelAndView("system/method/methodEdit");	
 		Drools_method entity= droolsMethodService.queryMethodById(id);
-		mv.addObject("entity",entity);		
+		List<Drools_method_parameter> list = droolsParamService.getParamList(id);
+		mv.addObject("entity",entity);	
+		mv.addObject("List",list);	
 		return mv;
 	}	
 	
 	@RequestMapping(value = "/methodEdit", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody Map<String, String> methodEdit(Drools_method entity){
+	public @ResponseBody Map<String, String> methodEdit(Drools_method entity,String paramname,String paramclass,String parambz){
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("resStatus", "0");//成功
 		try{
@@ -118,12 +119,15 @@ public class MethodController extends BaseController {
 			queryEntity.setServiceid(entity.getServiceid());
 			List<Drools_method> list = droolsMethodService.queryMethodList(entity);
 			if(list!=null && list.size()>0){
-				map.put("resStatus", "1");//失败
-				map.put("errorMsg", "方法已存在，请重新输入");//失败
-				return map;
+				if(!list.get(0).getId().equals(entity.getId())){
+					map.put("resStatus", "1");//失败
+					map.put("errorMsg", "方法已存在，请重新输入");//失败
+					return map;
+				}
 			}
-			
+			List<Drools_method_parameter> paramList=droolsParamService.getParamList(paramname, paramclass, parambz);//生成参数列表	
 			droolsMethodService.updateMethod(entity);
+			droolsParamService.addParam(paramList,entity.getId());
 			
 		}catch(Exception e){
 			e.printStackTrace();

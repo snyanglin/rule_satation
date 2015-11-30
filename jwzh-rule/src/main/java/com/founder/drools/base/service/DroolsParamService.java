@@ -25,6 +25,7 @@ public class DroolsParamService{
 	}
 	
 	public void addParam(List<Drools_method_parameter> list,String methodid){
+		drools_method_parameterDao.deleteByMethodId(methodid);
 		Drools_method_parameter entity;
 		if(list!=null)
 			for(int i=0;i<list.size();i++){

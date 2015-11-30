@@ -25,6 +25,10 @@ public class Drools_method_parameterDao extends BaseDaoImpl {
 	public void delete(String id) {
 		super.delete("Drools_method_parameter.delete", id);
 	}
+	
+	public void deleteByMethodId(String methodId) {
+		super.delete("Drools_method_parameter.deleteByMethodId", methodId);
+	}
 
 	public Drools_method_parameter queryById(String entityId) {
 		Drools_method_parameter entity=new Drools_method_parameter();

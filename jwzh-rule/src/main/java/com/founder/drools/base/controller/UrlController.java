@@ -99,9 +99,11 @@ public class UrlController extends BaseController {
 			queryEntity.setUrlname(entity.getUrlname());
 			List<Drools_url> list = droolsUrlService.queryUrlList(entity);
 			if(list!=null && list.size()>0){
-				map.put("resStatus", "1");//失败
-				map.put("errorMsg", "地址名称已存在，请重新输入");//失败
-				return map;
+				if(!list.get(0).getId().equals(entity.getId())){
+					map.put("resStatus", "1");//失败
+					map.put("errorMsg", "地址名称已存在，请重新输入");//失败
+					return map;
+				}
 			}
 			
 			droolsUrlService.updateUrl(entity);

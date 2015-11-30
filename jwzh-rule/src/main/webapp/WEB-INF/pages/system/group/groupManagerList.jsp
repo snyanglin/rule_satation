@@ -6,11 +6,10 @@
 <div class="panel panel-default">
    <div class="panel-heading">查询结果</div>
 	<table class="table">
-	<tr><th>方法名称</th><th>返回结果</th><th>方法说明</th><th>操作</th></tr>
+	<tr><th>分组名称</th><th>备注</th><th>操作</th></tr>
 	<c:forEach items="${Paginator.list}" var="item" varStatus="status">
-		<tr><td><c:out value="${item.methodname }" /></td>
-		<td><c:out value="${item.methodresponse }" /></td>		
-		<td><c:out value="${item.bz }" /></td>
+		<tr><td><c:out value="${item.groupname }" /></td>
+		<td><c:out value="${item.bz }" /></td>				
 		<td>
 			<a href="#" onclick="edit('${item.id}')">编辑</a>			
 		</td></tr>
