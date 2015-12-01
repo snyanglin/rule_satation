@@ -249,7 +249,7 @@
    					<table width="100%">	
 						<tr>
 							<td align="left" width="30%">
-   								<button type="button" class="btn btn-info btn-sm" onclick="saveRule('head',${ruleHead.id})" style="display:none;" id="saveButton_head" >保存</button>  						
+   								<button type="button" class="btn btn-success btn-sm" onclick="saveRule('head',${ruleHead.id})" style="display:none;" id="saveButton_head" >保存</button>  						
 							</td>
 							<td align="center">
 								<div class="input-group">			
@@ -284,8 +284,8 @@
    						<table width="100%">	
 						<tr>
 							<td align="left" width="30%">
-   								<button type="button" class="btn btn-info btn-sm" id="saveButton_${status.index}" style="display:none;" onclick="saveRule(${status.index},${item.id})" >保存</button>
-   								<button type="button" class="btn btn-default btn-sm" onclick="deleteRule(${status.index},${item.id})" >删除</button>   						
+   								<button type="button" class="btn btn-success btn-sm" id="saveButton_${status.index}" style="display:none;" onclick="saveRule(${status.index},${item.id})" >保存</button>
+   								<button type="button" class="btn btn-danger btn-sm" onclick="deleteRule(${status.index},${item.id})" >删除</button>   						
 							</td>
 							<td align="center">
 								<input type="hidden" id="rulename_${status.index}" name="rulename_${status.index}" value="${item.rulename}" />
@@ -334,7 +334,7 @@
    						<table width="100%">	
 						<tr>
 							<td align="left" width="30%">
-   								<button type="button" class="btn btn-info btn-sm" onclick="saveRule('add','add')" >保存</button>
+   								<button type="button" class="btn btn-success btn-sm" onclick="saveRule('add','add')" >保存</button>
    								<button type="button" class="btn btn-default btn-sm" onclick="saveRuleCancel()" >取消</button>   								  						
 							</td>
 							<td align="center">
@@ -374,7 +374,7 @@
 <div class="Hint">
 <p>1.“新增”是在当前规则文件中添加新的子规则。</p>
 <p>2.“发布”是将当前规则格式化并生成规则文件，规则马上生效，并在历史版本中生成历史版本。</p>
-<p>3.“归档”即删除，但是会在历史版本中生成版历史本。</p>
+<p>3.“归档”即删除，但是会在历史版本中生成历史版本。</p>
 </div>
 
 </div>

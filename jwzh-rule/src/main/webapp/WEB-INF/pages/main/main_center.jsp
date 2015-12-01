@@ -6,6 +6,6 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </HEAD>
 <body>
-main
+欢迎使用方正规则平台
 </body>
 </HTML>
