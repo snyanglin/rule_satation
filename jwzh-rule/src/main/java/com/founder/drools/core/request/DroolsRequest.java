@@ -34,6 +34,9 @@ public class DroolsRequest {
 	private int minCon=10;
 	private int releaseTime=5000;
 	private int releaseTimeOut=3000;
+	private int useConPool=1;//1，不使用连接池，0使用连接池
+	private boolean isInited=false;//是否已初始化，第一次使用的时候初始化
+	
 	private HttpRequestBean httpRequestBean=null;
 	private HttpClientUtil httpClientUtil=null;
 	
@@ -49,8 +52,7 @@ public class DroolsRequest {
 	 */
 	public DroolsRequest(String serverIp,String serverPort){
 		this.serverIp=serverIp;
-		this.serverPort=serverPort;
-		this.initHttpRequestBean();
+		this.serverPort=serverPort;		
 	}
 	
 	/**
@@ -67,21 +69,30 @@ public class DroolsRequest {
 		this.serverIp=serverIp;		
 		this.connectTimeout = connectTimeout;		
 		this.connectionRequestTimeout = connectionRequestTimeout;
-		this.socketTimeout=socketTimeout;
-		this.initHttpRequestBean();
+		this.socketTimeout=socketTimeout;		
 	}
 	
 	
-	public DroolsRequest(String serverIp,String serverPort,int connectTimeout,int connectionRequestTimeout,int socketTimeout,int maxCon,int minCon,int releaseTime,int releaseTimeOut){
+	public DroolsRequest(String serverIp,String serverPort,int connectTimeout,int connectionRequestTimeout,int socketTimeout,int maxCon,int minCon,int releaseTime,int releaseTimeOut,int useConPool){
 		this.serverIp=serverIp;		
+		this.serverPort=serverPort;
 		this.connectTimeout = connectTimeout;		
 		this.connectionRequestTimeout = connectionRequestTimeout;
 		this.socketTimeout=socketTimeout;
+		this.maxCon=maxCon;
+		this.minCon=minCon;
+		this.releaseTime=releaseTime;
+		this.releaseTimeOut=releaseTimeOut;
+		this.useConPool=useConPool;
 	}
 	
 	public void init(){
+		
 		this.initHttpRequestBean();
-		this.initHttpClientPool(this.maxCon,this.minCon,this.releaseTime,this.releaseTimeOut);
+		if(useConPool == 0){//使用连接池
+			this.initHttpClientPool(this.maxCon,this.minCon,this.releaseTime,this.releaseTimeOut);
+		}
+		this.isInited=true;
 	}
 	
 	private void initHttpRequestBean(){
@@ -142,9 +153,12 @@ public class DroolsRequest {
 		
 		if(ruleBean.getRuleName()==null || ruleBean.getRuleName().length()==0)
 			throw new Exception("RuleName can not be null!");
+				
+		if(!this.isInited){//没有初始化
+			this.init();
+		}
 		
-		
-		if(httpClientUtil!=null){//采用连接池生成HttpClient
+		if(useConPool == 0){//采用连接池生成HttpClient
 			httpRequestBean.setHttpClient(httpClientUtil.getHttpClient());
 		}
 		
@@ -274,6 +288,14 @@ public class DroolsRequest {
 
 	public void setReleaseTimeOut(int releaseTimeOut) {
 		this.releaseTimeOut = releaseTimeOut;
+	}
+
+	public int getUseConPool() {
+		return useConPool;
+	}
+
+	public void setUseConPool(int useConPool) {
+		this.useConPool = useConPool;
 	}
 	
 }

@@ -92,7 +92,7 @@ public class HttpRequestBean {
 			url+="/";
 		
 		if(params!=null && params.length()>0)
-			url +=url+"?"+params;
+			url =url+"?"+params;
 		System.out.println("Get request from:"+url);
 		
 		HttpGet httpRequst = new HttpGet(url);	

@@ -2,7 +2,6 @@ package com.founder.drools.core.inteface.impl;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import net.sf.json.JSONException;
@@ -52,15 +51,6 @@ public class RuleServiceImpl implements RuleService {
 			}
 			
 			StatefulKnowledgeSession ksession = ruleConfig.getKbase().newStatefulKnowledgeSession();
-			
-			//循环设置全局变量
-//			if(ruleBean.getGlobalParamMap()!=null){
-//				Object[] keyAry = ruleBean.getGlobalParamMap().keySet().toArray();
-//				for(int i=0;i<keyAry.length;i++){
-//					ksession.setGlobal((String)keyAry[i], ruleBean.getGlobalParamMap().get(keyAry[i]));					
-//				}
-//				
-//			}
 			
 			//循环设置参数
 			ksession.insert(ruleBean);

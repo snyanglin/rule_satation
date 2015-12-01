@@ -1,7 +1,5 @@
 package com.founder.drools.core.inteface;
 
-import java.util.Map;
-
 import com.founder.drools.core.request.RuleBean;
 
 /**
