@@ -44,6 +44,14 @@ public class ServiceController extends BaseController {
 	@Autowired
 	private DroolsMethodService droolsMethodService;
 	
+	/**
+	 * 
+	 * @Title: serviceManager
+	 * @Description: TODO(服务管理页面)
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/serviceManager", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView serviceManager(){
 		ModelAndView mv = new ModelAndView("system/service/serviceManager");	
@@ -53,6 +61,16 @@ public class ServiceController extends BaseController {
 	
 	}
 	
+	/**
+	 * 
+	 * @Title: getServiceManagerList
+	 * @Description: TODO(服务管理列表)
+	 * @param @param entity
+	 * @param @param paginator
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/getServiceManagerList", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView getServiceManagerList(Drools_service entity,Paginator paginator){
 		ModelAndView mv = new ModelAndView("system/service/serviceManagerList");			
@@ -64,6 +82,16 @@ public class ServiceController extends BaseController {
 		return mv;
 	}
 	
+	/**
+	 * 
+	 * @Title: getServiceSelectList
+	 * @Description: TODO(服务选择下拉框)
+	 * @param @param entity
+	 * @param @param queryType
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/getServiceSelectList", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView getServiceSelectList(Drools_service entity,String queryType){
 		ModelAndView mv = new ModelAndView("system/service/serviceSelectList");			
@@ -78,6 +106,14 @@ public class ServiceController extends BaseController {
 		return mv;
 	}
 	
+	/**
+	 * 
+	 * @Title: serviceAddPre
+	 * @Description: TODO(服务添加页面)
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/serviceAddPre", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView serviceAddPre(){
 		ModelAndView mv = new ModelAndView("system/service/serviceAdd");	
@@ -87,6 +123,15 @@ public class ServiceController extends BaseController {
 	
 	}
 	
+	/**
+	 * 
+	 * @Title: serviceAdd
+	 * @Description: TODO(服务添加ajax请求)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return Map<String,String>    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/serviceAdd", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody Map<String, String> serviceAdd(Drools_service entity){
 		Map<String, String> map = new HashMap<String, String>();
@@ -111,6 +156,15 @@ public class ServiceController extends BaseController {
 		return map;				
 	}
 	
+	/**
+	 * 
+	 * @Title: serviceEditPre
+	 * @Description: TODO(服务编辑页面)
+	 * @param @param id
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/serviceEditPre", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView serviceEditPre(String id){
 		ModelAndView mv = new ModelAndView("system/service/serviceEdit");	
@@ -121,6 +175,15 @@ public class ServiceController extends BaseController {
 		return mv;
 	}	
 	
+	/**
+	 * 
+	 * @Title: serviceEdit
+	 * @Description: TODO(服务编辑ajax请求)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return Map<String,String>    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/serviceEdit", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody Map<String, String> serviceEdit(Drools_service entity){
 		Map<String, String> map = new HashMap<String, String>();
@@ -148,6 +211,15 @@ public class ServiceController extends BaseController {
 		return map;
 	}
 	
+	/**
+	 * 
+	 * @Title: serviceDelete
+	 * @Description: TODO(服务删除ajax请求)
+	 * @param @param id
+	 * @param @return    设定文件
+	 * @return Map<String,String>    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/serviceDelete", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody Map<String, String> serviceDelete(String id){
 		Map<String, String> map = new HashMap<String, String>();

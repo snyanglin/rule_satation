@@ -51,6 +51,15 @@ public class RuleController extends BaseController {
 	@Resource(name="droolsGroupService")
 	private DroolsGroupService droolsGroupService;
 	
+	/**
+	 * 
+	 * @Title: ruleManager
+	 * @Description: TODO(规则管理页面)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/ruleManager", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleManager(Drools_rule entity){
 		ModelAndView mv = new ModelAndView("drools/edit/ruleManager");	
@@ -60,6 +69,16 @@ public class RuleController extends BaseController {
 		return mv;
 	}
 	
+	/**
+	 * 
+	 * @Title: getRuleManagerList
+	 * @Description: TODO(规则管理列表)
+	 * @param @param entity
+	 * @param @param paginator
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/getRuleManagerList", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView getRuleManagerList(Drools_rule entity,Paginator paginator){
 		ModelAndView mv = new ModelAndView("drools/edit/ruleManagerList");	
@@ -72,6 +91,15 @@ public class RuleController extends BaseController {
 		return mv;
 	}
 	
+	/**
+	 * 
+	 * @Title: ruleEditPre
+	 * @Description: TODO(规则编辑页面)
+	 * @param @param rulefilename
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/ruleEditPre", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleEditPre(String rulefilename){
 		ModelAndView mv = new ModelAndView("drools/edit/ruleEdit");	
@@ -88,9 +116,18 @@ public class RuleController extends BaseController {
 		return mv;
 	}	
 	
+	/**
+	 * 
+	 * @Title: ruleEdit
+	 * @Description: TODO(规则编辑ajax请求)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return Map    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/ruleEdit", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody Map ruleEdit(Drools_rule entity){
-		Map map = new HashMap();
+	public @ResponseBody Map<String, String> ruleEdit(Drools_rule entity){
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("resStatus", "0");//成功
 		try{
 			if("add".equals(entity.getId())){//新增规则体
@@ -127,15 +164,33 @@ public class RuleController extends BaseController {
 		return map;
 	}
 	
+	/**
+	 * 
+	 * @Title: ruleDelete
+	 * @Description: TODO(规则删除)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/ruleDelete", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleDelete(Drools_rule entity){		
 		droolsRuleService.deleteRule(entity.getId());
 		return this.ruleEditPre(entity.getRulefilename());		
 	}
 	
+	/**
+	 * 
+	 * @Title: ruleRelease
+	 * @Description: TODO(规则发布)
+	 * @param @param rulefilename
+	 * @param @return    设定文件
+	 * @return Map    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/ruleRelease", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody Map ruleRelease(String rulefilename){	
-		Map map = new HashMap();
+	public @ResponseBody Map<String, String> ruleRelease(String rulefilename){	
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("resStatus", "0");//成功
 		String res=droolsRuleService.ruleRelease(rulefilename);
 		if(res!=null){
@@ -145,6 +200,17 @@ public class RuleController extends BaseController {
 		return map;		
 	}
 	
+	/**
+	 * 
+	 * @Title: validateRule
+	 * @Description: TODO(规则验证)
+	 * @param @param ruleFileName 规则文件名
+	 * @param @param ruleName 规则名
+	 * @param @param paramStr 参数
+	 * @param @return    设定文件
+	 * @return RuleBean    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/validateRule", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody RuleBean validateRule(String ruleFileName,String ruleName,String paramStr){
 		RuleBean ruleBean = new RuleBean();
@@ -176,6 +242,17 @@ public class RuleController extends BaseController {
 		return ruleBean;
 	}
 	
+	/**
+	 * 
+	 * @Title: testRule
+	 * @Description: TODO(规则测试)
+	 * @param @param ruleFileName
+	 * @param @param ruleName
+	 * @param @param paramStr
+	 * @param @return    设定文件
+	 * @return RuleBean    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/testRule", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody RuleBean testRule(String ruleFileName,String ruleName,String paramStr){
 		RuleBean ruleBean = new RuleBean();
@@ -196,7 +273,15 @@ public class RuleController extends BaseController {
 	}
 	
 	
-	
+	/**
+	 * 
+	 * @Title: ruleListQuery
+	 * @Description: TODO(规则查询)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/ruleListQuery", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleListQuery(Drools_rule entity){
 		ModelAndView mv = new ModelAndView("drools/query/ruleListQuery");	
@@ -206,6 +291,16 @@ public class RuleController extends BaseController {
 		return mv;
 	}
 	
+	/**
+	 * 
+	 * @Title: getRuleList
+	 * @Description: TODO(规则列表)
+	 * @param @param entity
+	 * @param @param paginator
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/getRuleList", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView getRuleList(Drools_rule entity,Paginator paginator){
 		ModelAndView mv = new ModelAndView("drools/query/ruleList");	
@@ -217,6 +312,15 @@ public class RuleController extends BaseController {
 		return mv;
 	}
 	
+	/**
+	 * 
+	 * @Title: ruleQuery
+	 * @Description: TODO(规则详情查询)
+	 * @param @param rulefilename
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/ruleQuery", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleQuery(String rulefilename){
 		rulefilename=rulefilename.trim();
@@ -240,6 +344,14 @@ public class RuleController extends BaseController {
 		return mv;
 	}
 	
+	/**
+	 * 
+	 * @Title: ruleAddPre
+	 * @Description: TODO(规则文件添加页面)
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/ruleAddPre", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleAddPre(){
 		ModelAndView mv = new ModelAndView("drools/edit/ruleAdd");	
@@ -248,9 +360,18 @@ public class RuleController extends BaseController {
 		return mv;
 	}
 	
+	/**
+	 * 
+	 * @Title: ruleAdd
+	 * @Description: TODO(规则文件添加ajax请求)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return Map    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/ruleAdd", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody Map ruleAdd(Drools_rule entity){
-		Map map = new HashMap();
+	public @ResponseBody Map<String, String> ruleAdd(Drools_rule entity){
+		Map<String, String> map = new HashMap<String, String>();
 		map.put("resStatus", "0");//成功
 		
 		//验证
@@ -282,8 +403,8 @@ public class RuleController extends BaseController {
 	/**
 	 * 
 	 * @Title: ruleFile
-	 * @Description: TODO(归档)
-	 * @param @param ruleFileName
+	 * @Description: TODO(规则归档，删除)
+	 * @param @param ruleFileName 规则文件名
 	 * @param @return    设定文件
 	 * @return ModelAndView    返回类型
 	 * @throw
@@ -294,6 +415,15 @@ public class RuleController extends BaseController {
 		return this.ruleManager(null);	
 	}
 	
+	/**
+	 * 
+	 * @Title: ruleHisManager
+	 * @Description: TODO(历史规则管理页面)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/ruleHisManager", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleHisManager(Drools_ruleHis entity){
 		ModelAndView mv = new ModelAndView("drools/ruleHis/ruleHisManager");		
@@ -302,6 +432,17 @@ public class RuleController extends BaseController {
 		mv.addObject("GroupList",list);
 		return mv;
 	}
+	
+	/**
+	 * 
+	 * @Title: getRuleHisManagerList
+	 * @Description: TODO(历史规则列表)
+	 * @param @param entity
+	 * @param @param paginator
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/getRuleHisManagerList", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView getRuleHisManagerList(Drools_ruleHis entity,Paginator paginator){
 		ModelAndView mv = new ModelAndView("drools/ruleHis/ruleHisManagerList");
@@ -312,6 +453,15 @@ public class RuleController extends BaseController {
 		return mv;
 	}
 	
+	/**
+	 * 
+	 * @Title: ruleHisListQuery
+	 * @Description: TODO(规则版本列表查询页面)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/ruleHisListQuery", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleHisListQuery(Drools_ruleHis entity){
 		ModelAndView mv = new ModelAndView("drools/ruleHis/ruleHisListQuery");	
@@ -320,6 +470,17 @@ public class RuleController extends BaseController {
 		
 		return mv;
 	}
+	
+	/**
+	 * 
+	 * @Title: getRuleHisList
+	 * @Description: TODO(规则版本列表)
+	 * @param @param entity
+	 * @param @param paginator
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/getRuleHisList", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView getRuleHisList(Drools_ruleHis entity,Paginator paginator){
 		ModelAndView mv = new ModelAndView("drools/ruleHis/ruleHisList");	
@@ -331,6 +492,15 @@ public class RuleController extends BaseController {
 		return mv;
 	}
 	
+	/**
+	 * 
+	 * @Title: ruleHisQuery
+	 * @Description: TODO(规则版本详情查询)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/ruleHisQuery", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleHisQuery(Drools_ruleHis entity){
 		ModelAndView mv = new ModelAndView("drools/ruleHis/ruleHisQuery");	

@@ -23,7 +23,7 @@ import com.founder.framework.base.controller.BaseController;
  * ****************************************************************************
  * @Package:      [com.founder.zdrygl.base.controller.RuleTestController.java]  
  * @ClassName:    [RuleTestController]   
- * @Description:  [规则引擎测试控制器]   
+ * @Description:  [规则引擎分组管理控制器]   
  * @Author:       [zhang.hai@founder.com.cn]  
  * @CreateDate:   [2015年10月14日 下午2:34:49]   
  * @UpdateUser:   [ZhangHai(如多次修改保留历史记录，增加修改记录)]   
@@ -41,12 +41,30 @@ public class GroupController extends BaseController {
 	@Autowired
 	private DroolsRuleService droolsRuleService;
 	
+	/**
+	 * 
+	 * @Title: groupManager
+	 * @Description: TODO(分组管理页面)
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/groupManager", method = {RequestMethod.GET})
 	public ModelAndView groupManager(){
 		ModelAndView mv = new ModelAndView("system/group/groupManager");		        
 		return mv;
 	}
 	
+	/**
+	 * 
+	 * @Title: getGroupManagerList
+	 * @Description: TODO(分组列表页面)
+	 * @param @param entity
+	 * @param @param paginator
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/getGroupManagerList", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView getGroupManagerList(Drools_group entity,Paginator paginator){
 		ModelAndView mv = new ModelAndView("system/group/groupManagerList");			
@@ -58,12 +76,29 @@ public class GroupController extends BaseController {
 		return mv;		
 	}	
 	
+	/**
+	 * 
+	 * @Title: groupAddPre
+	 * @Description: TODO(分组添加页面)
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "groupAddPre", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView groupAddPre(){
 		ModelAndView mv = new ModelAndView("system/group/groupAdd");	
 		return mv;
 	}
 	
+	/**
+	 * 
+	 * @Title: groupAdd
+	 * @Description: TODO(ajax分组添加请求)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return Map<String,String>    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/groupAdd", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody Map<String, String> groupAdd(Drools_group entity){
 		Map<String, String> map = new HashMap<String, String>();
@@ -88,6 +123,15 @@ public class GroupController extends BaseController {
 		return map;				
 	}
 	
+	/**
+	 * 
+	 * @Title: groupEditPre
+	 * @Description: TODO(分组修改页面)
+	 * @param @param id
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/groupEditPre", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView groupEditPre(String id){
 		ModelAndView mv = new ModelAndView("system/group/groupEdit");	
@@ -96,6 +140,15 @@ public class GroupController extends BaseController {
 		return mv;
 	}	
 	
+	/**
+	 * 
+	 * @Title: groupEdit
+	 * @Description: TODO(分组修改ajax请求)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return Map<String,String>    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/groupEdit", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody Map<String, String> groupEdit(Drools_group entity){
 		Map<String, String> map = new HashMap<String, String>();
@@ -120,7 +173,15 @@ public class GroupController extends BaseController {
 		return map;
 	}
 	
-
+	/**
+	 * 
+	 * @Title: groupDelete
+	 * @Description: TODO(分组删除Ajax请求)
+	 * @param @param id
+	 * @param @return    设定文件
+	 * @return Map<String,String>    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/groupDelete", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody Map<String, String> groupDelete(String id){
 		Map<String, String> map = new HashMap<String, String>();

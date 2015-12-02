@@ -24,7 +24,7 @@ import com.founder.framework.base.controller.BaseController;
  * ****************************************************************************
  * @Package:      [com.founder.drools.base.controller.urlController.java]  
  * @ClassName:    [urlController]   
- * @Description:  [地址管理 控制器]   
+ * @Description:  [方法管理 控制器]   
  * @Author:       [zhang.hai@founder.com.cn]  
  * @CreateDate:   [2015年11月27日 上午10:04:11]   
  * @UpdateUser:   [ZhangHai(如多次修改保留历史记录，增加修改记录)]   
@@ -44,6 +44,14 @@ public class MethodController extends BaseController {
 	@Autowired
 	private DroolsUrlService droolsUrlService;
 	
+	/**
+	 * 
+	 * @Title: methodManager
+	 * @Description: TODO(方法管理页面)
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/methodManager", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView methodManager(){
 		ModelAndView mv = new ModelAndView("system/method/methodManager");	
@@ -53,6 +61,16 @@ public class MethodController extends BaseController {
 	
 	}
 	
+	/**
+	 * 
+	 * @Title: getMethodManagerList
+	 * @Description: TODO(方法列表页面)
+	 * @param @param entity
+	 * @param @param paginator
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/getMethodManagerList", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView getMethodManagerList(Drools_method entity,Paginator paginator){
 		ModelAndView mv = new ModelAndView("system/method/methodManagerList");			
@@ -64,6 +82,14 @@ public class MethodController extends BaseController {
 		return mv;
 	}
 	
+	/**
+	 * 
+	 * @Title: methodAddPre
+	 * @Description: TODO(方法添加页面)
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "methodAddPre", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView methodAddPre(){
 		ModelAndView mv = new ModelAndView("system/method/methodAdd");	
@@ -72,6 +98,18 @@ public class MethodController extends BaseController {
 		return mv;
 	}
 	
+	/**
+	 * 
+	 * @Title: methodAdd
+	 * @Description: TODO(方法添加ajax请求)
+	 * @param @param entity 方法对象
+	 * @param @param paramname 参数名集合
+	 * @param @param paramclass 参数类型集合
+	 * @param @param parambz 参数备注集合
+	 * @param @return    设定文件
+	 * @return Map<String,String>    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/methodAdd", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody Map<String, String> methodAdd(Drools_method entity,String paramname,String paramclass,String parambz){
 		Map<String, String> map = new HashMap<String, String>();
@@ -99,6 +137,15 @@ public class MethodController extends BaseController {
 		return map;				
 	}
 	
+	/**
+	 * 
+	 * @Title: methodEditPre
+	 * @Description: TODO(方法修改页面)
+	 * @param @param id
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/methodEditPre", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView methodEditPre(String id){
 		ModelAndView mv = new ModelAndView("system/method/methodEdit");	
@@ -109,6 +156,18 @@ public class MethodController extends BaseController {
 		return mv;
 	}	
 	
+	/**
+	 * 
+	 * @Title: methodEdit
+	 * @Description: TODO(方法修改ajax请求)
+	 * @param @param entity 参数对象
+	 * @param @param paramname 参数名集合
+	 * @param @param paramclass 参数类型集合
+	 * @param @param parambz 参数备注集合
+	 * @param @return    设定文件
+	 * @return Map<String,String>    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/methodEdit", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody Map<String, String> methodEdit(Drools_method entity,String paramname,String paramclass,String parambz){
 		Map<String, String> map = new HashMap<String, String>();
@@ -137,6 +196,15 @@ public class MethodController extends BaseController {
 		return map;
 	}
 	
+	/**
+	 * 
+	 * @Title: methodDelete
+	 * @Description: TODO(方法删除ajax请求)
+	 * @param @param id
+	 * @param @return    设定文件
+	 * @return Map<String,String>    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/methodDelete", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody Map<String, String> methodDelete(String id){
 		Map<String, String> map = new HashMap<String, String>();

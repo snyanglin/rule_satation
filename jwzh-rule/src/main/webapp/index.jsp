@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <base href="<%=basePath%>">
     
     <title>My JSP 'index.jsp' starting page</title>
-	<meta http-equiv="Refresh" content="0;url=<%=basePath%>forward/main|main">
+	<meta http-equiv="Refresh" content="0;url=<%=basePath%>founderRule/index">
 	
   </head>
   

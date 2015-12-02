@@ -39,6 +39,14 @@ public class UrlController extends BaseController {
 	@Autowired
 	private DroolsServiceService droolsServiceService;
 	
+	/**
+	 * 
+	 * @Title: urlManager
+	 * @Description: TODO(地址管理页面)
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/urlManager", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView urlManager(){
 		ModelAndView mv = new ModelAndView("system/url/urlManager");		        
@@ -65,6 +73,14 @@ public class UrlController extends BaseController {
 		return mv;
 	}
 	
+	/**
+	 * 
+	 * @Title: urlAddPre
+	 * @Description: TODO(地址添加页面)
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/urlAddPre", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView urlAddPre(){
 		ModelAndView mv = new ModelAndView("system/url/urlAdd");		        
@@ -72,6 +88,15 @@ public class UrlController extends BaseController {
 	
 	}
 	
+	/**
+	 * 
+	 * @Title: urlAdd
+	 * @Description: TODO(地址添加)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return Map<String,String>    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/urlAdd", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody Map<String, String> urlAdd(Drools_url entity){
 		Map<String, String> map = new HashMap<String, String>();
@@ -95,6 +120,15 @@ public class UrlController extends BaseController {
 		return map;				
 	}
 	
+	/**
+	 * 
+	 * @Title: urlEditPre
+	 * @Description: TODO(地址编辑页面)
+	 * @param @param id
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/urlEditPre", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView urlEditPre(String id){
 		ModelAndView mv = new ModelAndView("system/url/urlEdit");	
@@ -103,6 +137,15 @@ public class UrlController extends BaseController {
 		return mv;
 	}	
 	
+	/**
+	 * 
+	 * @Title: urlEdit
+	 * @Description: TODO(地址编辑)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return Map<String,String>    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/urlEdit", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody Map<String, String> urlEdit(Drools_url entity){
 		Map<String, String> map = new HashMap<String, String>();
@@ -129,6 +172,15 @@ public class UrlController extends BaseController {
 		return map;
 	}
 	
+	/**
+	 * 
+	 * @Title: urlDelete
+	 * @Description: TODO(地址删除)
+	 * @param @param id
+	 * @param @return    设定文件
+	 * @return Map<String,String>    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/urlDelete", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody Map<String, String> urlDelete(String id){
 		Map<String, String> map = new HashMap<String, String>();
@@ -153,6 +205,15 @@ public class UrlController extends BaseController {
 		return map;
 	}
 	
+	/**
+	 * 
+	 * @Title: urlValidate
+	 * @Description: TODO(地址验证)
+	 * @param @param url
+	 * @param @return    设定文件
+	 * @return Map<String,String>    返回类型
+	 * @throw
+	 */
 	@RequestMapping(value = "/urlValidate", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody Map<String, String> urlValidate(String url){
 		Map<String, String> map = new HashMap<String, String>();
