@@ -72,4 +72,9 @@ public class Drools_urlDao extends BaseDaoImpl {
 		if(entity.getUrl()!=null)
 			entity.setUrl(entity.getUrl().trim());
 	}
+
+
+	public int countUrlNum() {
+		return (int) super.queryForObject("Drools_url.countUrlNum",null);
+	}
 }

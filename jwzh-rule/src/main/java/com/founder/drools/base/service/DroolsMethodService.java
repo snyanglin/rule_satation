@@ -49,5 +49,17 @@ public class DroolsMethodService{
 	public void deleteMethod(String id){
 		drools_methodDao.delete(id);
 	}		
+	
+	/**
+	 * 
+	 * @Title: countMethodNum
+	 * @Description: TODO(统计方法数)
+	 * @param @return    设定文件
+	 * @return int    返回类型
+	 * @throw
+	 */
+	public int countMethodNum() {		
+		return drools_methodDao.countMethodNum();
+	}
 
 }

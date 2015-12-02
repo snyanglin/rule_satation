@@ -47,4 +47,8 @@ public class Drools_serviceDao extends BaseDaoImpl {
 		if(entity.getServicename()!=null)
 			entity.setServicename(entity.getServicename().trim());
 	}
+	
+	public int countServiceNum() {
+		return (int) super.queryForObject("Drools_service.countServiceNum",null);
+	}
 }

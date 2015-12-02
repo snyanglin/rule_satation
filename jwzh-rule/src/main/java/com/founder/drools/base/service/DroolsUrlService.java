@@ -102,5 +102,17 @@ public class DroolsUrlService{
 		httpRequestBean.setServiceUrl(url);
 		httpRequestBean.doHttpGet(null);		
 	}
+
+	/**
+	 * 
+	 * @Title: countUrlNum
+	 * @Description: TODO(统计地址数)
+	 * @param @return    设定文件
+	 * @return int    返回类型
+	 * @throw
+	 */
+	public int countUrlNum() {		
+		return drools_urlDao.countUrlNum();
+	}
 	
 }

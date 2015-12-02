@@ -53,4 +53,7 @@
 		<![CDATA[ order by CREATETIME DESC ]]>
     </select>
     
+     <select id="countServiceNum" parameterClass="drools_service" resultClass="java.lang.Integer">
+         select count(*) from DROOLS_SERVICE
+    </select>
 </sqlMap>

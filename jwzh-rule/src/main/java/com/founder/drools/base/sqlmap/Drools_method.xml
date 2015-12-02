@@ -56,4 +56,8 @@
 		<isNotEmpty prepend="and" property="urlid"> u.id = #urlid#</isNotEmpty>
 		<![CDATA[ order by m.CREATETIME DESC ]]>
     </select>        
+    
+    <select id="countMethodNum" parameterClass="drools_method" resultClass="java.lang.Integer">
+         select count(*) from DROOLS_METHOD
+    </select>
 </sqlMap>

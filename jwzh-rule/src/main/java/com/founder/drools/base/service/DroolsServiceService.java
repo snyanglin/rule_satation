@@ -45,4 +45,15 @@ public class DroolsServiceService{
 		drools_serviceDao.delete(id);
 	}
 
+	/**
+	 * 
+	 * @Title: countServiceNum
+	 * @Description: TODO(统计服务数)
+	 * @param @return    设定文件
+	 * @return int    返回类型
+	 * @throw
+	 */
+	public int countServiceNum() {		
+		return drools_serviceDao.countServiceNum();
+	}
 }

@@ -64,4 +64,15 @@ public class DroolsGroupService {
 		drools_groupDao.delete(id);
 	}
 	
+	/**
+	 * 
+	 * @Title: countGroupNum
+	 * @Description: TODO(统计分组数)
+	 * @param @return    设定文件
+	 * @return int    返回类型
+	 * @throw
+	 */
+	public int countGroupNum() {		
+		return drools_groupDao.countGroupNum();
+	}
 }

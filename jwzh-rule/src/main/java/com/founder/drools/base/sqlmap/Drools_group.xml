@@ -50,4 +50,8 @@
     <delete id="delete" parameterClass="String">
     	delete from drools_group where id = #id#
     </delete>
+    
+    <select id="countGroupNum" parameterClass="droolsGroup" resultClass="java.lang.Integer">
+         select count(*) from DROOLS_GROUP
+    </select>
 </sqlMap>

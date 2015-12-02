@@ -47,5 +47,9 @@ public class Drools_methodDao extends BaseDaoImpl {
 		if(entity.getMethodname()!=null)
 			entity.setMethodname(entity.getMethodname().trim());
 	}
+	
+	public int countMethodNum() {
+		return (int) super.queryForObject("Drools_method.countMethodNum",null);
+	}
 
 }

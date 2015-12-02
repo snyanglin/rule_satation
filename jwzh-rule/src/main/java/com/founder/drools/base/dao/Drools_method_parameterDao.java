@@ -26,6 +26,14 @@ public class Drools_method_parameterDao extends BaseDaoImpl {
 		super.delete("Drools_method_parameter.delete", id);
 	}
 	
+	/**
+	 * 
+	 * @Title: deleteByMethodId
+	 * @Description: TODO(通过方法ID批量删除参数)
+	 * @param @param methodId    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
 	public void deleteByMethodId(String methodId) {
 		super.delete("Drools_method_parameter.deleteByMethodId", methodId);
 	}

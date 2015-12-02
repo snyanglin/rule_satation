@@ -27,23 +27,62 @@ public class Drools_groupDao extends BaseDaoImpl {
 		super.delete("Drools_group.delete", id);
 	}
 
+	/**
+	 * 
+	 * @Title: queryByEntity
+	 * @Description: TODO(查询单个分组对象)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return Drools_group    返回类型
+	 * @throw
+	 */
 	public Drools_group queryByEntity(Drools_group entity) {
 		trimEntity(entity);
 		return (Drools_group)super.queryForObject("Drools_group.queryDroolsGroup", entity);
 	}
 	
+	/**
+	 * 
+	 * @Title: queryListByEntity
+	 * @Description: TODO(精确查询分组列表)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return List<Drools_group>    返回类型
+	 * @throw
+	 */
 	public List<Drools_group> queryListByEntity(Drools_group entity) {
 		trimEntity(entity);
 		return (List<Drools_group>)super.queryForList("Drools_group.queryDroolsGroup", entity);
 	}
 
+	/**
+	 * 
+	 * @Title: trimEntity
+	 * @Description: TODO(清楚对象中的空格)
+	 * @param @param entity    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
 	private void trimEntity(Drools_group entity){
 		if(entity.getGroupname()!=null)
 			entity.setGroupname(entity.getGroupname().trim());
 	}
 
+	/**
+	 * 
+	 * @Title: queryListByEntityFuzzy
+	 * @Description: TODO(模糊查询分组列表)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return List<Drools_group>    返回类型
+	 * @throw
+	 */
 	public List<Drools_group> queryListByEntityFuzzy(Drools_group entity) {
 		trimEntity(entity);
 		return (List<Drools_group>)super.queryForList("Drools_group.queryDroolsGroupFuzzy", entity);
+	}
+	
+	public int countGroupNum() {
+		return (int) super.queryForObject("Drools_group.countGroupNum",null);
 	}
 }

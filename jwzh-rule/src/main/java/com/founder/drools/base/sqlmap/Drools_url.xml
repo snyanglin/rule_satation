@@ -61,4 +61,8 @@
 		<![CDATA[ order by CREATETIME DESC ]]>
     </select>
     
+    <select id="countUrlNum" parameterClass="drools_url" resultClass="java.lang.Integer">
+         select count(*) from DROOLS_URL
+    </select>
+    
 </sqlMap>

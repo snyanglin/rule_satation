@@ -104,4 +104,9 @@
     <delete id="deleteRuleByFileName" parameterClass="String">
     	delete from DROOLS_RULE where RULEFILENAME = #rulefilename#
     </delete>
+    
+    
+    <select id="countRuleNum" parameterClass="drools_rule" resultClass="java.lang.Integer">
+         select count(*) from DROOLS_RULE where RULETYPE='0'
+    </select>
 </sqlMap>

@@ -2,7 +2,6 @@ package com.founder.drools.base.service;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -272,6 +271,18 @@ public class DroolsRuleService{
 		ruleHis.setGroupname(drools_rule.getGroupname());
 		
 		droolsRuleHisService.insert(ruleHis);
+	}
+	
+	/**
+	 * 
+	 * @Title: countRuleNum
+	 * @Description: TODO(统计现有的规则数)
+	 * @param @return    设定文件
+	 * @return int    返回类型
+	 * @throw
+	 */
+	public int countRuleNum(){
+		return drools_ruleDao.countRuleNum();
 	}
 
 }

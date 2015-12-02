@@ -1,5 +1,7 @@
 package com.founder.drools.base.controller;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,6 +9,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.founder.drools.base.service.DroolsGroupService;
+import com.founder.drools.base.service.DroolsMethodService;
+import com.founder.drools.base.service.DroolsRuleService;
+import com.founder.drools.base.service.DroolsServiceService;
+import com.founder.drools.base.service.DroolsUrlService;
 import com.founder.drools.core.inteface.RuleService;
 import com.founder.drools.core.request.RuleBean;
 import com.founder.framework.base.controller.BaseController;
@@ -31,6 +38,21 @@ public class FounderRuleController extends BaseController {
 	
 	@Autowired
 	private RuleService ruleService;
+	
+	@Autowired
+	private DroolsUrlService droolsUrlService;
+	
+	@Autowired
+	private DroolsServiceService droolsServiceService;
+	
+	@Autowired
+	private DroolsMethodService droolsMethodService;
+	
+	@Resource(name="droolsGroupService")
+	private DroolsGroupService droolsGroupService;
+	
+	@Autowired
+	private DroolsRuleService droolsRuleService;
 	
 	/**
 	 * 
@@ -67,8 +89,73 @@ public class FounderRuleController extends BaseController {
 	 */
 	@RequestMapping(value = "/index", method = {RequestMethod.GET})
 	public ModelAndView index(){
-		ModelAndView mv = new ModelAndView("main/main");		        
+		ModelAndView mv = new ModelAndView("main/main");		
 		return mv;
 	}	
+	
+	/**
+	 * 
+	 * @Title: getUrlNum
+	 * @Description: TODO(获取地址数)
+	 * @param @return    设定文件
+	 * @return int    返回类型
+	 * @throw
+	 */
+	@RequestMapping(value = "/getUrlNum", method = {RequestMethod.POST})
+	public @ResponseBody int getUrlNum(){
+		return droolsUrlService.countUrlNum();
+	}
+	
+	/**
+	 * 
+	 * @Title: getServiceNum
+	 * @Description: TODO(获取服务数)
+	 * @param @return    设定文件
+	 * @return int    返回类型
+	 * @throw
+	 */
+	@RequestMapping(value = "/getServiceNum", method = {RequestMethod.POST})
+	public @ResponseBody int getServiceNum(){
+		return droolsServiceService.countServiceNum();
+	}
+	
+	/**
+	 * 
+	 * @Title: getMethodNum
+	 * @Description: TODO(获取方法数)
+	 * @param @return    设定文件
+	 * @return int    返回类型
+	 * @throw
+	 */
+	@RequestMapping(value = "/getMethodNum", method = {RequestMethod.POST})
+	public @ResponseBody int getMethodNum(){
+		return droolsMethodService.countMethodNum();
+	}
+	
+	/**
+	 * 
+	 * @Title: getGroupNum
+	 * @Description: TODO(获取分组数)
+	 * @param @return    设定文件
+	 * @return int    返回类型
+	 * @throw
+	 */
+	@RequestMapping(value = "/getGroupNum", method = {RequestMethod.POST})
+	public @ResponseBody int getGroupNum(){
+		return droolsGroupService.countGroupNum();
+	}
+	
+	/**
+	 * 
+	 * @Title: getRuleNum
+	 * @Description: TODO(获取已有规则数)
+	 * @param @return    设定文件
+	 * @return int    返回类型
+	 * @throw
+	 */
+	@RequestMapping(value = "/getRuleNum", method = {RequestMethod.POST})
+	public @ResponseBody int getRuleNum(){
+		return droolsRuleService.countRuleNum();
+	}
 		
 }

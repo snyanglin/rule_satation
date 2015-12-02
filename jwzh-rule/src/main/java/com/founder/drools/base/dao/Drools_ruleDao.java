@@ -82,5 +82,9 @@ public class Drools_ruleDao extends BaseDaoImpl {
 		if(entity.getRulename()!=null)
 			entity.setRulename(entity.getRulename().trim());
 	}
+	
+	public int countRuleNum(){
+		return (int) super.queryForObject("Drools_rule.countRuleNum",null);
+	}
 
 }
