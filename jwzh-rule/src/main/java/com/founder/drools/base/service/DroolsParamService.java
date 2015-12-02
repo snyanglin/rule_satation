@@ -1,16 +1,15 @@
 package com.founder.drools.base.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.founder.drools.base.common.BaseModelUtils;
 import com.founder.drools.base.dao.Drools_method_parameterDao;
 import com.founder.drools.base.model.Drools_method_parameter;
-import com.founder.drools.core.model.DroolsUtils;
 
 @Service
 public class DroolsParamService{
@@ -39,9 +38,9 @@ public class DroolsParamService{
 		if(list!=null)
 			for(int i=0;i<list.size();i++){
 				entity = list.get(i);
-				entity.setId(DroolsUtils.getTimeString());
-				entity.setMethodid(methodid);
-				entity.setCreatetime(new Date());
+				BaseModelUtils.setSaveProperty(entity);
+				entity.setId(BaseModelUtils.getTimeString());
+				entity.setMethodid(methodid);				
 				drools_method_parameterDao.insert(entity);
 			}
 	}

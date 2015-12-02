@@ -2,26 +2,24 @@ package com.founder.drools.base.model;
 
 import java.util.Date;
 
+import com.founder.framework.annotation.FieldDesc;
+
 public class BaseModle {
 
-	private Date createtime;
-	
-	private Date updatetime;
-
-	public Date getCreateTime() {
+	@FieldDesc("创建时间") private Date createtime;
+	@FieldDesc("更新时间") private Date updatetime;
+	public Date getCreatetime() {
 		return createtime;
 	}
-
-	public void setCreateTime(Date createTime) {
-		this.createtime = createTime;
+	public void setCreatetime(Date createtime) {
+		this.createtime = createtime;
 	}
-
-	public Date getUpdateTime() {
+	public Date getUpdatetime() {
 		return updatetime;
 	}
-
-	public void setUpdateTime(Date updateTime) {
-		this.updatetime = updateTime;
+	public void setUpdatetime(Date updatetime) {
+		this.updatetime = updatetime;
 	}
+
 	
 }

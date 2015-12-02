@@ -1,15 +1,13 @@
 package com.founder.drools.base.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import com.founder.framework.annotation.DBInfoAnnotation;
 import com.founder.framework.annotation.FieldDesc;
-import com.founder.framework.base.entity.BaseEntity;
 
 
 @DBInfoAnnotation(tableName = "DROOLS_METHOD", pk = "id")
-public class Drools_method extends BaseEntity implements Serializable {
+public class Drools_method extends BaseModle implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -17,8 +15,6 @@ public class Drools_method extends BaseEntity implements Serializable {
 	@FieldDesc("服务ID") private String serviceid;
 	@FieldDesc("方法名") private String methodname;
 	@FieldDesc("备注") private String bz;
-	@FieldDesc("创建时间") private Date createtime;
-	@FieldDesc("更新时间") private Date updatetime;
 	@FieldDesc("方法名") private String methodresponse;
 	
 	@FieldDesc("服务名称") private String servicename;
@@ -48,19 +44,7 @@ public class Drools_method extends BaseEntity implements Serializable {
 	}
 	public void setBz(String bz) {
 		this.bz = bz;
-	}
-	public Date getCreatetime() {
-		return createtime;
-	}
-	public void setCreatetime(Date createtime) {
-		this.createtime = createtime;
-	}
-	public Date getUpdatetime() {
-		return updatetime;
-	}
-	public void setUpdatetime(Date updatetime) {
-		this.updatetime = updatetime;
-	}
+	}	
 	public String getUrlid() {
 		return urlid;
 	}

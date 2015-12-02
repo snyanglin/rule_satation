@@ -4,11 +4,10 @@ import java.io.Serializable;
 
 import com.founder.framework.annotation.DBInfoAnnotation;
 import com.founder.framework.annotation.FieldDesc;
-import com.founder.framework.base.entity.BaseEntity;
 
 
 @DBInfoAnnotation(tableName = "DROOLS_RULEHIS", pk = "version")
-public class Drools_ruleHis extends BaseEntity implements Serializable {
+public class Drools_ruleHis extends BaseModle implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.founder.drools.base.common.BaseModelUtils;
 import com.founder.drools.base.dao.Drools_ruleDao;
 import com.founder.drools.base.model.Drools_rule;
 import com.founder.drools.base.model.Drools_ruleHis;
@@ -41,8 +42,8 @@ public class DroolsRuleService{
 	
 	public void addRule(Drools_rule entity) {
 		entity.setStatus("1");
-		entity.setCreatetime(new Date());				
-		entity.setId(getTimeString());
+		BaseModelUtils.setSaveProperty(entity);				
+		entity.setId(BaseModelUtils.getTimeString());
 		if("undefined".equals(entity.getParamstr())){
 			entity.setParamstr(null);
 		}
@@ -64,11 +65,6 @@ public class DroolsRuleService{
 		return drools_ruleDao.queryListByEntity(entity);
 	}
 
-	public String getTimeString(){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-		return sdf.format(new Date());
-	}
-	
 	public void deleteRule(String id){
 		drools_ruleDao.delete(id);
 	}
@@ -111,7 +107,7 @@ public class DroolsRuleService{
 		//记录版本
 		Drools_rule ruleHead = new Drools_rule();
 		ruleHead.setRulefilename(rulefilename);
-		ruleHead.setVersion(this.getTimeString());
+		ruleHead.setVersion(BaseModelUtils.getTimeString());
 		ruleHead.setStatus("0");
 		ruleHead.setUpdatetime(new Date());	
 		drools_ruleDao.updateByRuleFileName(ruleHead);
@@ -237,9 +233,9 @@ public class DroolsRuleService{
 		//记录版本
 		Drools_rule ruleHead = new Drools_rule();
 		ruleHead.setRulefilename(ruleFileName);
-		ruleHead.setVersion(this.getTimeString());
+		ruleHead.setVersion(BaseModelUtils.getTimeString());
 		ruleHead.setStatus("0");
-		ruleHead.setUpdatetime(new Date());	
+		BaseModelUtils.setUpdateProperty(ruleHead);		
 		drools_ruleDao.updateByRuleFileName(ruleHead);
 		
 		this.writeRuleHistory(ruleFileName);//记录历史
@@ -263,7 +259,7 @@ public class DroolsRuleService{
 		
 		String version = drools_rule.getVersion();
 		if(version == null || version.length()==0)
-			version = this.getTimeString();
+			version = BaseModelUtils.getTimeString();
 		
 		Drools_ruleHis ruleHis=new Drools_ruleHis();
 		ruleHis.setVersion(version);

@@ -7,9 +7,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.founder.drools.base.common.BaseModelUtils;
 import com.founder.drools.base.dao.Drools_urlDao;
 import com.founder.drools.base.model.Drools_url;
-import com.founder.drools.core.model.DroolsUtils;
 import com.founder.drools.core.request.HttpRequestBean;
 
 @Service
@@ -75,8 +75,8 @@ public class DroolsUrlService{
 	 * @throw
 	 */
 	public void addUrl(Drools_url entity) {		
-		entity.setCreatetime(new Date());				
-		entity.setId(DroolsUtils.getTimeString());
+		BaseModelUtils.setSaveProperty(entity);		
+		entity.setId(BaseModelUtils.getTimeString());
 		drools_urlDao.insert(entity);
 	}
 	

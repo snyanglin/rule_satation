@@ -1,15 +1,13 @@
 package com.founder.drools.base.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import com.founder.framework.annotation.DBInfoAnnotation;
 import com.founder.framework.annotation.FieldDesc;
-import com.founder.framework.base.entity.BaseEntity;
 
 
 @DBInfoAnnotation(tableName = "DROOLS_RULE", pk = "id")
-public class Drools_rule extends BaseEntity implements Serializable {
+public class Drools_rule extends BaseModle implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -20,8 +18,6 @@ public class Drools_rule extends BaseEntity implements Serializable {
 	@FieldDesc("规则内容") private String content;
 	@FieldDesc("返回内容") private String paramstr;
 	@FieldDesc("状态：0正常，1未验证，3未发布，9历史版本") private String status;
-	@FieldDesc("创建时间") private Date createtime;
-	@FieldDesc("更新时间") private Date updatetime;
 	@FieldDesc("版本：新版本发布，老版本状态变成9的时间") private String version;
 	@FieldDesc("备注") private String bz;
 	@FieldDesc("规则类型：0规则头，1规则体") private String ruletype;
@@ -69,18 +65,6 @@ public class Drools_rule extends BaseEntity implements Serializable {
 	}
 	public void setStatus(String status) {
 		this.status = status;
-	}
-	public Date getCreatetime() {
-		return createtime;
-	}
-	public void setCreatetime(Date createtime) {
-		this.createtime = createtime;
-	}
-	public Date getUpdatetime() {
-		return updatetime;
-	}
-	public void setUpdatetime(Date updatetime) {
-		this.updatetime = updatetime;
 	}
 	public String getVersion() {
 		return version;

@@ -9,7 +9,7 @@ import com.founder.framework.base.entity.BaseEntity;
 
 
 @DBInfoAnnotation(tableName = "DROOLS_URL", pk = "id")
-public class Drools_url extends BaseEntity implements Serializable {
+public class Drools_url extends BaseModle implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -17,8 +17,6 @@ public class Drools_url extends BaseEntity implements Serializable {
 	@FieldDesc("地址名称") private String urlname;
 	@FieldDesc("地址URL") private String url;
 	@FieldDesc("备注") private String bz;	
-	@FieldDesc("创建时间") private Date createtime;
-	@FieldDesc("更新时间") private Date updatetime;
 	public String getId() {
 		return id;
 	}
@@ -43,18 +41,5 @@ public class Drools_url extends BaseEntity implements Serializable {
 	public void setBz(String bz) {
 		this.bz = bz;
 	}
-	public Date getCreatetime() {
-		return createtime;
-	}
-	public void setCreatetime(Date createtime) {
-		this.createtime = createtime;
-	}
-	public Date getUpdatetime() {
-		return updatetime;
-	}
-	public void setUpdatetime(Date updatetime) {
-		this.updatetime = updatetime;
-	}
-	
 	
 }

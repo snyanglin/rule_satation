@@ -1,15 +1,14 @@
 package com.founder.drools.base.service;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.founder.drools.base.common.BaseModelUtils;
 import com.founder.drools.base.dao.Drools_groupDao;
 import com.founder.drools.base.model.Drools_group;
-import com.founder.drools.core.model.DroolsUtils;
 
 @Service
 public class DroolsGroupService {
@@ -17,13 +16,13 @@ public class DroolsGroupService {
 	private Drools_groupDao drools_groupDao;
 
 	public void save(Drools_group entity){
-		entity.setCreateTime(new Date());
-		entity.setId(DroolsUtils.getTimeString());
+		BaseModelUtils.setSaveProperty(entity);		
+		entity.setId(BaseModelUtils.getTimeString());
 		drools_groupDao.insert(entity);
 	}
 	
 	public void update(Drools_group entity){
-		entity.setUpdateTime(new Date());
+		BaseModelUtils.setUpdateProperty(entity);		
 		drools_groupDao.update(entity);
 	}
 	
