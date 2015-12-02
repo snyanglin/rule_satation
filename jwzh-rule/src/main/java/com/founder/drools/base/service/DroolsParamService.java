@@ -11,6 +11,18 @@ import com.founder.drools.base.common.BaseModelUtils;
 import com.founder.drools.base.dao.Drools_method_parameterDao;
 import com.founder.drools.base.model.Drools_method_parameter;
 
+/**
+ * ****************************************************************************
+ * @Package:      [com.founder.drools.base.service.DroolsParamService.java]  
+ * @ClassName:    [DroolsParamService]   
+ * @Description:  [方法的参数管理服务]   
+ * @Author:       [zhang.hai@founder.com.cn]  
+ * @CreateDate:   [2015年12月2日 下午5:19:11]   
+ * @UpdateUser:   [ZhangHai(如多次修改保留历史记录，增加修改记录)]   
+ * @UpdateDate:   [2015年12月2日 下午5:19:11，(如多次修改保留历史记录，增加修改记录)]   
+ * @UpdateRemark: [说明本次修改内容,(如多次修改保留历史记录，增加修改记录)]  
+ * @Version:      [v1.0]
+ */
 @Service
 public class DroolsParamService{
 		

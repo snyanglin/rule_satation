@@ -269,6 +269,7 @@ public class RuleController extends BaseController {
         	return ruleBean;
         }		       
         
+        ruleBean.setResponse(ruleBean.getResponse().toString());
 		return ruleBean;
 	}
 	

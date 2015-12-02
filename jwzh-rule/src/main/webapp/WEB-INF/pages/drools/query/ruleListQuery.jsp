@@ -82,7 +82,7 @@ function doIt(){
 		<td>
 			<div class="input-group">			
 			<span class="input-group-addon">规则文件名称</span>	
-			<input type="text" id="rulefilename" name="rulefilename" value="" maxlength="50" class="form-control" />	
+			<input type="text" id="rulefilename" name="rulefilename" value="" maxlength="50" class="form-control" placeholder="最长50个字符"  />	
 			</div>			
 		</td>
 		

@@ -35,7 +35,7 @@
 	</tr>
 	<tr>
 		<th>创建时间：</th>
-		<td>${ruleObj.createtime}</td>
+		<td><fmt:formatDate value="${ruleObj.createtime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 	</tr>				
 	<tr>
 		<td colspan="2">

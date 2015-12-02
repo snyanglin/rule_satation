@@ -9,6 +9,18 @@ import org.springframework.stereotype.Service;
 import com.founder.drools.base.dao.Drools_ruleHisDao;
 import com.founder.drools.base.model.Drools_ruleHis;
 
+/**
+ * ****************************************************************************
+ * @Package:      [com.founder.drools.base.service.DroolsRuleHisService.java]  
+ * @ClassName:    [DroolsRuleHisService]   
+ * @Description:  [规则历史服务]   
+ * @Author:       [zhang.hai@founder.com.cn]  
+ * @CreateDate:   [2015年12月2日 下午5:20:08]   
+ * @UpdateUser:   [ZhangHai(如多次修改保留历史记录，增加修改记录)]   
+ * @UpdateDate:   [2015年12月2日 下午5:20:08，(如多次修改保留历史记录，增加修改记录)]   
+ * @UpdateRemark: [说明本次修改内容,(如多次修改保留历史记录，增加修改记录)]  
+ * @Version:      [v1.0]
+ */
 @Service
 public class DroolsRuleHisService{
 

@@ -12,6 +12,18 @@ import com.founder.drools.base.dao.Drools_urlDao;
 import com.founder.drools.base.model.Drools_url;
 import com.founder.drools.core.request.HttpRequestBean;
 
+/**
+ * ****************************************************************************
+ * @Package:      [com.founder.drools.base.service.DroolsUrlService.java]  
+ * @ClassName:    [DroolsUrlService]   
+ * @Description:  [远程应用系统地址管理服务]   
+ * @Author:       [zhang.hai@founder.com.cn]  
+ * @CreateDate:   [2015年12月2日 下午5:20:50]   
+ * @UpdateUser:   [ZhangHai(如多次修改保留历史记录，增加修改记录)]   
+ * @UpdateDate:   [2015年12月2日 下午5:20:50，(如多次修改保留历史记录，增加修改记录)]   
+ * @UpdateRemark: [说明本次修改内容,(如多次修改保留历史记录，增加修改记录)]  
+ * @Version:      [v1.0]
+ */
 @Service
 public class DroolsUrlService{
 		
