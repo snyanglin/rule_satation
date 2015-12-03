@@ -258,13 +258,13 @@
 								</div>
 							</td>
 							<td align="right" width="30%">
-								<a href="#" onclick="shRule('head',this)">收起</a>
+								<a href="#" onclick="shRule('head',this)">展开</a>
 							</td>
 						</tr>
 					</table>
    				</div>
 				<table class="table table-bordered">				
-				<tr id="shtr_head">										
+				<tr id="shtr_head" style="display:none">										
 					<td align="center">
 						<textarea rows="8" cols="100" id="content_head" name="content_head" onchange="showSaveButton('head')">${ruleHead.content}</textarea>
 					</td>

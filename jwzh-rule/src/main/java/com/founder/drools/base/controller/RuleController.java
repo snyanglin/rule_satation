@@ -268,8 +268,12 @@ public class RuleController extends BaseController {
         	ruleBean.setResponse(e.toString());  
         	return ruleBean;
         }		       
-        
-        ruleBean.setResponse(ruleBean.getResponse().toString());
+        Object obj=ruleBean.getResponse();
+        if(obj!=null)
+        	ruleBean.setResponse(obj.toString());
+        else{
+        	ruleBean.setResponse("没有获取到返回信息");
+        }
 		return ruleBean;
 	}
 	

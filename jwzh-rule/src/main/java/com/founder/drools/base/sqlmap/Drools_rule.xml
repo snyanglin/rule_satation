@@ -82,6 +82,7 @@
 		<isNotEmpty prepend=" and " property="updatetime">r.UPDATETIME = #updatetime#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="version">r.VERSION = #version#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="ruletype">r.RULETYPE = #ruletype#</isNotEmpty>
+		<![CDATA[ order by r.CREATETIME DESC ]]>
     </select>
     
     <select id="queryDroolsRuleFuzzy" parameterClass="drools_rule" resultClass="drools_rule">
@@ -95,6 +96,7 @@
 		<isNotEmpty prepend=" and " property="status">r.STATUS = #status#</isNotEmpty>						
 		<isNotEmpty prepend=" and " property="version">r.VERSION = #version#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="ruletype">r.RULETYPE = #ruletype#</isNotEmpty>
+		<![CDATA[ order by r.CREATETIME DESC ]]>
     </select>
     
     <delete id="deleteRule" parameterClass="String">
