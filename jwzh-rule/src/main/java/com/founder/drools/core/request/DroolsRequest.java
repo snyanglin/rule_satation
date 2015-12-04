@@ -163,7 +163,7 @@ public class DroolsRequest {
 		}
 		
 		String res= httpRequestBean.doHttpPost(this.getPostEntity(ruleBean));		
-		Object resObj=this.XStream2Obj(res);
+		Object resObj=DroolsRequest.XStream2Obj(res);
 		return (RuleBean)resObj;
 	}
 	
@@ -211,9 +211,9 @@ public class DroolsRequest {
 	 * @throw
 	 */
 	private HttpEntity getPostEntity(Object paramObj) throws Exception{		
-		String xmlSstr = this.Obj2XStream(paramObj);
+		String xmlSstr = DroolsRequest.Obj2XStream(paramObj);
 		
-		List params = new ArrayList();    	
+		List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();    	
     	params.add(new BasicNameValuePair("ruleBeanXmlStr", xmlSstr));
     	return new UrlEncodedFormEntity(params,HTTP.UTF_8);
 	}

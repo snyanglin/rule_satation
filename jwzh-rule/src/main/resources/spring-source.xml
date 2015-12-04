@@ -87,6 +87,7 @@
 		<property name="mappingLocations">
 			<list>
 				<value>classpath:/com/founder/**/sqlmap/*.xml</value>
+				<value>classpath:/com/founder/drools/base/sqlmap/*.xml</value>
 				<value>classpath:/com/founder/framework/sqlmap/operationLog.xml</value>
 				<value>classpath:/com/founder/framework/sqlmap/system.xml</value>
 				<value>classpath:/com/founder/framework/sysManager/sqlmap/*.xml</value>
