@@ -204,21 +204,7 @@ public class DroolsTools {
 	 * @throw
 	 */
 	public List<OrgUserInfo> getSameLeader(String orgCode,String orgCode2){
-		List<OrgOrganization> orgList = this.getParentOrgList(orgCode);
-		List<OrgOrganization> orgList2 = this.getParentOrgList(orgCode2);
-		
-		OrgOrganization sameOrg = null;
-		
-		for(int i=0;i<orgList.size();i++){
-			if(this.isContainsOrg(orgList2, orgList.get(i))){
-				if(sameOrg == null)	sameOrg=orgList.get(i);
-				else{
-					if(Integer.valueOf(sameOrg.getOrglevel())<Integer.valueOf(orgList.get(i).getOrglevel())){//orglevel越大，级别越低
-						sameOrg = orgList.get(i);//保存最小的级别
-					}
-				}
-			}
-		}
+		OrgOrganization sameOrg = this.getOrgOrganizationService().querySameParentOrg(orgCode, orgCode2);
 		
 		if(sameOrg!=null){
 			if("10".equals(sameOrg.getOrglevel())){//市公安局
@@ -230,26 +216,6 @@ public class DroolsTools {
 			}
 		}
 		return null;
-	}
-	
-	/**
-	 * 
-	 * @Title: isContainsOrg
-	 * @Description: TODO(list是否包含机构)
-	 * @param @param list 机构列表
-	 * @param @param org 机构
-	 * @param @return    设定文件
-	 * @return boolean    返回类型
-	 * @throw
-	 */
-	private boolean isContainsOrg(List<OrgOrganization> list,OrgOrganization org){
-		for(int i=0;i<list.size();i++){
-			if(list.get(i).getId().equals(org.getId())){
-				return true;
-			}
-		}
-		
-		return false;
 	}
 	
 	/**
