@@ -88,8 +88,8 @@ public class HttpRequestBean {
 			throw new Exception("ServiceUrl can not be null!");			
 		}
 		
-		if(!"/".equals(url.substring(url.length()-1)))
-			url+="/";
+		if("/".equals(url.substring(url.length()-1)))
+			url=url.substring(0,url.length()-1);
 		
 		if(params!=null && params.length()>0)
 			url =url+"?"+params;

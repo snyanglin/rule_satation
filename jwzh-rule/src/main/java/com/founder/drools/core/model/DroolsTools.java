@@ -1,7 +1,12 @@
 package com.founder.drools.core.model;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
 
 import org.apache.http.HttpEntity;
 
@@ -29,15 +34,15 @@ import com.founder.framework.organization.position.service.OrgPositionService;
  */
 public class DroolsTools {
 	
-	private DroolsRequestService droolsRequestService;
+	private static DroolsRequestService droolsRequestService;
 	
-	private OrgOrganizationService orgOrganizationService;
+	private static OrgOrganizationService orgOrganizationService;
 	
-	private OrgPositionService orgPositionService;
+	private static OrgPositionService orgPositionService;
 	
-	private OrgOrgAssignUserService orgOrgAssignUserService;
+	private static OrgOrgAssignUserService orgOrgAssignUserService;
 	
-	private OrgAssignPublic orgAssignPublic=new OrgAssignPublic();
+	private static OrgAssignPublic orgAssignPublic=new OrgAssignPublic();
 	
 	/**
 	 * 
@@ -49,8 +54,19 @@ public class DroolsTools {
 	 * @return Object    返回类型
 	 * @throw
 	 */
-	public Object requestByGet(String methodId,Map paramMap){
+	public static Object requestByGet(String methodId,Map<?, ?> paramMap){
 		String serviceUrl = getDroolsRequestService().getServiceUrl(methodId);
+		
+		//处理RestfulAnnotation接口 的请求方式
+		int index=serviceUrl.indexOf('{');
+		String paraName;
+		while(index>0){
+			paraName=serviceUrl.substring(index+1,serviceUrl.indexOf('}'));			
+			serviceUrl=serviceUrl.replace('{'+paraName+'}', (String)paramMap.get(paraName));
+			paramMap.remove(paraName);
+			index=serviceUrl.indexOf('{');
+		}
+		
 		String paraString = getDroolsRequestService().getGetParam(methodId, paramMap);
 		
 		HttpRequestBean httpRequestBean = getDroolsRequestService().getHttpRequestBean();
@@ -75,7 +91,7 @@ public class DroolsTools {
 	 * @return Object    返回类型
 	 * @throw
 	 */
-	public Object requestByPost(String methodId,Map paramMap){
+	public static Object requestByPost(String methodId,Map<?, ?> paramMap){
 		String serviceUrl = getDroolsRequestService().getServiceUrl(methodId);
 		HttpEntity httpEntity = getDroolsRequestService().getPostParam(methodId, paramMap);
 		
@@ -100,7 +116,7 @@ public class DroolsTools {
 	 * @return OrgOrganization    返回类型
 	 * @throw
 	 */
-	public OrgOrganization getOrganization(String orgCode){		
+	public static OrgOrganization getOrganization(String orgCode){		
 		return getOrgOrganizationService().queryByOrgcode(orgCode);
 	}
 	
@@ -113,7 +129,7 @@ public class DroolsTools {
 	 * @return OrgOrganization    返回类型
 	 * @throw
 	 */
-	public String getOrgName(String orgCode){		
+	public static String getOrgName(String orgCode){		
 		OrgOrganization org = getOrganization(orgCode);
 		if(org!=null)
 			return org.getOrgname();
@@ -129,7 +145,7 @@ public class DroolsTools {
 	 * @return OrgOrganization    返回类型
 	 * @throw
 	 */
-	public OrgOrganization getParentOrg(String orgCode){
+	public static OrgOrganization getParentOrg(String orgCode){
 		return getOrgOrganizationService().queryParentOrgByOrgcode(orgCode);	
 	}
 	
@@ -142,7 +158,7 @@ public class DroolsTools {
 	 * @return String    返回类型
 	 * @throw
 	 */
-	public String getParentOrgName(String orgCode){
+	public static String getParentOrgName(String orgCode){
 		OrgOrganization org = getParentOrg(orgCode);
 		if(org!=null){
 			return org.getOrgname();
@@ -160,9 +176,9 @@ public class DroolsTools {
 	 * @return List    返回类型
 	 * @throw
 	 */
-	public List<OrgOrganization> getParentOrgList(String orgCode){
+	public static List<OrgOrganization> getParentOrgList(String orgCode){
 		
-		return this.getOrgOrganizationService().queryUpOrgsByOrgcode(orgCode);
+		return getOrgOrganizationService().queryUpOrgsByOrgcode(orgCode);
 	}
 	
 	/**
@@ -174,7 +190,7 @@ public class DroolsTools {
 	 * @return OrgOrganization    返回类型
 	 * @throw
 	 */
-	public OrgOrganization getUserOrgByUserId(String userId){
+	public static OrgOrganization getUserOrgByUserId(String userId){
 		return getOrgOrgAssignUserService().queryUserOrganization(userId);
 	}
 	
@@ -187,9 +203,24 @@ public class DroolsTools {
 	 * @return List<OrgUserInfo>    返回类型
 	 * @throw
 	 */
-	public List<OrgUserInfo> getSZ(String orgCode){
-		String szOrgCode = this.getOrgOrganizationService().queryUpOrgByLevel(orgCode,"32").getOrgcode();//派出所
+	public static List<OrgUserInfo> getSZ(String orgCode){
+		String szOrgCode = getOrgOrganizationService().queryUpOrgByLevel(orgCode,"32").getOrgcode();//派出所
 		List<OrgUserInfo> list = orgAssignPublic.queryUserByOrgAndPos(szOrgCode, "SZ");
+		return list;
+	}
+	
+	/**
+	 * 
+	 * @Title: getOrgLeader
+	 * @Description: TODO(获取部门领导)
+	 * @param @param orgCode
+	 * @param @param pos
+	 * @param @return    设定文件
+	 * @return List<OrgUserInfo>    返回类型
+	 * @throw
+	 */
+	public static List<OrgUserInfo> getOrgLeader(String orgCode,String pos){		
+		List<OrgUserInfo> list = orgAssignPublic.queryUserByOrgAndPos(orgCode, pos);
 		return list;
 	}
 	
@@ -203,8 +234,8 @@ public class DroolsTools {
 	 * @return List<OrgUserInfo>    返回类型
 	 * @throw
 	 */
-	public List<OrgUserInfo> getSameLeader(String orgCode,String orgCode2){
-		OrgOrganization sameOrg = this.getOrgOrganizationService().querySameParentOrg(orgCode, orgCode2);
+	public static List<OrgUserInfo> getSameLeader(String orgCode,String orgCode2){
+		OrgOrganization sameOrg = getOrgOrganizationService().querySameParentOrg(orgCode, orgCode2);
 		
 		if(sameOrg!=null){
 			if("10".equals(sameOrg.getOrglevel())){//市公安局
@@ -220,39 +251,70 @@ public class DroolsTools {
 	
 	/**
 	 * 
+	 * @Title: jsonToMap
+	 * @Description: TODO(将json字符串转成Map,递归调用，如果不能转成Map，直接返回String)
+	 * @param @param jsonString
+	 * @param @return Map或者String
+	 * @param @throws JSONException    设定文件
+	 * @return Object    返回类型
+	 * @throw
+	 */
+	public static Object jsonToMap(String jsonString) throws JSONException {
+    	try{
+    		JSONObject jsonObject=JSONObject.fromObject(jsonString);
+	        
+	        Map<String, Object> result = new HashMap<String, Object>();
+	        Iterator<?> iterator = jsonObject.keys();
+	        String key = null;
+	        String value = null;
+	        
+	        while (iterator.hasNext()) {	
+	            key = (String) iterator.next();
+	            value = jsonObject.getString(key);
+	            result.put(key, jsonToMap(value));	
+	        }
+	        return result;
+    	}catch(Exception e){
+    		return jsonString;
+    	}
+
+    }
+	
+	/**
+	 * 
 	 * @Title: getDroolsRequestService
 	 * @Description: TODO(获取远程请求地址的服务)
 	 * @param @return    设定文件
 	 * @return DroolsRequestService    返回类型
 	 * @throw
 	 */
-	private DroolsRequestService getDroolsRequestService(){
-		if(this.droolsRequestService==null){
-			this.droolsRequestService=(DroolsRequestService) SpringCreator.getBean("droolsRequestService");
+	private static DroolsRequestService getDroolsRequestService(){
+		if(droolsRequestService==null){
+			droolsRequestService=(DroolsRequestService) SpringCreator.getBean("droolsRequestService");
 		}
 		return droolsRequestService;
 	}
 	
 	
-	private OrgOrganizationService getOrgOrganizationService(){
-		if(this.orgOrganizationService == null){
-			this.orgOrganizationService=(OrgOrganizationService) SpringCreator.getBean("orgOrganizationService");
+	private static OrgOrganizationService getOrgOrganizationService(){
+		if(orgOrganizationService == null){
+			orgOrganizationService=(OrgOrganizationService) SpringCreator.getBean("orgOrganizationService");
 		}
 		
 		return orgOrganizationService;
 	}
 	
-	private OrgPositionService getOrgPositionService(){
-		if(this.orgPositionService == null){
-			this.orgPositionService=(OrgPositionService) SpringCreator.getBean("orgPositionService");
+	private static OrgPositionService getOrgPositionService(){
+		if(orgPositionService == null){
+			orgPositionService=(OrgPositionService) SpringCreator.getBean("orgPositionService");
 		}
 		
 		return orgPositionService;
 	}
 	
-	private OrgOrgAssignUserService getOrgOrgAssignUserService(){
-		if(this.orgOrgAssignUserService == null){
-			this.orgOrgAssignUserService=(OrgOrgAssignUserService) SpringCreator.getBean("orgOrgAssignUserService");
+	private static OrgOrgAssignUserService getOrgOrgAssignUserService(){
+		if(orgOrgAssignUserService == null){
+			orgOrgAssignUserService=(OrgOrgAssignUserService) SpringCreator.getBean("orgOrgAssignUserService");
 		}
 		
 		return orgOrgAssignUserService;
