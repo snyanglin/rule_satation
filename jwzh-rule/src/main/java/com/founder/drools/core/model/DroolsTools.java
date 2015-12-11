@@ -282,6 +282,22 @@ public class DroolsTools {
 	
 	/**
 	 * 
+	 * @Title: isEmpty
+	 * @Description: TODO(判断String是否为空)
+	 * @param @param str
+	 * @param @return    设定文件
+	 * @return boolean    返回类型
+	 * @throw
+	 */
+	public boolean isEmpty(String str){
+		if(str==null || str.length()==0)
+			return false;
+		else
+			return true;
+	}
+	
+	/**
+	 * 
 	 * @Title: getDroolsRequestService
 	 * @Description: TODO(获取远程请求地址的服务)
 	 * @param @return    设定文件
