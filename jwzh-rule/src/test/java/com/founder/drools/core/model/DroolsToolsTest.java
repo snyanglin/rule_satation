@@ -95,5 +95,21 @@ public class DroolsToolsTest extends TestCase{
 		//assertEquals("组织机构获取失败",org==null);
 		System.out.println("====testGetSameLeader======end====");
 	}
+	
+	@Test
+	public void testGetOrgUserByUserId() {
+		System.out.println("====testGetOrgUserByUserId======start====");
+		
+		//组织机构级别：50  组织机构名称：解放责任区2  组织机构代码：210204410102
+		//组织机构级别：32  组织机构名称：白山路派出所  组织机构代码：210204410000
+		//组织机构级别：21  组织机构名称：沙河口分局  组织机构代码：210204000000
+		//组织机构级别：10  组织机构名称：大连市公安局  组织机构代码：210200000000
+//		droolsTools.getOrgUserByUserId(userId)
+//		for(int i=0;i<userList.size();i++){
+//			System.out.println("用户姓名："+userList.get(i).getUsername()+"  组织机构名称："+userList.get(i).getOrgname());
+//		}		
+		//assertEquals("组织机构获取失败",org==null);
+		System.out.println("====testGetOrgUserByUserId======end====");
+	}
 
 }
