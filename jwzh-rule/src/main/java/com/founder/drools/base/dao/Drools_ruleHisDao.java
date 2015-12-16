@@ -37,7 +37,7 @@ public class Drools_ruleHisDao extends BaseDaoImpl {
 	/**
 	 * 
 	 * @Title: queryDroolsRuleHisManagerList
-	 * @Description: TODO(查询规则文件列表)
+	 * @Description: TODO(查询规则文件列表,取最大版本号)
 	 * @param @param entity
 	 * @param @return    设定文件
 	 * @return List<Drools_ruleHis>    返回类型

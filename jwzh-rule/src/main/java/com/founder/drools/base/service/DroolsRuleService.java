@@ -217,16 +217,19 @@ public class DroolsRuleService{
 		List list = drools_ruleDao.queryListByEntity(entity);
 		StringBuffer content=new StringBuffer();
 		if(ruleHead.getContent()!=null)
-			content.append(ruleHead.getContent()).append("\r\n\r\n");
+			content.append("/*RULE HEAD START*/\r\n").append(ruleHead.getContent()).append("\r\n/*RULE HEAD END*/\r\n\r\n");
 		
+		content.append("/*RULE BODY START*/\r\n\r\n");
 		for(int i=0;i<list.size();i++){
 			entity =((Drools_rule)list.get(i));
+			content.append("/*RULE START*/\r\n");
 			content.append("rule \""+entity.getRulename()+"\"\r\n\r\n");
 			if(entity.getContent()!=null)
 				content.append(entity.getContent());
-			content.append("\r\n\r\nend\r\n\r\n");
+			content.append("\r\n\r\nend\r\n");
+			content.append("/*RULE START*/\r\n\r\n");
 		}
-		
+		content.append("/*RULE BODY END*/");
 		ruleHead.setContent(content.toString());
 		
 		return ruleHead;
@@ -281,6 +284,7 @@ public class DroolsRuleService{
 		ruleHis.setGroupid(drools_rule.getGroupid());		
 		
 		ruleHis.setGroupname(drools_rule.getGroupname());
+		ruleHis.setBz(drools_rule.getBz());
 		
 		droolsRuleHisService.insert(ruleHis);
 	}

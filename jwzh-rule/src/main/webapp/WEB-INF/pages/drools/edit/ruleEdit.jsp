@@ -344,7 +344,7 @@
 								</div>
 							</td>
 							<td align="right" width="30%">
-								<a href="#" onclick="shRule('add',this)">收起</a></a>
+								<a href="#" onclick="shRule('add',this)">收起</a>
 							</td>
 						</tr>
 						</table>

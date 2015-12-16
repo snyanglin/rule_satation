@@ -13,14 +13,16 @@
 		<isNotEmpty prepend="," property="groupname"><![CDATA[ groupname]]></isNotEmpty>
 		<isNotEmpty prepend="," property="rulefilename"><![CDATA[ rulefilename]]></isNotEmpty>
 		<isNotEmpty prepend="," property="content"><![CDATA[ content]]></isNotEmpty>
-		<isNotEmpty prepend="," property="ruleid"><![CDATA[ ruleid]]></isNotEmpty>		
+		<isNotEmpty prepend="," property="ruleid"><![CDATA[ ruleid]]></isNotEmpty>	
+		<isNotEmpty prepend="," property="bz"><![CDATA[ bz]]></isNotEmpty>	
        )VALUES(
        	#version#       	
 		<isNotEmpty prepend="," property="groupid"><![CDATA[#groupid#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="groupname"><![CDATA[#groupname#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="rulefilename"><![CDATA[#rulefilename#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="content"><![CDATA[#content#]]></isNotEmpty>
-		<isNotEmpty prepend="," property="ruleid"><![CDATA[#ruleid#]]></isNotEmpty>		
+		<isNotEmpty prepend="," property="ruleid"><![CDATA[#ruleid#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="bz"><![CDATA[ #bz#]]></isNotEmpty>		
        )
     </insert>	
     

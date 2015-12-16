@@ -16,6 +16,7 @@ public class Drools_ruleHis extends BaseModle implements Serializable {
 	@FieldDesc("分组名") private String groupname;
 	@FieldDesc("规则文件名") private String rulefilename;
 	@FieldDesc("规则内容") private String content;
+	@FieldDesc("备注") private String bz;
 	@FieldDesc("使用时的规则ID，区分是否是同一个规则") private String ruleid;
 	
 	
@@ -48,6 +49,12 @@ public class Drools_ruleHis extends BaseModle implements Serializable {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	public String getBz() {
+		return bz;
+	}
+	public void setBz(String bz) {
+		this.bz = bz;
 	}
 	public String getRuleid() {
 		return ruleid;
