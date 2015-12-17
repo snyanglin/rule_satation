@@ -9,8 +9,6 @@
 <script type="text/javascript">
 	var groupSize=${fn:length(groupList)};
 	var showText="<table class=\"table\">";
-	var timeStr="";
-	var exportNum=0;
 	function shGroup(index,obj){
 		if(obj.innerHTML=="收起"){
 			obj.innerHTML="展开";
@@ -39,7 +37,7 @@
 			var groupname;
 			var fileNameAry;
 			var fileStr;
-			timeStr=getTimeStr();
+			
 			for(var index=0;index<groupSize;index++){//循环获取分组
 				groupid = $("#groupid_"+index).val();//分组id
 				groupname = $("#groupname_"+index).val();//分组名
@@ -69,12 +67,10 @@
 		$("#showDiv").html(showText+"</table>");	
 		var paramPairs=[
 		 				new ParamPair("groupid",groupid),
-		 		 		new ParamPair("fileStr",fileStr),
-		 		 		new ParamPair("timeStr",timeStr)
+		 		 		new ParamPair("fileStr",fileStr)
 		 		];
 		
 		var url="<%=basePath%>ruleExOrIm/ruleExport";
-		exportNum++;//调用导出前添加一个正在导出的数目
  		postToServer(paramPairs,url,function(data){ 			
 			if(data){
 				if(data.resStatus == '0'){
@@ -85,48 +81,9 @@
 			}else{
 				$("#text_"+groupid).text("规则分组（"+groupname+"）导出失败："+data);
 			}		
-			exportzip();//导出完成后打包
  		});
 	}
 	
-	function exportzip(){
-		//判断是否所有的分组都导出完成
-		exportNum--;//调用一次说明导出完成一个
-		if(exportNum>0) return;//还有未导出完成的
-		//打包导出文件
-		showText=$("#showDiv").html();	
-		//showText=showText.substr(0,showText.indexOf("</table>"));		
-		showText=showText.substr(0,showText.indexOf("</tbody>"));
-		showText+="<tr><td id=\"text_zip\">规则打包中，请稍后……</td></tr>";
-		$("#showDiv").html(showText+"</tbody></table>");
-		var paramPairs=[
-	 		 		new ParamPair("timeStr",timeStr)
-	 		];
-		var url="<%=basePath%>ruleExOrIm/ruleExportZip";
- 		postToServer(paramPairs,url,function(data){ 			
-			if(data){
-				if(data.resStatus == '0'){
-					$("#text_zip").html("规则打包完成：<a href=\"<%=basePath%>download/rules.zip\" >下载</a>");
-				}else{
-					$("#text_zip").text("规则打包失败："+data.errorMsg);
-				}				
-			}else{
-				$("#text_zip").text("规规则打包失败："+data);
-			}		
- 		});
-	}
-	
-	function getTimeStr(){
-		var myDate = new Date();		  
-		var yyyy = myDate.getFullYear();    //获取完整的年份(4位,1970-????)  
-		var mm = myDate.getMonth()+1;       //获取当前月份(0-11,0代表1月)  
-		if(mm.length==1) mm="0"+mm;
-		var dd = myDate.getDate();        //获取当前日(1-31)  
-		var hh = myDate.getHours();       //获取当前小时数(0-23)  
-		var mh = myDate.getMinutes();     //获取当前分钟数(0-59)  
-		var ss = myDate.getSeconds();     //获取当前秒数(0-59)  
-		return ""+yyyy+mm+dd+hh+mh+ss;
-	}
 </script>
 </head>
 <body>

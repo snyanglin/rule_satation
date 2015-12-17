@@ -52,6 +52,15 @@
 		
 		order by VERSION DESC
     </select>
+    <!-- 查询导出列表 -->
+    <select id="queryExportList" parameterClass="String" resultClass="drools_ruleHis">
+	    select * from DROOLS_RULEHIS 
+	    where 
+			VERSION in ( select max(VERSION) from DROOLS_RULEHIS group by RULEID)
+		and RULEID in (select distinct(id) from DROOLS_RULE where RULETYPE='0')
+		and groupid=#groupid#
+		order by VERSION DESC
+    </select>
     
     <!-- 查询规则平台历史分组表-->
     <select id="queryRuleHisGroup"  resultClass="drools_ruleHis">

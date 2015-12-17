@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,15 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.founder.drools.base.model.Drools_group;
-import com.founder.drools.base.model.Drools_rule;
 import com.founder.drools.base.model.Drools_ruleHis;
 import com.founder.drools.base.service.DroolsGroupService;
 import com.founder.drools.base.service.DroolsRuleHisService;
-import com.founder.drools.base.service.DroolsRuleService;
-import com.founder.drools.core.inteface.RuleService;
-import com.founder.drools.core.model.Paginator;
-import com.founder.drools.core.request.RuleBean;
 import com.founder.framework.base.controller.BaseController;
+import com.founder.framework.utils.StringUtils;
 /**
  * ****************************************************************************
  * @Package:      [com.founder.drools.base.controller.RuleExOrImController.java]  
@@ -37,7 +35,9 @@ import com.founder.framework.base.controller.BaseController;
  */
 @Controller
 @RequestMapping("ruleExOrIm")
-public class RuleExOrImController extends BaseController {						
+public class RuleExOrImController extends BaseController {		
+	private Logger logger = Logger.getLogger(this.getClass());
+	
 	@Resource(name="droolsGroupService")
 	private DroolsGroupService droolsGroupService;
 	
@@ -58,8 +58,7 @@ public class RuleExOrImController extends BaseController {
 		Drools_ruleHis entity=new Drools_ruleHis();
 		
 		for(int i=0;i<groupList.size();i++){
-			entity.setGroupid(groupList.get(i).getId());
-			List<Drools_ruleHis> hisList= droolsRuleHisService.queryRuleHisManagerList(entity);
+			List<Drools_ruleHis> hisList= droolsRuleHisService.queryExportList(groupList.get(i).getId());
 			groupList.get(i).setRuleFileList(hisList);
 		}
 		
@@ -79,13 +78,30 @@ public class RuleExOrImController extends BaseController {
 	 * @throw
 	 */
 	@RequestMapping(value = "/ruleExport", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody Map<String, String> ruleExport(String groupid,String fileStr){
+	public @ResponseBody Map<String, String> ruleExport(String groupid,String fileStr,String timeStr){
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("resStatus", "0");//成功
 		
 		try{
 			Drools_group groupEntity = droolsGroupService.queryById(groupid);//规则分组
-			droolsRuleHisService.exportRule(groupEntity.getGroupname(), fileStr);
+			droolsRuleHisService.exportRule(groupEntity.getGroupname(), fileStr,timeStr);
+		}catch(Exception e){
+			e.printStackTrace();
+			map.put("resStatus", "1");//失败
+			map.put("errorMsg", e.toString());//失败
+		}
+		
+		return map;
+	}
+	
+	@RequestMapping(value = "/ruleExportZip", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody Map<String, String> ruleExportZip(String timeStr,HttpServletRequest request){
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("resStatus", "0");//成功
+		
+		try{
+			String basePath=request.getSession().getServletContext().getRealPath("/");
+			droolsRuleHisService.exportZip(timeStr,basePath);
 		}catch(Exception e){
 			e.printStackTrace();
 			map.put("resStatus", "1");//失败

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.founder.drools.base.dao.Drools_ruleHisDao;
 import com.founder.drools.base.model.Drools_ruleHis;
+import com.founder.drools.core.model.ZipUtils;
 import com.founder.framework.config.SystemConfig;
 
 /**
@@ -68,12 +69,22 @@ public class DroolsRuleHisService{
 		return drools_ruleHisDao.queryRuleHisGroup();
 	}
 	
-	public void exportRule(String groupname,String fileStr){
+	/**
+	 * 
+	 * @Title: exportRule
+	 * @Description: TODO(导出规则)
+	 * @param @param groupname
+	 * @param @param fileStr
+	 * @param @param timeStr    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void exportRule(String groupname,String fileStr,String timeStr){
 		String fileAry[]=fileStr.split(",");
 		Drools_ruleHis queryEntity = new Drools_ruleHis();
 		Drools_ruleHis resEntity;
 		
-		String exportDir=clearGroup(groupname);//清空的目录
+		String exportDir=clearGroup(groupname,timeStr);//清空的目录
 		for(int i =0;i<fileAry.length;i++){
 			queryEntity.setVersion(fileAry[i]);			
 			resEntity = this.queryRuleHis(queryEntity);//规则文件
@@ -81,7 +92,36 @@ public class DroolsRuleHisService{
 		}
 	}
 	
-	private String clearGroup(String groupName){
+	/**
+	 * 
+	 * @Title: exportZip
+	 * @Description: TODO(打包ZIP)
+	 * @param @param timeStr    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void exportZip(String timeStr,String basePath){
+		if(filePath==null || filePath.length()==0)
+			filePath = SystemConfig.getString("DrlFilePath");
+		if(filePath==null || filePath.length()==0)
+			throw new RuntimeException("can not find \"DrlFilePath\" in systemconfig");
+		
+		String exportDir=filePath+"/export/"+timeStr;
+		
+		ZipUtils.zipFiles(exportDir, basePath+"/download/rules.zip");
+	}
+	
+	/**
+	 * 
+	 * @Title: clearGroup
+	 * @Description: TODO(清理导出的目录，删除以前的，建立新的)
+	 * @param @param groupName
+	 * @param @param timeStr
+	 * @param @return    设定文件
+	 * @return String    返回类型
+	 * @throw
+	 */
+	private String clearGroup(String groupName,String timeStr){
 		if(filePath==null || filePath.length()==0)
 			filePath = SystemConfig.getString("DrlFilePath");
 		if(filePath==null || filePath.length()==0)
@@ -92,7 +132,13 @@ public class DroolsRuleHisService{
 		File dir = new File(exportDir);
 		/*导出的文件所在的目录*/
 		if(!dir.exists()){
-			dir.mkdir();
+			dir.mkdirs();
+		}else{//已存在，删除以前的文件
+			File[] files = dir.listFiles();
+			for(int i=0;i<files.length;i++){
+				if(files[i].isDirectory() && files[i].getName().equals(timeStr)) continue;//当前正在导出的文件夹不能删除
+				deleteFiles(files[i]);//删除文件或者文件夹
+			}
 		}
 				
 		if(!dir.exists()){
@@ -100,10 +146,10 @@ public class DroolsRuleHisService{
 		}
 		
 		/*分组文件夹*/
-		exportDir+="/"+groupName;
+		exportDir+="/"+timeStr+"/"+groupName;
 		dir = new File(exportDir);
 		if(!dir.exists()){
-			dir.mkdir();
+			dir.mkdirs();
 		}else{//清空文件夹
 			File[] files = dir.listFiles();
 			for(int i=0;i<files.length;i++){
@@ -120,6 +166,30 @@ public class DroolsRuleHisService{
 	
 	/**
 	 * 
+	 * @Title: deleteFiles
+	 * @Description: TODO(删除文件夹)
+	 * @param @param file    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	private void deleteFiles(File file){
+		try{
+			if(file.isDirectory()){
+				File[] files = file.listFiles();
+				for(int i=0;i<files.length;i++){
+					deleteFiles(files[i]);
+				}
+				file.delete();
+			}else{
+				file.delete();
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 
 	 * @Title: writeDrl
 	 * @Description: TODO(生成规则文件)
 	 * @param @param groupName
@@ -130,15 +200,6 @@ public class DroolsRuleHisService{
 	private void  writeDrl(String exportDir,Drools_ruleHis entity){		
 		if(entity==null || entity.getRulefilename()==null || entity.getContent()==null || entity.getRulefilename().length()==0 || entity.getContent().length()==0)
 			return;
-		
-		
-		if(filePath==null || filePath.length()==0)
-			filePath = SystemConfig.getString("DrlFilePath");
-		if(filePath==null || filePath.length()==0)
-			throw new RuntimeException("can not find \"DrlFilePath\" in systemconfig");
-		
-		
-		
 		
 		try{			
 			File file=new File(exportDir+"/"+entity.getRulefilename()+".drl");
@@ -152,5 +213,18 @@ public class DroolsRuleHisService{
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * 
+	 * @Title: queryExportList
+	 * @Description: TODO(查询导出规则列表)
+	 * @param @param groupid
+	 * @param @return    设定文件
+	 * @return List<Drools_ruleHis>    返回类型
+	 * @throw
+	 */
+	public List<Drools_ruleHis> queryExportList(String groupid){
+		return drools_ruleHisDao.queryExportList(groupid);
 	}
 }

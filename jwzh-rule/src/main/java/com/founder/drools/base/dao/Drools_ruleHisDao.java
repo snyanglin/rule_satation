@@ -58,4 +58,17 @@ public class Drools_ruleHisDao extends BaseDaoImpl {
 	public List<Drools_ruleHis> queryRuleHisGroup(){
 		return super.queryForList("Drools_ruleHis.queryRuleHisGroup");
 	}
+	
+	/**
+	 * 
+	 * @Title: queryExportList
+	 * @Description: TODO(查询导出规则列表)
+	 * @param @param groupid
+	 * @param @return    设定文件
+	 * @return List<Drools_ruleHis>    返回类型
+	 * @throw
+	 */
+	public List<Drools_ruleHis> queryExportList(String groupid){
+		return super.queryForList("Drools_ruleHis.queryExportList",groupid);
+	}
 }
