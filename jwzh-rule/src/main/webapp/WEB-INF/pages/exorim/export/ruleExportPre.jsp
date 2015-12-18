@@ -19,7 +19,7 @@
 			obj.innerHTML="收起";
 			$("#group_"+index).show();
 		}
-	}
+	}	
 	
 	function groupCheck(obj,index){
 		if(obj.checked){
@@ -106,7 +106,8 @@
  		postToServer(paramPairs,url,function(data){ 			
 			if(data){
 				if(data.resStatus == '0'){
-					$("#text_zip").html("规则打包完成：<a href=\"<%=basePath%>download/rules.zip\" >下载</a>");
+					$("#text_zip").html("规则打包完成：<a href=\"#\" onclick=\"download()\">下载</a>");
+					$("#downButton").show();
 				}else{
 					$("#text_zip").text("规则打包失败："+data.errorMsg);
 				}				
@@ -126,6 +127,10 @@
 		var mh = myDate.getMinutes();     //获取当前分钟数(0-59)  
 		var ss = myDate.getSeconds();     //获取当前秒数(0-59)  
 		return ""+yyyy+mm+dd+hh+mh+ss;
+	}
+	
+	function download(){
+		location.href="<%=basePath%>download/rules.zip";
 	}
 </script>
 </head>
@@ -179,7 +184,9 @@
 
 
 <div align="center">
-	<button type="button" class="btn btn-success" onclick="exportRule(this)">导出</button>	
+	<button type="button" class="btn btn-success" onclick="exportRule(this)">导出</button>
+	&nbsp;
+	<button type="button" id="downButton" class="btn btn-success" onclick="download()" style="display:none">下载</button>	
 </div>
 
 <!-- 模态框（Modal） -->

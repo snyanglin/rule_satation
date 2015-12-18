@@ -46,7 +46,7 @@
 				</tr>				
 				<tr>
 					<td colspan="2">
-						<pre class="pre-scrollable">${ruleHis.content}</pre>						
+						<textarea rows="30" cols="100" readonly="readonly">${ruleHis.content}</textarea>
 					</td>
 				</tr>
 			</table>

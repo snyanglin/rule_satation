@@ -11,6 +11,7 @@ import com.founder.drools.base.common.BaseModelUtils;
 import com.founder.drools.base.dao.Drools_urlDao;
 import com.founder.drools.base.model.Drools_url;
 import com.founder.drools.core.request.HttpRequestBean;
+import com.founder.framework.utils.UUID;
 
 /**
  * ****************************************************************************
@@ -88,7 +89,7 @@ public class DroolsUrlService{
 	 */
 	public void addUrl(Drools_url entity) {		
 		BaseModelUtils.setSaveProperty(entity);		
-		entity.setId(BaseModelUtils.getTimeString());
+		entity.setId(UUID.create());
 		drools_urlDao.insert(entity);
 	}
 	

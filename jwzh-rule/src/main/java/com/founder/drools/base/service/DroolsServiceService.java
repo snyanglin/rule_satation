@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.founder.drools.base.common.BaseModelUtils;
 import com.founder.drools.base.dao.Drools_serviceDao;
 import com.founder.drools.base.model.Drools_service;
+import com.founder.framework.utils.UUID;
 
 /**
  * ****************************************************************************
@@ -44,7 +45,7 @@ public class DroolsServiceService{
 	
 	public void addService(Drools_service entity) {		
 		BaseModelUtils.setSaveProperty(entity);	
-		entity.setId(BaseModelUtils.getTimeString());
+		entity.setId(UUID.create());
 		drools_serviceDao.insert(entity);
 	}
 	

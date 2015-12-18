@@ -6,21 +6,25 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.founder.drools.base.model.Drools_group;
+import com.founder.drools.base.model.Drools_rule;
 import com.founder.drools.base.model.Drools_ruleHis;
 import com.founder.drools.base.service.DroolsGroupService;
 import com.founder.drools.base.service.DroolsRuleHisService;
+import com.founder.drools.base.service.DroolsRuleService;
 import com.founder.framework.base.controller.BaseController;
-import com.founder.framework.utils.StringUtils;
 /**
  * ****************************************************************************
  * @Package:      [com.founder.drools.base.controller.RuleExOrImController.java]  
@@ -43,6 +47,9 @@ public class RuleExOrImController extends BaseController {
 	
 	@Resource(name="droolsRuleHisService")
 	private DroolsRuleHisService droolsRuleHisService;
+	
+	@Autowired
+	private DroolsRuleService droolsRuleService;
 	/**
 	 * 
 	 * @Title: ruleExportPre
@@ -119,20 +126,75 @@ public class RuleExOrImController extends BaseController {
 	 * @return ModelAndView    返回类型
 	 * @throw
 	 */
-	@RequestMapping(value = "/ruleImportPre", method = {RequestMethod.GET,RequestMethod.POST})
+	@RequestMapping(value = "/ruleImportPre", method = {RequestMethod.GET})
 	public ModelAndView ruleImportPre(){
 		ModelAndView mv = new ModelAndView("exorim/import/ruleImportPre");	
-		
+		return mv;
+	}
+	
+	@RequestMapping(value = "/ruleImportView", method = {RequestMethod.POST})
+	public ModelAndView ruleImportView(@RequestParam(value="zipFile") CommonsMultipartFile zipFile){
+		ModelAndView mv = new ModelAndView("exorim/import/ruleImport");	
+		if(!zipFile.isEmpty()){
+			
+			if(zipFile.getSize()>1024*1024)//文件不能超过1M
+				throw new RuntimeException("File is too large");
+			
+			FileItem fileItem = zipFile.getFileItem();
+			String zipFileName = fileItem.getName();
+			if (zipFileName.indexOf("\\") != -1) { // 去除完整路径
+				zipFileName = zipFileName.substring(zipFileName.lastIndexOf("\\") + 1);
+			}
+			
+			String fileType = "";//文件类型
+			int atI = zipFileName.lastIndexOf(".");
+			if (atI != -1) {
+				fileType = zipFileName.substring(atI + 1);
+				fileType = fileType.toLowerCase();
+			}
+			if(!"zip".equals(fileType)){
+				throw new RuntimeException("File type can only be 'zip'!");
+			}
+			
+			List<Drools_group> groupList=droolsRuleHisService.importZip(zipFile.getBytes());
+			mv.addObject("GroupList",groupList);
+		}
 		
 		return mv;
 	}
 	
 	@RequestMapping(value = "/ruleImport", method = {RequestMethod.GET,RequestMethod.POST})
-	public ModelAndView ruleImport(){
-		ModelAndView mv = new ModelAndView("exorim/import/ruleImportPre");	
+	public @ResponseBody Map<String, String> ruleImport(String groupname,String ruleFileName,String filePath){
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("resStatus", "0");//成功
 		
+		try{
+			//验证规则文件是否存在
+			Drools_rule queryEntity=new Drools_rule();
+			queryEntity.setRulefilename(ruleFileName.trim());
+			List<Drools_rule> resList=droolsRuleService.queryRuleListByEntity(queryEntity);
+			if(resList.size()>0)
+				throw new RuntimeException("Rule file \""+ruleFileName+"\" is exits!");
+			
+			//验证分组是否存在，不存在则创建
+			Drools_group groupEntity= droolsGroupService.validateAndAdd(groupname);
+			
+			List<Drools_rule> list=droolsRuleHisService.importRule(groupEntity.getId(), ruleFileName, filePath);
+			if(list.size()==0){
+				map.put("resStatus", "1");//失败
+				map.put("errorMsg", "规则文件解析出错！");//失败
+			}
+			 
+			for(int i=0;i<list.size();i++){
+				 droolsRuleService.addRule(list.get(i));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			map.put("resStatus", "1");//失败
+			map.put("errorMsg", e.toString());//失败
+		}
 		
-		return mv;
+		return map;
 	}
 	
 }

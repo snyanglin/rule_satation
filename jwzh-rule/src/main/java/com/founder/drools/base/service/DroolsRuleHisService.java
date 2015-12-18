@@ -2,14 +2,20 @@ package com.founder.drools.base.service;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.founder.drools.base.dao.Drools_ruleHisDao;
+import com.founder.drools.base.model.Drools_group;
+import com.founder.drools.base.model.Drools_rule;
 import com.founder.drools.base.model.Drools_ruleHis;
+import com.founder.drools.core.model.RuleFileUtil;
 import com.founder.drools.core.model.ZipUtils;
 import com.founder.framework.config.SystemConfig;
 
@@ -227,4 +233,33 @@ public class DroolsRuleHisService{
 	public List<Drools_ruleHis> queryExportList(String groupid){
 		return drools_ruleHisDao.queryExportList(groupid);
 	}
+
+	public List<Drools_group> importZip(byte[] bytes) {
+		if(filePath==null || filePath.length()==0)
+			filePath = SystemConfig.getString("DrlFilePath");
+		if(filePath==null || filePath.length()==0)
+			throw new RuntimeException("can not find \"DrlFilePath\" in systemconfig");
+		
+		String importDir=filePath+"/import/";
+		File baseFdir=new File(importDir);
+		this.deleteFiles(baseFdir);//删除目录
+		ZipUtils.unZipFile(bytes, importDir);//解压ZIP
+		
+		//读取并解析规则
+		Map<String,Drools_group> groupMap=new HashMap<String,Drools_group>();
+		RuleFileUtil.readRuleFromDir(baseFdir, groupMap);
+		Object keyAry[] = groupMap.keySet().toArray();
+		List<Drools_group> groupList=new LinkedList<Drools_group>();
+		for(int i=0;i<keyAry.length;i++){
+			String groupName=keyAry[i].toString();
+			Drools_group drools_group = groupMap.get(groupName);
+			groupList.add(drools_group);
+		}
+		return groupList;
+	}
+	
+	public List<Drools_rule> importRule(String groupId,String ruleFileName,String filePath){
+		return RuleFileUtil.readRuleFromFile(groupId,ruleFileName,filePath);
+	}
+
 }

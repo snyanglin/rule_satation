@@ -1,9 +1,11 @@
 package com.founder.drools.core.model;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 /**
  * ****************************************************************************
@@ -21,7 +23,12 @@ public class ZipUtils {
 	private static byte[] buf = new byte[1024];
 	
 	public static void main(String[] args) throws Exception {
-		ZipUtils.zipFiles("D:/work/drl/export","/export/export.zip");
+		ZipUtils.zipFiles("D:/work/drl/export","D:/work/drl/export.zip");
+		File file=new File("D:/work/drl/export.zip");
+		FileInputStream in = new FileInputStream(file);
+		byte[] bytes=new byte[1024*1024];
+		in.read(bytes);
+		ZipUtils.unZipFile(bytes,"D:/work/drl/import");
 	}
 	
 	/**‘
@@ -48,6 +55,18 @@ public class ZipUtils {
        	 	throw new RuntimeException("文件打包失败！");
 		}
 	}
+	
+	/**
+	 * 
+	 * @Title: zipFiles
+	 * @Description: TODO(压缩ZIP)
+	 * @param @param srcFile
+	 * @param @param out
+	 * @param @param base
+	 * @param @throws IOException    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
     private static void zipFiles(File srcFile, ZipOutputStream out,String base) throws IOException {  
         if (srcFile.isDirectory()) {//目录
 			File[] inputFiles = srcFile.listFiles();
@@ -74,5 +93,47 @@ public class ZipUtils {
 				in.close();
 			}
 		} 
+    }
+    
+    /**
+     * 
+     * @Title: unZipFile
+     * @Description: TODO(解压ZIP)
+     * @param @param bytes
+     * @param @param basePath    设定文件
+     * @return void    返回类型
+     * @throw
+     */
+    public static void unZipFile(byte[] bytes,String basePath){
+    	ZipInputStream in=new ZipInputStream(new ByteArrayInputStream(bytes));
+    	try{
+    		ZipEntry zipEntry = in.getNextEntry();
+    		while(zipEntry!=null){
+    			File file=new File(basePath+"/"+zipEntry.getName());
+    			if (zipEntry.isDirectory()) {  
+    				file.mkdirs();
+    			}else{
+    				file.createNewFile();
+    				FileOutputStream out = new FileOutputStream(file);  
+    				int b = 0;  
+    				while ((b = in.read()) != -1){  
+    					out.write(b);  
+    					out.flush();
+    				}  
+    				out.close();  
+
+    			}
+    			zipEntry = in.getNextEntry();
+    		}
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	}finally{
+    		try {
+				in.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
     }
 }

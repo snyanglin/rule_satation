@@ -8,7 +8,7 @@
     <insert id="insert" parameterClass="drools_ruleHis">
        insert into DROOLS_RULEHIS
        (
-        version        
+        id,version        
 		<isNotEmpty prepend="," property="groupid"><![CDATA[ groupid]]></isNotEmpty>
 		<isNotEmpty prepend="," property="groupname"><![CDATA[ groupname]]></isNotEmpty>
 		<isNotEmpty prepend="," property="rulefilename"><![CDATA[ rulefilename]]></isNotEmpty>
@@ -16,7 +16,7 @@
 		<isNotEmpty prepend="," property="ruleid"><![CDATA[ ruleid]]></isNotEmpty>	
 		<isNotEmpty prepend="," property="bz"><![CDATA[ bz]]></isNotEmpty>	
        )VALUES(
-       	#version#       	
+       	#id# ,#version#       	
 		<isNotEmpty prepend="," property="groupid"><![CDATA[#groupid#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="groupname"><![CDATA[#groupname#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="rulefilename"><![CDATA[#rulefilename#]]></isNotEmpty>
@@ -30,7 +30,8 @@
     <select id="queryRuleHis" parameterClass="drools_ruleHis" resultClass="drools_ruleHis">
          select * from DROOLS_RULEHIS
 		 where 1=1	
-		 <isNotEmpty prepend=" and " property="version">VERSION = #version#</isNotEmpty>
+		<isNotEmpty prepend=" and " property="id">ID = #id#</isNotEmpty>
+		<isNotEmpty prepend=" and " property="version">VERSION = #version#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="groupid">GROUPID = #groupid#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="groupname"><![CDATA[GROUPNAME like '%$groupname$%' ]]></isNotEmpty>
 		<isNotEmpty prepend=" and " property="rulefilename"><![CDATA[ RULEFILENAME like '%$rulefilename$%' ]]></isNotEmpty>
@@ -67,7 +68,4 @@
          select distinct GROUPID, GROUPNAME from DROOLS_RULEHIS  order by GROUPID	
     </select>
     
-    <delete id="deleteRuleHis" parameterClass="drools_rule">
-    	delete from DROOLS_RULEHIS where VERSION = #version#
-    </delete>
 </sqlMap>

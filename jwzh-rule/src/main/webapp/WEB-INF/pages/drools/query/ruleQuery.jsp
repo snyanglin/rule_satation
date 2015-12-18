@@ -39,7 +39,7 @@
 	</tr>				
 	<tr>
 		<td colspan="2">
-			<pre class="pre-scrollable">${ruleObj.content}</pre>
+			<textarea rows="30" cols="100" readonly="readonly">${ruleObj.content}</textarea>
 		</td>
 	</tr>
 	</table>

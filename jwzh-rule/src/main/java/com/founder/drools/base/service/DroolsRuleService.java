@@ -17,6 +17,7 @@ import com.founder.drools.base.model.Drools_ruleHis;
 import com.founder.drools.core.inteface.RuleService;
 import com.founder.drools.core.request.RuleBean;
 import com.founder.framework.config.SystemConfig;
+import com.founder.framework.utils.UUID;
 
 /**
  * ****************************************************************************
@@ -54,7 +55,7 @@ public class DroolsRuleService{
 	public void addRule(Drools_rule entity) {
 		entity.setStatus("1");
 		BaseModelUtils.setSaveProperty(entity);				
-		entity.setId(BaseModelUtils.getTimeString());
+		entity.setId(UUID.create());
 		if("undefined".equals(entity.getParamstr())){
 			entity.setParamstr(null);
 		}
@@ -210,15 +211,14 @@ public class DroolsRuleService{
 		entity.setRulefilename(ruleFileName);
 		entity.setRuletype("0");
 		Drools_rule ruleHead = drools_ruleDao.queryByEntity(entity);
+		StringBuffer content=new StringBuffer();
+		if(ruleHead.getContent()!=null)
+			content.append("/*RULE HEAD START*/\r\n/*BZ:"+ruleHead.getBz()+"*/\r\n").append(ruleHead.getContent()).append("\r\n/*RULE HEAD END*/\r\n\r\n");
 		
 		//查询规则体
 		entity.setRuletype("1");
 		entity.setRulename(rulename);
 		List list = drools_ruleDao.queryListByEntity(entity);
-		StringBuffer content=new StringBuffer();
-		if(ruleHead.getContent()!=null)
-			content.append("/*RULE HEAD START*/\r\n").append(ruleHead.getContent()).append("\r\n/*RULE HEAD END*/\r\n\r\n");
-		
 		content.append("/*RULE BODY START*/\r\n\r\n");
 		for(int i=0;i<list.size();i++){
 			entity =((Drools_rule)list.get(i));
@@ -227,7 +227,7 @@ public class DroolsRuleService{
 			if(entity.getContent()!=null)
 				content.append(entity.getContent());
 			content.append("\r\n\r\nend\r\n");
-			content.append("/*RULE START*/\r\n\r\n");
+			content.append("/*RULE END*/\r\n\r\n");
 		}
 		content.append("/*RULE BODY END*/");
 		ruleHead.setContent(content.toString());
@@ -276,6 +276,7 @@ public class DroolsRuleService{
 			version = BaseModelUtils.getTimeString();
 		
 		Drools_ruleHis ruleHis=new Drools_ruleHis();
+		ruleHis.setId(UUID.create());
 		ruleHis.setVersion(version);
 		ruleHis.setContent(drools_rule.getContent());		
 		ruleHis.setRulefilename(drools_rule.getRulefilename());

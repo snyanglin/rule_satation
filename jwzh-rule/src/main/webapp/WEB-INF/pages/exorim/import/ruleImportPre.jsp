@@ -7,89 +7,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>导入导出</title>
 <script type="text/javascript">
-	var groupSize=${fn:length(groupList)};
-	var showText="<table class=\"table\">";
-	function shGroup(index,obj){
-		if(obj.innerHTML=="收起"){
-			obj.innerHTML="展开";
-			$("#group_"+index).hide();
+	function doIt(){
+		if($("#zipFile").val()==""){
+			alert("请选择导入的ZIP文件");
+			return false;
 		}else{
-			obj.innerHTML="收起";
-			$("#group_"+index).show();
+			document.dataForm.submit();
 		}
 	}
-	
-	function groupCheck(obj,index){
-		if(obj.checked){
-			
-			$("input[name=ruleFileAry_"+index+"]").prop("checked", true);			
-		}else{
-			$("input[name=ruleFileAry_"+index+"]").prop("checked", false);
-		}
-	}
-	
-	function exportRule(obj){
-		$(obj).prop("disabled",true);		
-		
-		showText="<table class=\"table\">";
-		if(groupSize){
-			var groupid;
-			var groupname;
-			var fileNameAry;
-			var fileStr;
-			
-			for(var index=0;index<groupSize;index++){//循环获取分组
-				groupid = $("#groupid_"+index).val();//分组id
-				groupname = $("#groupname_"+index).val();//分组名
-				fileNameAry=$("input[name=ruleFileAry_"+index+"]");//分组下的规则文件
-				fileStr="";
-				if(fileNameAry){//该分组下有规则文件
-					for(var i=0;i<fileNameAry.length;i++){
-						if(fileNameAry[i].checked){//选中要导出的文件
-							fileStr+=","+fileNameAry[i].value;
-						}
-						
-					}
-				}
-				if(fileStr!=""){//有需要导出的规则
-					fileStr=fileStr.substr(1);//删除最前面的','					
-					exportGroup(groupid,groupname,fileStr);
-				}
-			}
-		}
-		$(obj).prop("disabled",false);	
-	}
-	function exportGroup(groupid,groupname,fileStr){
-		$('#myModal').modal({
-			keyboard: false
-			})
-		showText+="<tr><td id=\"text_"+groupid+"\">规则分组（"+groupname+"）导出中，请稍后……</td></tr>";
-		$("#showDiv").html(showText+"</table>");	
-		var paramPairs=[
-		 				new ParamPair("groupid",groupid),
-		 		 		new ParamPair("fileStr",fileStr)
-		 		];
-		
-		var url="<%=basePath%>ruleExOrIm/ruleExport";
- 		postToServer(paramPairs,url,function(data){ 			
-			if(data){
-				if(data.resStatus == '0'){
-					$("#text_"+groupid).text("规则分组（"+groupname+"）导出完成");
-				}else{
-					$("#text_"+groupid).text("规则分组（"+groupname+"）导出失败："+data.errorMsg);
-				}				
-			}else{
-				$("#text_"+groupid).text("规则分组（"+groupname+"）导出失败："+data);
-			}		
- 		});
-	}
-	
 </script>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 	<div class="navbar-header">
-      <a class="navbar-brand" href="#">规则导出</a>
+      <a class="navbar-brand" href="#">规则导入</a>
    </div>	
 </nav>
 <div class="mainDiv">
@@ -99,44 +30,39 @@
 <!-- 主体 -->
 <div class="well well-lg">
 
-<form action="<%=basePath%>ruleExOrIm/ruleExport"  id="dataForm" name="dataForm" method="post">
+<form action="<%=basePath%>ruleExOrIm/ruleImportView"  id="dataForm" name="dataForm" method="post" enctype="multipart/form-data">
 
-<c:forEach items="${groupList}" var="item" varStatus="status">
-<span id="resListTab">
 <div class="panel panel-default">
-   <div class="panel-heading">
-   		<table width="100%" >
-   		<tr>
-   			<td width="10%"><input type="checkbox" checked="checked" onclick="groupCheck(this,'${status.index }')" /></td> 
-			<td width="80%" align="center"><b>规则分组：</b><c:out value="${item.groupname }" /></td>
-			<td align="right"><a href="#" onclick="shGroup('${status.index}',this)">收起</a></td>
-   		</tr>
-   		</table>
-   		<input type="hidden" id="groupid_${status.index}" value="${item.id }" />
-   		<input type="hidden" id="groupname_${status.index}" value="${item.groupname }" />
-   
-   </div>
-	<table class="table" id="group_${status.index}">	
-		<tr><th>选择</th><th width="45%">规则文件名称</th><th width="45%">备注</th></tr>
-		
-		<c:forEach items="${item.ruleFileList}" var="item2" varStatus="status2">
-		<tr>
-			<td>
-				<input type="checkbox" id="ruleFile_${item2.version}" name="ruleFileAry_${status.index }" checked="checked" value="${item2.version}"/>
-			</td>
-			<td>${item2.rulefilename }</td>
-			<td>${item2.bz }</td>
+   <div class="panel-heading">导入选项</div>
+	<table class="table table-bordered">
+	<tr>		
+		<td width="50%">
 			
-		</tr>
-		</c:forEach>
+		      <input type="file" id="zipFile" name="zipFile" />
+		</td>
+		<td>
+		      <button type="button" class="btn btn-success" onclick="doIt()">预览</button>
+		</td>
+	</tr>
 	</table>
 </div>
-</span>
-</c:forEach>
+
+<div class="panel panel-default">
+   <div class="panel-heading">*导入说明（<font color="red">请仔细阅读</font>）</div>
+	<table class="table table-bordered">
+	<tr>		
+		<td>
+			<p>1.导入前先备份当前规则平台的所有规则，因为导入必须清空原有的分组和规则。</p>
+			<p>2.导入文件必须是规则平台导出的ZIP压缩包，否则识别不了规则文件内容。</p>
+			<p>3.文件大小不能超过1M。</p>
+		</td>
+	</tr>
+	</table>
+</div>
 
 
 <div align="center">
-	<button type="button" class="btn btn-success" onclick="exportRule(this)">导出</button>	
+		
 </div>
 
 <!-- 模态框（Modal） -->
