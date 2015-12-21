@@ -3,9 +3,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.founder</groupId>
 	<artifactId>jwzh-rule</artifactId>
-	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>jwzh-rules Maven Webapp</name>
+	<packaging>jar</packaging>
+	<version>1.0.1</version>
+	<name>jwzh-rules</name>
 	<url>http://maven.apache.org</url>
 	
 	<repositories>
@@ -358,6 +358,22 @@
 		</dependency>
 	</dependencies>
 	<build>
+		<sourceDirectory>src/main/rule</sourceDirectory>
+		<finalName>jwzh-rule</finalName>
+		<resources>
+            <resource>
+                <directory>src/main/rule</directory>
+                <excludes>                    
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>applicationContext-rule.xml</include>
+                </includes>                
+            </resource>
+        </resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -365,9 +381,11 @@
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
+					<encoding>UTF-8</encoding>
+					<skip>true</skip>
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>jwzh-rule</finalName>
+		
 	</build>
 </project>
