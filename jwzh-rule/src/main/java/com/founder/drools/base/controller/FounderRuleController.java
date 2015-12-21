@@ -1,5 +1,7 @@
 package com.founder.drools.base.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -74,16 +76,17 @@ public class FounderRuleController extends BaseController {
 		
 		Drools_rule entity= new Drools_rule();
 		entity.setRulefilename(ruleFileName);//规则文件名
-		Drools_rule ruleHead = droolsRuleService.queryRuleByEntity(entity);
-		String ruleFileNameOut=ruleHead.getRulefilename();
+		List<Drools_rule> ruleHead = (List<Drools_rule>)droolsRuleService.queryRuleListByEntity(entity);
+		int ruleNum=ruleHead.size();
 		
 		 //执行规则前先判断规则库中是否有
-		if(ruleFileNameOut!=""){
+		if(ruleNum>0){
 			ruleService.executeRule(ruleBean);
+			ruleBean.setResponse("规则调用成功！");
 			return xStream.toXML(ruleBean);
 		}else{
 			
-			ruleBean.setResponse("没有找到该规则");
+			ruleBean.setResponse("没有找到该规则！");
 			return xStream.toXML(ruleBean);
 		}
        
