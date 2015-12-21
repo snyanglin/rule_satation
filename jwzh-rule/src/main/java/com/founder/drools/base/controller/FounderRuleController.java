@@ -1,6 +1,8 @@
 package com.founder.drools.base.controller;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.founder.drools.base.model.Drools_rule;
 import com.founder.drools.base.service.DroolsGroupService;
 import com.founder.drools.base.service.DroolsMethodService;
 import com.founder.drools.base.service.DroolsRuleService;
@@ -53,7 +56,7 @@ public class FounderRuleController extends BaseController {
 	
 	@Autowired
 	private DroolsRuleService droolsRuleService;
-	
+
 	/**
 	 * 
 	 * @Title: executeRule
@@ -67,17 +70,47 @@ public class FounderRuleController extends BaseController {
 	public @ResponseBody String executeRule(String ruleBeanXmlStr){
 		XStream xStream = new XStream(new DomDriver());
 		RuleBean ruleBean = (RuleBean) xStream.fromXML(ruleBeanXmlStr);
-        
-        //执行规则
-        try{        	
-        	ruleService.executeRule(ruleBean);
-        }catch(Exception e){
-        	e.printStackTrace();
-        	ruleBean.setResponse(e.toString());        	
-        }
+		String ruleFileName=ruleBean.getRuleFileName();
 		
-		return xStream.toXML(ruleBean);
+		Drools_rule entity= new Drools_rule();
+		entity.setRulefilename(ruleFileName);//规则文件名
+		Drools_rule ruleHead = droolsRuleService.queryRuleByEntity(entity);
+		String ruleFileNameOut=ruleHead.getRulefilename();
+		
+		 //执行规则前先判断规则库中是否有
+		if(ruleFileNameOut!=""){
+			ruleService.executeRule(ruleBean);
+			return xStream.toXML(ruleBean);
+		}else{
+			
+			ruleBean.setResponse("没有找到该规则");
+			return xStream.toXML(ruleBean);
+		}
+       
+     
 	}	
+	
+	/**
+	 * 
+	 * @Title: login
+	 * @Description: TODO(登录校正页面)
+	 * @param @return    提示页面/设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
+	@RequestMapping(value = "/login", method = {RequestMethod.POST})
+	public ModelAndView login(HttpServletRequest request,HttpServletResponse response){
+		String userName = request.getParameter("userName");
+		String passWord = request.getParameter("passWord");
+		if(userName.equals("jwzh")&&(passWord.equals("123456"))){
+			ModelAndView mv2 = new ModelAndView("main/main");		
+			return mv2;
+		}else{
+			ModelAndView mv = new ModelAndView("loginFalse");		
+			return mv;
+		}
+		
+	}
 	
 	/**
 	 * 

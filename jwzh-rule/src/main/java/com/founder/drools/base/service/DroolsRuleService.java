@@ -162,7 +162,7 @@ public class DroolsRuleService{
 		}
 		File dir = new File(filePath+testDir);
 		if(!dir.exists()){
-			dir.mkdir();
+			dir.mkdirs();
 		}
 		
 		if(!dir.exists()){

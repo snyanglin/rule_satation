@@ -22,7 +22,7 @@ function onPageChange(pageNum){
 	if(rulefilename == "")
 		rulefilename=$("#rulefilename").val();
 	
-	var paramPairs=[
+	var paramPairs=[ 
 	                
 	 				new ParamPair("pageIndex",pageNum),	 		 		
 	 		 		new ParamPair("rulefilename",rulefilename),
@@ -76,6 +76,7 @@ function doIt(){
 			</select>
 			</div>
 		</td>		
+		
 		<td>
 			<div class="input-group">			
 			<span class="input-group-addon">规则文件名称</span>			

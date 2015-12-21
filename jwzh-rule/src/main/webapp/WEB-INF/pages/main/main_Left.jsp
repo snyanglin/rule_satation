@@ -21,7 +21,7 @@
 <li>
 	<ul>
 		<li class="menu" onclick="menuClick('<%=contextPath%>/urlManager/urlManager')">
-			地址管理
+			地址管理<%=contextPath %>
 		</li>
 		<li class="menu" onclick="menuClick('<%=contextPath%>/serviceManager/serviceManager')">
 			服务管理

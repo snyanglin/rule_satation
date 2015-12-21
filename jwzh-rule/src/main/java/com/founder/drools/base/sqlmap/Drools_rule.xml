@@ -85,6 +85,14 @@
 		<![CDATA[ order by r.CREATETIME DESC ]]>
     </select>
     
+        <!-- 查询规则平台规则表-->
+    <select id="checkByrulefilename" parameterType="String" resultType="String">
+           select * from drools_rule where RULEFILENAME=#{rulefilename}
+         
+		
+    </select>
+    
+    
     <select id="queryDroolsRuleFuzzy" parameterClass="drools_rule" resultClass="drools_rule">
          select r.*,g.GROUPNAME
          from DROOLS_GROUP g,DROOLS_RULE r
