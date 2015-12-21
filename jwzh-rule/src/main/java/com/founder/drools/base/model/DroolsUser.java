@@ -1,6 +1,6 @@
 package com.founder.drools.base.model;
 
-public class UserId {
+public class DroolsUser {
  private String userName;
  private String passWord;
 public String getUserName() {

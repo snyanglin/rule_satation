@@ -9,16 +9,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     <title>My JSP 'index.jsp' starting page</title>
-	<meta http-equiv="Refresh" content="2;url=LoginFirst.jsp">
+	<meta http-equiv="Refresh" content="0;url=LoginFirst.jsp">
 	
   </head>
   
   <body>
      <br>
-     <hr/>
-     <%out.print(path); %>
-     <hr/>
-     <%out.print(basePath); %>
+
   </body>
   
 
