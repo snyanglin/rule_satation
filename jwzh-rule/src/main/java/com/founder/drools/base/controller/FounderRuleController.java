@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.founder.drools.base.model.DroolsUser;
 import com.founder.drools.base.model.Drools_rule;
 import com.founder.drools.base.service.DroolsGroupService;
 import com.founder.drools.base.service.DroolsMethodService;
@@ -101,12 +102,16 @@ public class FounderRuleController extends BaseController {
 	 * @return ModelAndView    返回类型
 	 * @throw
 	 */
-	@RequestMapping(value = "/login", method = {RequestMethod.POST})
+	@RequestMapping(value = "/login", method = {RequestMethod.POST,RequestMethod.GET})
 	public ModelAndView login(HttpServletRequest request,HttpServletResponse response){
 		String userName = request.getParameter("userName");
 		String passWord = request.getParameter("passWord");
-		if(userName.equals("jwzh")&&(passWord.equals("123456"))){
+		DroolsUser user=new DroolsUser();
+		user.setPassWord(passWord);
+		user.setUserName(userName);
+		if("jwzh".equals(userName)&&("123456".equals(passWord))){
 			ModelAndView mv2 = new ModelAndView("main/main");		
+			request.getSession().setAttribute("LoginUser", user);
 			return mv2;
 		}else{
 			ModelAndView mv = new ModelAndView("loginFalse");		
@@ -114,21 +119,7 @@ public class FounderRuleController extends BaseController {
 		}
 		
 	}
-	
-	/**
-	 * 
-	 * @Title: index
-	 * @Description: TODO(规则平台自身主页面)
-	 * @param @return    设定文件
-	 * @return ModelAndView    返回类型
-	 * @throw
-	 */
-	@RequestMapping(value = "/index", method = {RequestMethod.GET})
-	public ModelAndView index(){
-		ModelAndView mv = new ModelAndView("main/main");		
-		return mv;
-	}	
-	
+		
 	/**
 	 * 
 	 * @Title: getUrlNum
