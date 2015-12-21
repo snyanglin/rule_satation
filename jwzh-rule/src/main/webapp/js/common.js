@@ -13,7 +13,7 @@ window.ParamPair = (function(){
 })();
 
 /**
- * 公共ajax post方法
+ * 公共ajax post方法 同步
  * paramPairs:ParamPairs数组
  * url:请求URL
  * calback:返回处理参数
@@ -32,6 +32,49 @@ function postToServer(paramPairs,url,calback){
 	
 	$.ajax({
 		async:true,
+		type:"POST",
+		data:dataStr,
+		dataType:"json",
+		url:url,
+		success:calback,
+		error: function(data){
+			if(data){
+				if(data.status==200){
+					calback(data.responseText);
+				}else if(data.statusText){
+					alert(data.statusText);
+				}else{
+					alert(data);
+				}
+				
+			}else{
+				alert("post to server error!");
+			}
+			
+		}
+	});
+}
+
+/**
+ * 公共ajax post方法 异步
+ * paramPairs:ParamPairs数组
+ * url:请求URL
+ * calback:返回处理参数
+ */
+function postToServerAsync(paramPairs,url,calback){
+	var dataStr="";
+	//参数处理
+	for(var i=0;i<paramPairs.length;i++){
+		if(dataStr!="")
+			dataStr+="&";
+		dataStr+=paramPairs[i].name+"="+paramPairs[i].value;
+	}
+	
+	if(calback==null)
+		calback=postToServerCalback;
+	
+	$.ajax({
+		async:false,
 		type:"POST",
 		data:dataStr,
 		dataType:"json",

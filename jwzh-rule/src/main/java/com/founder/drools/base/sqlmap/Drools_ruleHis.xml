@@ -8,19 +8,21 @@
     <insert id="insert" parameterClass="drools_ruleHis">
        insert into DROOLS_RULEHIS
        (
-        version        
+        id,version        
 		<isNotEmpty prepend="," property="groupid"><![CDATA[ groupid]]></isNotEmpty>
 		<isNotEmpty prepend="," property="groupname"><![CDATA[ groupname]]></isNotEmpty>
 		<isNotEmpty prepend="," property="rulefilename"><![CDATA[ rulefilename]]></isNotEmpty>
 		<isNotEmpty prepend="," property="content"><![CDATA[ content]]></isNotEmpty>
-		<isNotEmpty prepend="," property="ruleid"><![CDATA[ ruleid]]></isNotEmpty>		
+		<isNotEmpty prepend="," property="ruleid"><![CDATA[ ruleid]]></isNotEmpty>	
+		<isNotEmpty prepend="," property="bz"><![CDATA[ bz]]></isNotEmpty>	
        )VALUES(
-       	#version#       	
+       	#id# ,#version#       	
 		<isNotEmpty prepend="," property="groupid"><![CDATA[#groupid#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="groupname"><![CDATA[#groupname#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="rulefilename"><![CDATA[#rulefilename#]]></isNotEmpty>
 		<isNotEmpty prepend="," property="content"><![CDATA[#content#]]></isNotEmpty>
-		<isNotEmpty prepend="," property="ruleid"><![CDATA[#ruleid#]]></isNotEmpty>		
+		<isNotEmpty prepend="," property="ruleid"><![CDATA[#ruleid#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="bz"><![CDATA[ #bz#]]></isNotEmpty>		
        )
     </insert>	
     
@@ -28,7 +30,8 @@
     <select id="queryRuleHis" parameterClass="drools_ruleHis" resultClass="drools_ruleHis">
          select * from DROOLS_RULEHIS
 		 where 1=1	
-		 <isNotEmpty prepend=" and " property="version">VERSION = #version#</isNotEmpty>
+		<isNotEmpty prepend=" and " property="id">ID = #id#</isNotEmpty>
+		<isNotEmpty prepend=" and " property="version">VERSION = #version#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="groupid">GROUPID = #groupid#</isNotEmpty>
 		<isNotEmpty prepend=" and " property="groupname"><![CDATA[GROUPNAME like '%$groupname$%' ]]></isNotEmpty>
 		<isNotEmpty prepend=" and " property="rulefilename"><![CDATA[ RULEFILENAME like '%$rulefilename$%' ]]></isNotEmpty>
@@ -50,13 +53,19 @@
 		
 		order by VERSION DESC
     </select>
+    <!-- 查询导出列表 -->
+    <select id="queryExportList" parameterClass="String" resultClass="drools_ruleHis">
+	    select * from DROOLS_RULEHIS 
+	    where 
+			VERSION in ( select max(VERSION) from DROOLS_RULEHIS group by RULEID)
+		and RULEID in (select distinct(id) from DROOLS_RULE where RULETYPE='0')
+		and groupid=#groupid#
+		order by VERSION DESC
+    </select>
     
     <!-- 查询规则平台历史分组表-->
     <select id="queryRuleHisGroup"  resultClass="drools_ruleHis">
          select distinct GROUPID, GROUPNAME from DROOLS_RULEHIS  order by GROUPID	
     </select>
     
-    <delete id="deleteRuleHis" parameterClass="drools_rule">
-    	delete from DROOLS_RULEHIS where VERSION = #version#
-    </delete>
 </sqlMap>

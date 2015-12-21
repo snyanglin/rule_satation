@@ -48,6 +48,17 @@
 		</li>
 	</ul>
 </li>
+<li class="menuf">导入导出</li>
+<li>
+	<ul>
+		<li class="menu" onclick="menuClick('<%=contextPath%>/ruleExOrIm/ruleExportPre')">
+			规则导出
+		</li>
+		<li class="menu" onclick="menuClick('<%=contextPath%>/ruleExOrIm/ruleImportPre')">
+			规则导入
+		</li>		
+	</ul>
+</li>
 </ul>
 </body>
 </html>

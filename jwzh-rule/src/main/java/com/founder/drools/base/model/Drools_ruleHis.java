@@ -11,14 +11,22 @@ public class Drools_ruleHis extends BaseModle implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@FieldDesc("ID") private String id;
 	@FieldDesc("版本，归档时间") private String version;	
 	@FieldDesc("分组ID") private String groupid;
 	@FieldDesc("分组名") private String groupname;
 	@FieldDesc("规则文件名") private String rulefilename;
 	@FieldDesc("规则内容") private String content;
+	@FieldDesc("备注") private String bz;
 	@FieldDesc("使用时的规则ID，区分是否是同一个规则") private String ruleid;
 	
 	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getVersion() {
 		return version;
 	}
@@ -48,6 +56,12 @@ public class Drools_ruleHis extends BaseModle implements Serializable {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	public String getBz() {
+		return bz;
+	}
+	public void setBz(String bz) {
+		this.bz = bz;
 	}
 	public String getRuleid() {
 		return ruleid;

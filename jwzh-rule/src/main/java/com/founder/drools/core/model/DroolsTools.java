@@ -262,7 +262,7 @@ public class DroolsTools {
 	 * @return OrgUser    返回类型
 	 * @throw
 	 */
-	public OrgUser getOrgUserByUserId(String userId){
+	public static OrgUser getOrgUserByUserId(String userId){
 		return getOrgUserService().queryByUserid(userId);		
 	}
 	
@@ -306,7 +306,7 @@ public class DroolsTools {
 	 * @return boolean    返回类型
 	 * @throw
 	 */
-	public boolean isEmpty(String str){
+	public static boolean isEmpty(String str){
 		if(str==null || str.length()==0)
 			return false;
 		else
