@@ -85,7 +85,6 @@ public class FounderRuleController extends BaseController {
 		 //执行规则前先判断规则库中是否有
 		if(ruleNum>0){
 			ruleService.executeRule(ruleBean);
-			ruleBean.setResponse("规则调用成功！");
 			return xStream.toXML(ruleBean);
 		}else{
 			
