@@ -338,7 +338,7 @@
 		<dependency>
 			<groupId>com.founder</groupId>
 			<artifactId>jwzh-framework</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
