@@ -69,7 +69,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
 			builder.append("<script type=\"text/javascript\" charset=\"UTF-8\">");  
 			builder.append("alert(\"\u7528\u6237\u64CD\u4F5C\u8D85\u65F6,\u8BF7\u91CD\u65B0\u767B\u5F55\uFF01\");");  
 			builder.append("window.top.location.href=\"");  
-			builder.append(path+"/LoginFirst.jsp\";</script>");  
+			builder.append(path+"/founderRule/index\";</script>");  
 			out.print(builder.toString());  
 			out.close();
 			return false;

@@ -100,6 +100,8 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
                 <list>    
                   <value>^\/(\w+\/)*index\.jsp$</value>    
                   <value>.*jwzh-rule\/founderRule\/login</value>
+                  <value>.*jwzh-rule\/founderRule\/index</value>
+                  <value>.*jwzh-rule\/founderRule\/index.do</value>
                   <value>.*\.(js|png|css)$</value>
                   <value>.*jwzh-rule/forward/.*</value>
                   <value>.*\/test\/.*</value>

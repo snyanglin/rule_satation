@@ -96,6 +96,20 @@ public class FounderRuleController extends BaseController {
 	
 	/**
 	 * 
+	 * @Title: index
+	 * @Description: TODO(规则平台登录页面)
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
+	@RequestMapping(value = "/index", method = {RequestMethod.GET})
+	public ModelAndView index(){
+		ModelAndView mv = new ModelAndView("login");		
+		return mv;
+	}
+	
+	/**
+	 * 
 	 * @Title: login
 	 * @Description: TODO(登录校正页面)
 	 * @param @return    提示页面/设定文件
@@ -117,7 +131,13 @@ public class FounderRuleController extends BaseController {
 			ModelAndView mv = new ModelAndView("loginFalse");		
 			return mv;
 		}
-		
+	}
+	
+	@RequestMapping(value = "/logout", method = {RequestMethod.POST,RequestMethod.GET})
+	public ModelAndView logout(HttpServletRequest request,HttpServletResponse response){
+		ModelAndView mv = new ModelAndView("login");
+		request.getSession().setAttribute("LoginUser", null);
+		return mv;
 	}
 		
 	/**
