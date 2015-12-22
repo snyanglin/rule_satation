@@ -41,6 +41,9 @@ function postToServer(paramPairs,url,calback){
 			if(data){
 				if(data.status==200){
 					calback(data.responseText);
+				}else if(data.status==409){
+					alert("用户操作超时,请重新登录！");
+					window.top.location.href=contextPath+"/founderRule/index";
 				}else if(data.statusText){
 					alert(data.statusText);
 				}else{
@@ -84,6 +87,9 @@ function postToServerAsync(paramPairs,url,calback){
 			if(data){
 				if(data.status==200){
 					calback(data.responseText);
+				}else if(data.status==409){
+					alert("用户操作超时,请重新登录！");
+					window.top.location.href=contextPath+"/founderRule/index";
 				}else if(data.statusText){
 					alert(data.statusText);
 				}else{

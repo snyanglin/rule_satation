@@ -62,17 +62,22 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
 		
 		Object user=request.getSession().getAttribute("LoginUser");
 		if(user==null || !(user instanceof DroolsUser)){
-			
-			PrintWriter out = response.getWriter();  
-			StringBuilder builder = new StringBuilder();  
-			String path = request.getContextPath();
-			builder.append("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head>");
-			builder.append("<script type=\"text/javascript\" charset=\"UTF-8\">");  
-			builder.append("alert(\"\u7528\u6237\u64CD\u4F5C\u8D85\u65F6,\u8BF7\u91CD\u65B0\u767B\u5F55\uFF01\");");  
-			builder.append("window.top.location.href=\"");  
-			builder.append(path+"/founderRule/index\";</script>");  
-			out.print(builder.toString());  
-			out.close();
+			if ((request.getHeader("x-requested-with") != null)
+					&& (request.getHeader("x-requested-with")
+							.equalsIgnoreCase("XMLHttpRequest"))) {
+				response.setStatus(409);
+			} else {
+				PrintWriter out = response.getWriter();  
+				StringBuilder builder = new StringBuilder();  
+				String path = request.getContextPath();
+				builder.append("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head>");
+				builder.append("<script type=\"text/javascript\" charset=\"UTF-8\">");  
+				builder.append("alert(\"用户操作超时,请重新登录！\");");
+				builder.append("window.top.location.href=\"");  
+				builder.append(path+"/founderRule/index\";</script>");  
+				out.print(builder.toString());  
+				out.close();
+			}
 			return false;
 		}
 		
