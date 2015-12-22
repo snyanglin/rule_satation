@@ -285,7 +285,7 @@
 						<tr>
 							<td align="left" width="30%">
    								<button type="button" class="btn btn-success btn-sm" id="saveButton_${status.index}" style="display:none;" onclick="saveRule(${status.index},'${item.id}')" >保存</button>
-   								<button type="button" class="btn btn-danger btn-sm" onclick="deleteRule(${status.index},${item.id})" >删除</button>   						
+   								<button type="button" class="btn btn-danger btn-sm" onclick="deleteRule(${status.index},'${item.id}')" >删除</button>   						
 							</td>
 							<td align="center">
 								<input type="hidden" id="rulename_${status.index}" name="rulename_${status.index}" value="${item.rulename}" />
