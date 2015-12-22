@@ -22,6 +22,7 @@ import com.founder.drools.base.service.DroolsServiceService;
 import com.founder.drools.base.service.DroolsUrlService;
 import com.founder.drools.core.inteface.RuleService;
 import com.founder.drools.core.request.RuleBean;
+import com.founder.framework.annotation.RestfulAnnotation;
 import com.founder.framework.base.controller.BaseController;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -69,6 +70,7 @@ public class FounderRuleController extends BaseController {
 	 * @return String    返回类型
 	 * @throw
 	 */
+	@RestfulAnnotation(valiField = "ruleBeanXmlStr", serverId = "3")
 	@RequestMapping(value = "/executeRule", method = {RequestMethod.POST})
 	public @ResponseBody String executeRule(String ruleBeanXmlStr){
 		XStream xStream = new XStream(new DomDriver());

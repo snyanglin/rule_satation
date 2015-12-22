@@ -1,24 +1,18 @@
 package com.founder.drools.core.interceptor;
 
 import java.io.PrintWriter;
-import java.util.HashMap;
+import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-import org.springframework.web.util.WebUtils;
 
 import com.founder.drools.base.model.DroolsUser;
-import com.founder.framework.base.entity.SessionBean;
-import com.founder.framework.components.AppConst;
-import com.founder.framework.httpService.BaseHttpClient;
-import com.founder.framework.httpService.HttpClientResultBean;
-import com.founder.framework.httpService.SSOAuthHttpClient;
+import com.founder.framework.annotation.RestfulAnnotation;
 
 /**
  * ****************************************************************************
@@ -36,10 +30,6 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
 
 	private List<String> allowUrls;
 	
-	private SSOAuthHttpClient client = new SSOAuthHttpClient();
-	
-	private static final ThreadLocal<String> threadLocal = new ThreadLocal<String>();  
-	
 	public List<String> getAllowUrls() {
 		return allowUrls;
 	}
@@ -51,6 +41,15 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 
+		//RestfulAnnotation
+		if (handler instanceof HandlerMethod) {
+			HandlerMethod handlerMethod = (HandlerMethod) handler;
+			Method method = handlerMethod.getMethod();
+			if (method.isAnnotationPresent(RestfulAnnotation.class)) {
+				return true;
+			}
+		}
+				
 		//允许通过的URL不验session
 		String requestUrl = request.getRequestURI();  
 		for(String url : allowUrls) {  
@@ -58,6 +57,8 @@ public class SessionInterceptor extends HandlerInterceptorAdapter{
 				return true;  
 			}  
 		} 
+		
+		
 		
 		Object user=request.getSession().getAttribute("LoginUser");
 		if(user==null || !(user instanceof DroolsUser)){
