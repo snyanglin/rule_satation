@@ -28,9 +28,12 @@ function groupCheck(obj,index){
 }
 
 function importRule(obj){
-	$(obj).prop("disabled",true);
+	if(!confirm("您即将清空原有规则，导入新的规则，您确认要导入么？"))
+		return;
 	
+	$(obj).prop("disabled",true);
 	if(groupSize){
+		clearRule();
 		var groupname;
 		var fileNameAry;
 		for(var index=0;index<groupSize;index++){//循环获取分组
@@ -70,6 +73,18 @@ function importRuleFile(groupIndex,ruleIndex,ruleFileName){
 			}
 		}else{
 			$("#statusText_"+groupIndex+"_"+ruleIndex).html("导入失败");
+		}		
+	});
+}
+
+function clearRule(){
+	var url="<%=basePath%>ruleExOrIm/clrearRule";
+	
+	postToServerAsync(null,url,function(data){ 			
+		if(data){
+			
+		}else{
+			
 		}		
 	});
 }

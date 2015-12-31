@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -42,7 +44,7 @@ public class ZipUtils {
 	 */
 	public static void zipFiles(String src, String target) { 
 		try {
-			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(new File(target))); 
+			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(new File(target)),StandardCharsets.UTF_8);
 			File file = new File(src);
 			if(file.isDirectory())
 				zipFiles(file, out,file.getName());
@@ -98,14 +100,14 @@ public class ZipUtils {
     /**
      * 
      * @Title: unZipFile
-     * @Description: TODO(解压ZIP)
+     * @Description: TODO(以UTF-8编码 解压ZIP)
      * @param @param bytes
      * @param @param basePath    设定文件
      * @return void    返回类型
      * @throw
      */
     public static void unZipFile(byte[] bytes,String basePath){
-    	ZipInputStream in=new ZipInputStream(new ByteArrayInputStream(bytes));
+    	ZipInputStream in=new ZipInputStream(new ByteArrayInputStream(bytes),StandardCharsets.UTF_8);
     	try{
     		ZipEntry zipEntry = in.getNextEntry();
     		while(zipEntry!=null){
@@ -114,7 +116,7 @@ public class ZipUtils {
     				file.mkdirs();
     			}else{
     				file.createNewFile();
-    				FileOutputStream out = new FileOutputStream(file);  
+    				FileOutputStream out= new FileOutputStream(file);  
     				int b = 0;  
     				while ((b = in.read()) != -1){  
     					out.write(b);  

@@ -156,6 +156,7 @@ public class RuleExOrImController extends BaseController {
 				throw new RuntimeException("File type can only be 'zip'!");
 			}
 			
+			//解压ZIP,获取分组
 			List<Drools_group> groupList=droolsRuleHisService.importZip(zipFile.getBytes());
 			mv.addObject("GroupList",groupList);
 		}
@@ -188,6 +189,24 @@ public class RuleExOrImController extends BaseController {
 			for(int i=0;i<list.size();i++){
 				 droolsRuleService.addRule(list.get(i));
 			}
+		}catch(Exception e){
+			e.printStackTrace();
+			map.put("resStatus", "1");//失败
+			map.put("errorMsg", e.toString());//失败
+		}
+		
+		return map;
+	}
+	
+	
+	@RequestMapping(value = "/clrearRule", method = {RequestMethod.POST})
+	public @ResponseBody Map<String, String> clrearRule(){
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("resStatus", "0");//成功
+		
+		try{
+			droolsRuleService.clearRule();
+			droolsGroupService.clearGroup();
 		}catch(Exception e){
 			e.printStackTrace();
 			map.put("resStatus", "1");//失败

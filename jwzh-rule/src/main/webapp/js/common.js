@@ -21,10 +21,12 @@ window.ParamPair = (function(){
 function postToServer(paramPairs,url,calback){
 	var dataStr="";
 	//参数处理
-	for(var i=0;i<paramPairs.length;i++){
-		if(dataStr!="")
-			dataStr+="&";
-		dataStr+=paramPairs[i].name+"="+paramPairs[i].value;
+	if(paramPairs!=null){
+		for(var i=0;i<paramPairs.length;i++){
+			if(dataStr!="")
+				dataStr+="&";
+			dataStr+=paramPairs[i].name+"="+paramPairs[i].value;
+		}
 	}
 	
 	if(calback==null)
@@ -67,10 +69,12 @@ function postToServer(paramPairs,url,calback){
 function postToServerAsync(paramPairs,url,calback){
 	var dataStr="";
 	//参数处理
-	for(var i=0;i<paramPairs.length;i++){
-		if(dataStr!="")
-			dataStr+="&";
-		dataStr+=paramPairs[i].name+"="+paramPairs[i].value;
+	if(paramPairs!=null){
+		for(var i=0;i<paramPairs.length;i++){
+			if(dataStr!="")
+				dataStr+="&";
+			dataStr+=paramPairs[i].name+"="+paramPairs[i].value;
+		}
 	}
 	
 	if(calback==null)

@@ -234,6 +234,15 @@ public class DroolsRuleHisService{
 		return drools_ruleHisDao.queryExportList(groupid);
 	}
 
+	/**
+	 * 
+	 * @Title: importZip
+	 * @Description: TODO(解压ZIP文件，读取规则文件)
+	 * @param @param bytes
+	 * @param @return    设定文件
+	 * @return List<Drools_group>    返回类型
+	 * @throw
+	 */
 	public List<Drools_group> importZip(byte[] bytes) {
 		if(filePath==null || filePath.length()==0)
 			filePath = SystemConfig.getString("DrlFilePath");
@@ -258,6 +267,17 @@ public class DroolsRuleHisService{
 		return groupList;
 	}
 	
+	/**
+	 * 
+	 * @Title: importRule
+	 * @Description: TODO(导入规则文件内容到数据库)
+	 * @param @param groupId
+	 * @param @param ruleFileName
+	 * @param @param filePath
+	 * @param @return    设定文件
+	 * @return List<Drools_rule>    返回类型
+	 * @throw
+	 */
 	public List<Drools_rule> importRule(String groupId,String ruleFileName,String filePath){
 		return RuleFileUtil.readRuleFromFile(groupId,ruleFileName,filePath);
 	}
