@@ -48,10 +48,33 @@ public class DroolsMethodService{
 		return drools_methodDao.queryListByEntity(entity);
 	}
 	
+	/**
+	 * 
+	 * @Title: addMethod
+	 * @Description: TODO(添加方法，)
+	 * @param @param entity    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
 	public void addMethod(Drools_method entity) {		
 		BaseModelUtils.setSaveProperty(entity);			
 		entity.setId(UUID.create());
 		drools_methodDao.insert(entity);
+	}
+	
+	/**
+	 * 
+	 * @Title: addMethodList
+	 * @Description: TODO(批量添加)
+	 * @param @param list    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void addMethodList(List<Drools_method> list) {		
+		for(Drools_method entity:list){
+			BaseModelUtils.setSaveProperty(entity);
+			drools_methodDao.insert(entity);
+		}
 	}
 	
 	public void updateMethod(Drools_method entity) {		

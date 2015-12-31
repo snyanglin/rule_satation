@@ -17,6 +17,7 @@ import com.founder.drools.base.model.Drools_rule;
 import com.founder.drools.base.model.Drools_ruleHis;
 import com.founder.drools.core.model.RuleFileUtil;
 import com.founder.drools.core.model.ZipUtils;
+import com.founder.drools.core.request.DroolsRequest;
 import com.founder.framework.config.SystemConfig;
 
 /**
@@ -96,6 +97,19 @@ public class DroolsRuleHisService{
 			resEntity = this.queryRuleHis(queryEntity);//规则文件
 			this.writeDrl(exportDir, resEntity);//生成文件
 		}
+	}
+	
+	public void exportSys(String timeStr,String fileName,List list){
+		if(filePath==null || filePath.length()==0)
+			filePath = SystemConfig.getString("DrlFilePath");
+		if(filePath==null || filePath.length()==0)
+			throw new RuntimeException("can not find \"DrlFilePath\" in systemconfig");
+		
+		//创建文件夹
+		String exportDir=filePath+"/export/"+timeStr+"/sysconfig";
+		
+		this.writeSysFile(exportDir,fileName, list);
+		
 	}
 	
 	/**
@@ -221,6 +235,24 @@ public class DroolsRuleHisService{
 		}
 	}
 	
+	private void  writeSysFile(String exportDir,String fileName,List list){		
+		try{			
+			File dir=new File(exportDir);
+			if(!dir.exists())
+				dir.mkdirs();
+			File file=new File(exportDir+"/"+fileName+".xml");
+			
+			file.createNewFile();
+			
+			FileWriter fileWriter =new FileWriter(file);
+            fileWriter.write(DroolsRequest.Obj2XStream(list));
+            fileWriter.flush();
+            fileWriter.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * 
 	 * @Title: queryExportList
@@ -280,6 +312,21 @@ public class DroolsRuleHisService{
 	 */
 	public List<Drools_rule> importRule(String groupId,String ruleFileName,String filePath){
 		return RuleFileUtil.readRuleFromFile(groupId,ruleFileName,filePath);
+	}
+	
+	/**
+	 * 
+	 * @Title: importSys
+	 * @Description: TODO(导入服务方法的List)
+	 * @param @param ruleFileName
+	 * @param @param filePath
+	 * @param @return    设定文件
+	 * @return List    返回类型
+	 * @throw
+	 */
+	public List importSys(String filePath){
+		
+		return RuleFileUtil.readSysConfigFromFile(filePath);
 	}
 
 }

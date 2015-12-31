@@ -88,6 +88,18 @@ function clearRule(){
 		}		
 	});
 }
+
+function importSys(){
+	var url="<%=basePath%>ruleExOrIm/importSys";
+	
+	postToServerAsync(null,url,function(data){ 			
+		if(data){
+			
+		}else{
+			
+		}		
+	});
+}
 </script>
 </head>
 <body>

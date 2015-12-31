@@ -14,6 +14,7 @@ import java.util.Map;
 import com.founder.drools.base.model.Drools_group;
 import com.founder.drools.base.model.Drools_rule;
 import com.founder.drools.base.model.Drools_ruleHis;
+import com.founder.drools.core.request.DroolsRequest;
 
 public class RuleFileUtil {
 	/**
@@ -41,7 +42,7 @@ public class RuleFileUtil {
 					fileType = fileName.substring(atI + 1);
 					fileType = fileType.toLowerCase();
 				}
-				if(!"drl".equals(fileType)){//只读取规则文件
+				if(!"drl".equals(fileType) && !"xml".equals(fileType)){//只读取规则文件和配置文件
 					return;
 				}
 				
@@ -55,7 +56,10 @@ public class RuleFileUtil {
 				entity.setRulefilename(ruleFileName);
 		        ruleFileList.add(entity);
 				
-		        entity.setBz(readBZ(file));
+		        if("drl".equals(fileType))
+		        	entity.setBz(readBZ(file));
+		        else
+		        	entity.setBz("系统服务方法配置文件");
 		        entity.setContent(file.getPath());
 		       
 			}
@@ -196,6 +200,44 @@ public class RuleFileUtil {
         return list;
 	}
 	
+	/**
+	 * 
+	 * @Title: readSysConfigFromFile
+	 * @Description: TODO(读取配置的xml，转成list)
+	 * @param @param filePath
+	 * @param @return    设定文件
+	 * @return List    返回类型
+	 * @throw
+	 */
+	public static List readSysConfigFromFile(String filePath){
+        BufferedReader br = null;
+		try { 
+			FileInputStream fis = new FileInputStream(filePath); 
+	        InputStreamReader isr = new InputStreamReader(fis, "UTF-8"); 
+			 br = new BufferedReader(isr);
+			 StringBuffer content=new StringBuffer();//文件内容
+	         String line = ""; 
+	            
+	         while ((line = br.readLine()) != null) {
+        		 content.append(line).append("\r\n");
+	         }
+	         
+	         return (List) DroolsRequest.XStream2Obj(content.toString());
+		 }catch (Exception e) {
+	        	e.printStackTrace();
+	     }finally{
+	            if(br!=null){
+	                try {
+	                    br.close();
+	                    br=null;
+	                } catch (IOException e) {
+	                    e.printStackTrace();
+	                }
+	            }
+	     }
+		
+		return null;
+	}
 	
 	/**
 	 * 
