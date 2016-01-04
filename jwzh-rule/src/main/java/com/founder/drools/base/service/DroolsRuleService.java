@@ -52,8 +52,17 @@ public class DroolsRuleService{
 		return drools_ruleDao.queryByEntity(entity);
 	}
 	
+	
+	/**
+	 * 
+	 * @Title: addRule
+	 * @Description: TODO(规则添加)
+	 * @param @param entity    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
 	public void addRule(Drools_rule entity) {
-		entity.setStatus("1");
+		entity.setStatus("1");//初始状态，未验证
 		BaseModelUtils.setSaveProperty(entity);				
 		entity.setId(UUID.create());
 		if("undefined".equals(entity.getParamstr())){
@@ -62,21 +71,55 @@ public class DroolsRuleService{
 		drools_ruleDao.insert(entity);
 	}
 	
+	/**
+	 * 
+	 * @Title: updateRule
+	 * @Description: TODO(规则更新)
+	 * @param @param entity    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
 	public void updateRule(Drools_rule entity) {		
 		entity.setUpdatetime(new Date());		
 		drools_ruleDao.update(entity);
 	}
 	
+	/**
+	 * 
+	 * @Title: queryRuleManagerList
+	 * @Description: TODO(查询规则管理列表)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return List<Drools_rule>    返回类型
+	 * @throw
+	 */
 	public List<Drools_rule> queryRuleManagerList(Drools_rule entity) {	
 		if(entity == null) entity= new Drools_rule();
 		entity.setRuletype("0");//查询规则显示列表
 		return drools_ruleDao.queryListByEntityFuzzy(entity);
 	}
 	
+	/**
+	 * 
+	 * @Title: queryRuleListByEntity
+	 * @Description: TODO(通过实体对象查询规则列表)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return List<Drools_rule>    返回类型
+	 * @throw
+	 */
 	public List<Drools_rule> queryRuleListByEntity(Drools_rule entity) {		 
 		return drools_ruleDao.queryListByEntity(entity);
 	}
 
+	/**
+	 * 
+	 * @Title: deleteRule
+	 * @Description: TODO(规则删除)
+	 * @param @param id    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
 	public void deleteRule(String id){
 		drools_ruleDao.delete(id);
 	}
@@ -300,6 +343,18 @@ public class DroolsRuleService{
 	 */
 	public int countRuleNum(){
 		return drools_ruleDao.countRuleNum();
+	}
+	
+	/**
+	 * 
+	 * @Title: clearRule
+	 * @Description: TODO(清空规则)
+	 * @param     设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void clearRule(){
+		drools_ruleDao.clearRule();
 	}
 
 }

@@ -85,4 +85,16 @@ public class Drools_groupDao extends BaseDaoImpl {
 	public int countGroupNum() {
 		return (int) super.queryForObject("Drools_group.countGroupNum",null);
 	}
+	
+	/**
+	 * 
+	 * @Title: clearGroup
+	 * @Description: TODO(清空分组)
+	 * @param     设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void clearGroup(){
+		super.delete("Drools_group.clearGroup", null);
+	}
 }

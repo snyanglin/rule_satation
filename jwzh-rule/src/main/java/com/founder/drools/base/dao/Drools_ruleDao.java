@@ -87,4 +87,15 @@ public class Drools_ruleDao extends BaseDaoImpl {
 		return (int) super.queryForObject("Drools_rule.countRuleNum",null);
 	}
 
+	/**
+	 * 
+	 * @Title: clearRule
+	 * @Description: TODO(清空规则)
+	 * @param     设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void clearRule(){
+		super.delete("Drools_rule.clearRule", null);
+	}
 }

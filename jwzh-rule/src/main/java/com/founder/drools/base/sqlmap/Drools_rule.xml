@@ -110,6 +110,10 @@
     	delete from DROOLS_RULE where RULEFILENAME = #rulefilename#
     </delete>
     
+    <!-- 清空规则 -->
+    <delete id="clearRule" parameterClass="String">
+    	delete from DROOLS_RULE
+    </delete>
     
     <select id="countRuleNum" parameterClass="drools_rule" resultClass="java.lang.Integer">
          select count(*) from DROOLS_RULE where RULETYPE='0'

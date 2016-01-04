@@ -2,8 +2,10 @@ package com.founder.drools.core.model;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,8 +14,18 @@ import java.util.Map;
 import com.founder.drools.base.model.Drools_group;
 import com.founder.drools.base.model.Drools_rule;
 import com.founder.drools.base.model.Drools_ruleHis;
+import com.founder.drools.core.request.DroolsRequest;
 
 public class RuleFileUtil {
+	/**
+	 * 
+	 * @Title: readRuleFromDir
+	 * @Description: TODO(从某个路径下读取规则)
+	 * @param @param file 存放规则的最上层路劲
+	 * @param @param groupMap    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
 	public static void readRuleFromDir(File file,Map<String,Drools_group> groupMap){
 		try{
 			if(file.isDirectory()){//目录
@@ -30,7 +42,7 @@ public class RuleFileUtil {
 					fileType = fileName.substring(atI + 1);
 					fileType = fileType.toLowerCase();
 				}
-				if(!"drl".equals(fileType)){//只读取规则文件
+				if(!"drl".equals(fileType) && !"xml".equals(fileType)){//只读取规则文件和配置文件
 					return;
 				}
 				
@@ -44,7 +56,10 @@ public class RuleFileUtil {
 				entity.setRulefilename(ruleFileName);
 		        ruleFileList.add(entity);
 				
-		        entity.setBz(readBZ(file));
+		        if("drl".equals(fileType))
+		        	entity.setBz(readBZ(file));
+		        else
+		        	entity.setBz("系统服务方法配置文件");
 		        entity.setContent(file.getPath());
 		       
 			}
@@ -54,7 +69,17 @@ public class RuleFileUtil {
 		}
 	}
 	
-	public List readRule(String ruleFileName,String content){
+	/**
+	 * 
+	 * @Title: readRule
+	 * @Description: TODO(解析读取到的文件内容)
+	 * @param @param ruleFileName 规则文件名
+	 * @param @param content 文件内容
+	 * @param @return    设定文件
+	 * @return List<Drools_rule>    返回类型
+	 * @throw
+	 */
+	public List<Drools_rule> readRule(String ruleFileName,String content){
 		Drools_rule rule_head=new Drools_rule();//规则头
 		rule_head.setRuletype("0");
         rule_head.setRulefilename(ruleFileName);
@@ -85,6 +110,17 @@ public class RuleFileUtil {
         return ruleList;
 	}
 	
+	/**
+	 * 
+	 * @Title: readRuleFromFile
+	 * @Description: TODO(以UTF-8编码读取规则文件并解析)
+	 * @param @param groupId
+	 * @param @param ruleFileName
+	 * @param @param filePath
+	 * @param @return    设定文件
+	 * @return List<Drools_rule>    返回类型
+	 * @throw
+	 */
 	public static List<Drools_rule> readRuleFromFile(String groupId,String ruleFileName,String filePath){
 		List<Drools_rule> list=new LinkedList<Drools_rule>();
 		Drools_rule rule_head=new Drools_rule();//规则头
@@ -95,7 +131,9 @@ public class RuleFileUtil {
         BufferedReader br = null;
         boolean readHead=true;
 		try { 
-			 br = new BufferedReader(new FileReader(new File(filePath)));
+			FileInputStream fis = new FileInputStream(filePath); 
+	        InputStreamReader isr = new InputStreamReader(fis, "UTF-8"); 
+			 br = new BufferedReader(isr);
 			 StringBuffer content=new StringBuffer();//规则内容Buf
 	         String line = ""; 
 	         String ruleName;
@@ -162,8 +200,55 @@ public class RuleFileUtil {
         return list;
 	}
 	
+	/**
+	 * 
+	 * @Title: readSysConfigFromFile
+	 * @Description: TODO(读取配置的xml，转成list)
+	 * @param @param filePath
+	 * @param @return    设定文件
+	 * @return List    返回类型
+	 * @throw
+	 */
+	public static List readSysConfigFromFile(String filePath){
+        BufferedReader br = null;
+		try { 
+			FileInputStream fis = new FileInputStream(filePath); 
+	        InputStreamReader isr = new InputStreamReader(fis, "UTF-8"); 
+			 br = new BufferedReader(isr);
+			 StringBuffer content=new StringBuffer();//文件内容
+	         String line = ""; 
+	            
+	         while ((line = br.readLine()) != null) {
+        		 content.append(line).append("\r\n");
+	         }
+	         
+	         return (List) DroolsRequest.XStream2Obj(content.toString());
+		 }catch (Exception e) {
+	        	e.printStackTrace();
+	     }finally{
+	            if(br!=null){
+	                try {
+	                    br.close();
+	                    br=null;
+	                } catch (IOException e) {
+	                    e.printStackTrace();
+	                }
+	            }
+	     }
+		
+		return null;
+	}
 	
-
+	/**
+	 * 
+	 * @Title: getGroup
+	 * @Description: TODO(获取分组名，文件夹名既是分组名，分组不可重复，所以存公共Map中)
+	 * @param @param file
+	 * @param @param groupMap
+	 * @param @return    设定文件
+	 * @return Drools_group    返回类型
+	 * @throw
+	 */
 	private static Drools_group getGroup(File file,Map<String,Drools_group> groupMap){
 		String groupName=file.getParent();
 		int subIndex=groupName.lastIndexOf('\\');

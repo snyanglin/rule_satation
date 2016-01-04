@@ -43,10 +43,33 @@ public class DroolsServiceService{
 		return drools_serviceDao.queryListByEntity(entity);
 	}
 	
+	/**
+	 * 
+	 * @Title: addService
+	 * @Description: TODO(服务添加，新增ID)
+	 * @param @param entity    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
 	public void addService(Drools_service entity) {		
 		BaseModelUtils.setSaveProperty(entity);	
 		entity.setId(UUID.create());
 		drools_serviceDao.insert(entity);
+	}
+	
+	/**
+	 * 
+	 * @Title: addServiceList
+	 * @Description: TODO(批量添加)
+	 * @param @param list    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void addServiceList(List<Drools_service>	list) {		
+		for(Drools_service entity:list){
+			BaseModelUtils.setSaveProperty(entity);
+			drools_serviceDao.insert(entity);
+		}
 	}
 	
 	public void updateService(Drools_service entity) {		

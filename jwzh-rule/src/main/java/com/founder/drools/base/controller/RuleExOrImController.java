@@ -19,11 +19,19 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.founder.drools.base.model.Drools_group;
+import com.founder.drools.base.model.Drools_method;
+import com.founder.drools.base.model.Drools_method_parameter;
 import com.founder.drools.base.model.Drools_rule;
 import com.founder.drools.base.model.Drools_ruleHis;
+import com.founder.drools.base.model.Drools_service;
+import com.founder.drools.base.model.Drools_url;
 import com.founder.drools.base.service.DroolsGroupService;
+import com.founder.drools.base.service.DroolsMethodService;
+import com.founder.drools.base.service.DroolsParamService;
 import com.founder.drools.base.service.DroolsRuleHisService;
 import com.founder.drools.base.service.DroolsRuleService;
+import com.founder.drools.base.service.DroolsServiceService;
+import com.founder.drools.base.service.DroolsUrlService;
 import com.founder.framework.base.controller.BaseController;
 /**
  * ****************************************************************************
@@ -50,6 +58,14 @@ public class RuleExOrImController extends BaseController {
 	
 	@Autowired
 	private DroolsRuleService droolsRuleService;
+	@Autowired
+	private DroolsMethodService droolsMethodService;
+	@Autowired
+	private DroolsServiceService droolsServiceService;
+	@Autowired
+	private DroolsUrlService droolsUrlService;
+	@Autowired
+	private DroolsParamService droolsParamService;
 	/**
 	 * 
 	 * @Title: ruleExportPre
@@ -156,6 +172,7 @@ public class RuleExOrImController extends BaseController {
 				throw new RuntimeException("File type can only be 'zip'!");
 			}
 			
+			//解压ZIP,获取分组
 			List<Drools_group> groupList=droolsRuleHisService.importZip(zipFile.getBytes());
 			mv.addObject("GroupList",groupList);
 		}
@@ -169,25 +186,99 @@ public class RuleExOrImController extends BaseController {
 		map.put("resStatus", "0");//成功
 		
 		try{
-			//验证规则文件是否存在
-			Drools_rule queryEntity=new Drools_rule();
-			queryEntity.setRulefilename(ruleFileName.trim());
-			List<Drools_rule> resList=droolsRuleService.queryRuleListByEntity(queryEntity);
-			if(resList.size()>0)
-				throw new RuntimeException("Rule file \""+ruleFileName+"\" is exits!");
-			
-			//验证分组是否存在，不存在则创建
-			Drools_group groupEntity= droolsGroupService.validateAndAdd(groupname);
-			
-			List<Drools_rule> list=droolsRuleHisService.importRule(groupEntity.getId(), ruleFileName, filePath);
-			if(list.size()==0){
-				map.put("resStatus", "1");//失败
-				map.put("errorMsg", "规则文件解析出错！");//失败
+			if("sysconfig".equals(groupname)){//服务方法配置文件
+				List list=droolsRuleHisService.importSys(filePath);
+				if("Drools_url".equals(ruleFileName)){
+						droolsUrlService.addUrlList(list);
+				}else if("Drools_service".equals(ruleFileName)){
+					droolsServiceService.addServiceList(list);
+				}else if("Drools_method".equals(ruleFileName)){
+					droolsMethodService.addMethodList(list);
+				}else if("Drools_method_parameter".equals(ruleFileName)){
+					droolsParamService.addParam(list);
+				}
+				
+			}else{
+				//验证规则文件是否存在
+				Drools_rule queryEntity=new Drools_rule();
+				queryEntity.setRulefilename(ruleFileName.trim());
+				List<Drools_rule> resList=droolsRuleService.queryRuleListByEntity(queryEntity);
+				if(resList.size()>0)
+					throw new RuntimeException("Rule file \""+ruleFileName+"\" is exits!");
+				
+				//验证分组是否存在，不存在则创建
+				Drools_group groupEntity= droolsGroupService.validateAndAdd(groupname);
+				
+				List<Drools_rule> list=droolsRuleHisService.importRule(groupEntity.getId(), ruleFileName, filePath);
+				if(list.size()==0){
+					map.put("resStatus", "1");//失败
+					map.put("errorMsg", "规则文件解析出错！");//失败
+				}
+				 
+				for(int i=0;i<list.size();i++){
+					 droolsRuleService.addRule(list.get(i));
+				}
 			}
-			 
-			for(int i=0;i<list.size();i++){
-				 droolsRuleService.addRule(list.get(i));
-			}
+		}catch(Exception e){
+			e.printStackTrace();
+			map.put("resStatus", "1");//失败
+			map.put("errorMsg", e.toString());//失败
+		}
+		
+		return map;
+	}
+	
+	/**
+	 * 
+	 * @Title: clrearRule
+	 * @Description: TODO(清空规则)
+	 * @param @return    设定文件
+	 * @return Map<String,String>    返回类型
+	 * @throw
+	 */
+	@RequestMapping(value = "/clrearRule", method = {RequestMethod.POST})
+	public @ResponseBody Map<String, String> clrearRule(){
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("resStatus", "0");//成功
+		
+		try{
+			droolsRuleService.clearRule();
+			droolsGroupService.clearGroup();
+		}catch(Exception e){
+			e.printStackTrace();
+			map.put("resStatus", "1");//失败
+			map.put("errorMsg", e.toString());//失败
+		}
+		
+		return map;
+	}
+	
+	/**
+	 * 
+	 * @Title: exportSys
+	 * @Description: TODO(导出服务方法配置)
+	 * @param @return    设定文件
+	 * @return Map<String,String>    返回类型
+	 * @throw
+	 */
+	@RequestMapping(value = "/exportSys", method = {RequestMethod.POST})
+	public @ResponseBody Map<String, String> exportSys(String timeStr){
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("resStatus", "0");//成功
+		
+		try{
+			List<Drools_url> urlList = droolsUrlService.queryUrlListFuzzy(null);
+			droolsRuleHisService.exportSys(timeStr, "Drools_url", urlList);
+			
+			List<Drools_service> serviceList= droolsServiceService.queryServiceList(null);
+			droolsRuleHisService.exportSys(timeStr, "Drools_service", serviceList);
+			
+			List<Drools_method> methodList = droolsMethodService.queryMethodList(null);
+			droolsRuleHisService.exportSys(timeStr, "Drools_method", methodList);
+			
+			List<Drools_method_parameter> parameterList = droolsParamService.queryParamList();
+			droolsRuleHisService.exportSys(timeStr, "Drools_method_parameter", parameterList);
+			
 		}catch(Exception e){
 			e.printStackTrace();
 			map.put("resStatus", "1");//失败

@@ -51,6 +51,10 @@
     	delete from drools_group where id = #id#
     </delete>
     
+    <delete id="clearGroup" parameterClass="String">
+    	delete from drools_group
+    </delete>
+    
     <select id="countGroupNum" parameterClass="droolsGroup" resultClass="java.lang.Integer">
          select count(*) from DROOLS_GROUP
     </select>

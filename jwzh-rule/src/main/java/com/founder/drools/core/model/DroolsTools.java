@@ -1,5 +1,6 @@
 package com.founder.drools.core.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -208,7 +209,10 @@ public class DroolsTools {
 	 * @throw
 	 */
 	public static List<OrgUserInfo> getSZ(String orgCode){
-		String szOrgCode = getOrgOrganizationService().queryUpOrgByLevel(orgCode,"32").getOrgcode();//派出所
+		OrgOrganization obj = getOrgOrganizationService().queryUpOrgByLevel(orgCode,"32");
+		if(obj==null) 
+			return new ArrayList<OrgUserInfo>();
+		String szOrgCode = obj.getOrgcode();//派出所
 		List<OrgUserInfo> list = orgAssignPublic.queryUserByOrgAndPos(szOrgCode, "SZ");
 		return list;
 	}

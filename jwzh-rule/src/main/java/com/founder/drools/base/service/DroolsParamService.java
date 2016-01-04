@@ -38,6 +38,19 @@ public class DroolsParamService{
 	
 	/**
 	 * 
+	 * @Title: queryParamList
+	 * @Description: TODO(导出时使用，查询所有数据)
+	 * @param @return    设定文件
+	 * @return List<Drools_method_parameter>    返回类型
+	 * @throw
+	 */
+	public List<Drools_method_parameter> queryParamList(){
+		Drools_method_parameter entity= new Drools_method_parameter();
+		return drools_method_parameterDao.queryListByEntity(entity);
+	}
+	
+	/**
+	 * 
 	 * @Title: addParam
 	 * @Description: TODO(添加方法参数)
 	 * @param @param list
@@ -56,6 +69,13 @@ public class DroolsParamService{
 				entity.setMethodid(methodid);				
 				drools_method_parameterDao.insert(entity);
 			}
+	}
+	
+	public void addParam(List<Drools_method_parameter> list){
+		for(Drools_method_parameter entity:list){
+			BaseModelUtils.setSaveProperty(entity);
+			drools_method_parameterDao.insert(entity);
+		}
 	}
 	
 	/**

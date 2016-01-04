@@ -93,6 +93,10 @@
 		//判断是否所有的分组都导出完成
 		exportNum--;//调用一次说明导出完成一个
 		if(exportNum>0) return;//还有未导出完成的
+		
+		//导出服务方法配置
+		exportSys();
+		
 		//打包导出文件
 		showText=$("#showDiv").html();	
 		//showText=showText.substr(0,showText.indexOf("</table>"));		
@@ -131,6 +135,21 @@
 	
 	function download(){
 		location.href="<%=basePath%>download/rules.zip";
+	}
+	
+	function exportSys(){
+		var paramPairs=[
+		 		 		new ParamPair("timeStr",timeStr)
+		 		];
+		var url="<%=basePath%>ruleExOrIm/exportSys";
+		
+		postToServerAsync(paramPairs,url,function(data){ 			
+			if(data){
+				
+			}else{
+				
+			}		
+		});
 	}
 </script>
 </head>

@@ -128,4 +128,19 @@ public class DroolsUrlService{
 		return drools_urlDao.countUrlNum();
 	}
 	
+	/**
+	 * 
+	 * @Title: addUrlList
+	 * @Description: TODO(批量添加)
+	 * @param @param list    设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void addUrlList(List<Drools_url> list) {	
+		for(Drools_url entity:list){
+			BaseModelUtils.setSaveProperty(entity);				
+			drools_urlDao.insert(entity);
+		}
+	}
+	
 }

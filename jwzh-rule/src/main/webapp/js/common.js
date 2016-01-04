@@ -21,10 +21,12 @@ window.ParamPair = (function(){
 function postToServer(paramPairs,url,calback){
 	var dataStr="";
 	//参数处理
-	for(var i=0;i<paramPairs.length;i++){
-		if(dataStr!="")
-			dataStr+="&";
-		dataStr+=paramPairs[i].name+"="+paramPairs[i].value;
+	if(paramPairs!=null){
+		for(var i=0;i<paramPairs.length;i++){
+			if(dataStr!="")
+				dataStr+="&";
+			dataStr+=paramPairs[i].name+"="+paramPairs[i].value;
+		}
 	}
 	
 	if(calback==null)
@@ -41,6 +43,9 @@ function postToServer(paramPairs,url,calback){
 			if(data){
 				if(data.status==200){
 					calback(data.responseText);
+				}else if(data.status==409){
+					alert("用户操作超时,请重新登录！");
+					window.top.location.href=contextPath+"/founderRule/index";
 				}else if(data.statusText){
 					alert(data.statusText);
 				}else{
@@ -64,10 +69,12 @@ function postToServer(paramPairs,url,calback){
 function postToServerAsync(paramPairs,url,calback){
 	var dataStr="";
 	//参数处理
-	for(var i=0;i<paramPairs.length;i++){
-		if(dataStr!="")
-			dataStr+="&";
-		dataStr+=paramPairs[i].name+"="+paramPairs[i].value;
+	if(paramPairs!=null){
+		for(var i=0;i<paramPairs.length;i++){
+			if(dataStr!="")
+				dataStr+="&";
+			dataStr+=paramPairs[i].name+"="+paramPairs[i].value;
+		}
 	}
 	
 	if(calback==null)
@@ -84,6 +91,9 @@ function postToServerAsync(paramPairs,url,calback){
 			if(data){
 				if(data.status==200){
 					calback(data.responseText);
+				}else if(data.status==409){
+					alert("用户操作超时,请重新登录！");
+					window.top.location.href=contextPath+"/founderRule/index";
 				}else if(data.statusText){
 					alert(data.statusText);
 				}else{

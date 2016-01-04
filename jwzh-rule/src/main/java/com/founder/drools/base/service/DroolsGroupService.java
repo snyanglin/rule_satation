@@ -110,4 +110,16 @@ public class DroolsGroupService {
 		}
 		return groupEntity;
 	}
+	
+	/**
+	 * 
+	 * @Title: clearGroup
+	 * @Description: TODO(清空分组)
+	 * @param     设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void clearGroup() {		
+		drools_groupDao.clearGroup();
+	}
 }
