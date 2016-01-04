@@ -78,7 +78,6 @@ public class RuleExOrImController extends BaseController {
 	public ModelAndView ruleExportPre(){
 		ModelAndView mv = new ModelAndView("exorim/export/ruleExportPre");	
 		List<Drools_group> groupList=droolsGroupService.queryListByEntity(null);
-		Drools_ruleHis entity=new Drools_ruleHis();
 		
 		for(int i=0;i<groupList.size();i++){
 			List<Drools_ruleHis> hisList= droolsRuleHisService.queryExportList(groupList.get(i).getId());
