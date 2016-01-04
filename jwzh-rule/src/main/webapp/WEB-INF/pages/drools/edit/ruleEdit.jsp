@@ -249,7 +249,7 @@
    					<table width="100%">	
 						<tr>
 							<td align="left" width="30%">
-   								<button type="button" class="btn btn-success btn-sm" onclick="saveRule('head',${ruleHead.id})" style="display:none;" id="saveButton_head" >保存</button>  						
+   								<button type="button" class="btn btn-success btn-sm" onclick="saveRule('head','${ruleHead.id}')" style="display:none;" id="saveButton_head" >保存</button>  						
 							</td>
 							<td align="center">
 								<div class="input-group">			
@@ -284,8 +284,8 @@
    						<table width="100%">	
 						<tr>
 							<td align="left" width="30%">
-   								<button type="button" class="btn btn-success btn-sm" id="saveButton_${status.index}" style="display:none;" onclick="saveRule(${status.index},${item.id})" >保存</button>
-   								<button type="button" class="btn btn-danger btn-sm" onclick="deleteRule(${status.index},${item.id})" >删除</button>   						
+   								<button type="button" class="btn btn-success btn-sm" id="saveButton_${status.index}" style="display:none;" onclick="saveRule(${status.index},'${item.id}')" >保存</button>
+   								<button type="button" class="btn btn-danger btn-sm" onclick="deleteRule(${status.index},'${item.id}')" >删除</button>   						
 							</td>
 							<td align="center">
 								<input type="hidden" id="rulename_${status.index}" name="rulename_${status.index}" value="${item.rulename}" />
@@ -344,7 +344,7 @@
 								</div>
 							</td>
 							<td align="right" width="30%">
-								<a href="#" onclick="shRule('add',this)">收起</a></a>
+								<a href="#" onclick="shRule('add',this)">收起</a>
 							</td>
 						</tr>
 						</table>

@@ -19,6 +19,8 @@ import com.founder.framework.organization.assign.vo.OrgUserInfo;
 import com.founder.framework.organization.department.bean.OrgOrganization;
 import com.founder.framework.organization.department.service.OrgOrganizationService;
 import com.founder.framework.organization.position.service.OrgPositionService;
+import com.founder.framework.organization.user.bean.OrgUser;
+import com.founder.framework.organization.user.service.OrgUserService;
 
 /**
  * ****************************************************************************
@@ -41,6 +43,8 @@ public class DroolsTools {
 	private static OrgPositionService orgPositionService;
 	
 	private static OrgOrgAssignUserService orgOrgAssignUserService;
+	
+	private static OrgUserService orgUserService;
 	
 	private static OrgAssignPublic orgAssignPublic=new OrgAssignPublic();
 	
@@ -251,6 +255,19 @@ public class DroolsTools {
 	
 	/**
 	 * 
+	 * @Title: getOrgUserByUserId
+	 * @Description: TODO(通过UserId查询OrgUser对象)
+	 * @param @param userId
+	 * @param @return    设定文件
+	 * @return OrgUser    返回类型
+	 * @throw
+	 */
+	public static OrgUser getOrgUserByUserId(String userId){
+		return getOrgUserService().queryByUserid(userId);		
+	}
+	
+	/**
+	 * 
 	 * @Title: jsonToMap
 	 * @Description: TODO(将json字符串转成Map,递归调用，如果不能转成Map，直接返回String)
 	 * @param @param jsonString
@@ -289,7 +306,7 @@ public class DroolsTools {
 	 * @return boolean    返回类型
 	 * @throw
 	 */
-	public boolean isEmpty(String str){
+	public static boolean isEmpty(String str){
 		if(str==null || str.length()==0)
 			return false;
 		else
@@ -334,5 +351,13 @@ public class DroolsTools {
 		}
 		
 		return orgOrgAssignUserService;
+	}
+	
+	private static OrgUserService getOrgUserService(){
+		if(orgUserService == null){
+			orgUserService=(OrgUserService) SpringCreator.getBean("orgUserService");
+		}
+		
+		return orgUserService;
 	}
 }

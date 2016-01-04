@@ -19,6 +19,7 @@ if(pageIndex == "" || pageIndex == undefined) pageIndex=1;
 if(pageSize == "" || pageSize == undefined) pageSize=10;
 if(visiblePages == "" || visiblePages == undefined) visiblePages=5;
 
+if(totalCount>0){
 	$("#PaginatorDiv").jqPaginator({
 		totalCounts : totalCount,
 	    currentPage : pageIndex,
@@ -33,7 +34,7 @@ if(visiblePages == "" || visiblePages == undefined) visiblePages=5;
 	    page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
 	    onPageChange : onPageChange
 	});
-
+}
 </script>
 
 <div align="center" >

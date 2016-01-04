@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.founder.drools.base.common.BaseModelUtils;
 import com.founder.drools.base.dao.Drools_groupDao;
 import com.founder.drools.base.model.Drools_group;
+import com.founder.framework.utils.UUID;
 
 /**
  * ****************************************************************************
@@ -29,7 +30,7 @@ public class DroolsGroupService {
 
 	public void save(Drools_group entity){
 		BaseModelUtils.setSaveProperty(entity);		
-		entity.setId(BaseModelUtils.getTimeString());
+		entity.setId(UUID.create());
 		drools_groupDao.insert(entity);
 	}
 	
@@ -86,5 +87,27 @@ public class DroolsGroupService {
 	 */
 	public int countGroupNum() {		
 		return drools_groupDao.countGroupNum();
+	}
+	
+	/**
+	 * 
+	 * @Title: validateAndAdd
+	 * @Description: TODO(验证分组是否存在，不存在则创建)
+	 * @param @param groupname
+	 * @param @return    设定文件
+	 * @return Drools_group    返回类型
+	 * @throw
+	 */
+	public synchronized Drools_group validateAndAdd(String groupname){
+		
+		Drools_group groupEntity=new Drools_group();
+		groupEntity.setGroupname(groupname);
+		List<Drools_group> resGroupList = queryListByEntity(groupEntity);
+		if(resGroupList.size()==0){
+			 save(groupEntity);
+		}else{
+			 groupEntity=resGroupList.get(0);
+		}
+		return groupEntity;
 	}
 }

@@ -91,23 +91,25 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
 		<property name="messageConverters"  ref="messageConverters"></property><!-- 绑定错误信息 -->
 	</bean>
 	
-	<!-- 此部分暂时注释掉 -->
-	<!--  <mvc:interceptors>
+	
+	<mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/*/**"/>
-            <bean class="com.founder.framework.interceptor.SessionInterceptor">
+            <bean class="com.founder.drools.core.interceptor.SessionInterceptor">
             <property name="allowUrls">    
                 <list>    
                   <value>^\/(\w+\/)*index\.jsp$</value>    
-                  <value>^\/(\w+\/)*LoginPage\/login.*</value>
+                  <value>.*jwzh-rule\/founderRule\/login</value>
+                  <value>.*jwzh-rule\/founderRule\/index</value>
+                  <value>.*jwzh-rule\/founderRule\/index.do</value>
                   <value>.*\.(js|png|css)$</value>
-                  <value>.*\/forward\/forword</value>
+                  <value>.*jwzh-rule/forward/.*</value>
                   <value>.*\/test\/.*</value>
                 </list>    
             </property>
             </bean>
         </mvc:interceptor>
-    </mvc:interceptors> -->
+    </mvc:interceptors>
 	<!-- 不进行拦截的 -->
 	<mvc:resources location="/" mapping="/**/*.html" order="0" />
 	<mvc:resources location="/images/" mapping="/images/**" />
@@ -118,6 +120,7 @@ http://www.springframework.org/schema/cache http://www.springframework.org/schem
 	<mvc:resources location="/plugin/" mapping="/plugin/**" />
 	<mvc:resources location="/WEB-INF/pages/" mapping="/pages/**" />
 	<mvc:resources location="/bootstrap/" mapping="/bootstrap/**" />
+	<mvc:resources location="/download/" mapping="/download/**" />
 
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/pages/" />

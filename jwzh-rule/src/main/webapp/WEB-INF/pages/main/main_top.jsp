@@ -26,9 +26,14 @@ body{
 <table width="100%" height="100%" border="0">
 <tr>
 <td width="125px">
-<p class="title" onclick="window.top.location='<%=basePath%>founderRule/index'">规则平台</p>
+<p class="title" onclick="window.parent.frames['main_center'].location='<%=contextPath%>/forward/main|main_center'">规则平台</p>
 </td>
 <td>&nbsp;</td>
+<td align="right">
+	<div href="#" onclick="window.top.location='<%=basePath%>founderRule/logout'" style="margin-right:20px;cursor:pointer;">
+		<img alt="退出" src="<%=basePath%>/images/logout.png" width="60px" />
+	</div>
+</td>
 </tr>
 </table>	
 </body>

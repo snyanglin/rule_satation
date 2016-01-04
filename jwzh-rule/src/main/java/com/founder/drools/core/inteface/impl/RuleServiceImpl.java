@@ -41,17 +41,14 @@ public class RuleServiceImpl implements RuleService {
 		try{	
 			String ruleFileName=ruleBean.getRuleFileName();
 			logger.info("execute rule:"+ruleFileName);
-			
 			RuleConfig ruleConfig = (RuleConfig) ruleConfigMap.get(ruleFileName);
 			if(ruleConfig == null){
 				this.reLoadOne(ruleFileName);//重新加载
 				ruleConfig = (RuleConfig) ruleConfigMap.get(ruleFileName);
 				if(ruleConfig == null)
 					throw new RuntimeException("Can not find ruleFile named \""+ruleFileName+"\"");
-			}
-			
-			StatefulKnowledgeSession ksession = ruleConfig.getKbase().newStatefulKnowledgeSession();
-			
+			}	
+			StatefulKnowledgeSession ksession = ruleConfig.getKbase().newStatefulKnowledgeSession();	
 			//循环设置参数
 			ksession.insert(ruleBean);
 			ksession.insert(this.jsonToMap(ruleBean.getJsonParamStr()));		
