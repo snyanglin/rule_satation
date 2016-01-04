@@ -68,7 +68,6 @@ public class DroolsTools {
 		while(index>0){
 			paraName=serviceUrl.substring(index+1,serviceUrl.indexOf('}'));			
 			serviceUrl=serviceUrl.replace('{'+paraName+'}', (String)paramMap.get(paraName));
-			paramMap.remove(paraName);
 			index=serviceUrl.indexOf('{');
 		}
 		
