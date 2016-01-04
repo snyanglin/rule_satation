@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,8 @@ import com.founder.framework.base.controller.BaseController;
 @Controller
 @RequestMapping("serviceManager")
 public class ServiceController extends BaseController {
+	private Logger logger = Logger.getLogger(this.getClass());
+	
 	@Autowired
 	private DroolsServiceService droolsServiceService;
 	
@@ -149,7 +152,7 @@ public class ServiceController extends BaseController {
 			droolsServiceService.addService(entity);
 			
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 			map.put("resStatus", "1");//失败
 			map.put("errorMsg", e.toString());//失败
 		}
@@ -204,7 +207,7 @@ public class ServiceController extends BaseController {
 			droolsServiceService.updateService(entity);
 			
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 			map.put("resStatus", "1");//失败
 			map.put("errorMsg", e.toString());//失败
 		}
@@ -236,7 +239,7 @@ public class ServiceController extends BaseController {
 			droolsServiceService.deleteService(id);
 			
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 			map.put("resStatus", "1");//失败
 			map.put("errorMsg", e.toString());//失败
 		}

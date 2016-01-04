@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +38,8 @@ import com.founder.framework.base.controller.BaseController;
  */
 @Controller
 @RequestMapping("ruleManager")
-public class RuleController extends BaseController {					
+public class RuleController extends BaseController {
+	private Logger logger = Logger.getLogger(this.getClass());
 	
 	@Autowired
 	private RuleService ruleService;
@@ -157,7 +159,7 @@ public class RuleController extends BaseController {
 				droolsRuleService.updateRule(entity);	
 			}
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 			map.put("resStatus", "1");//失败
 			map.put("errorMsg", e.toString());//失败
 		}
@@ -222,7 +224,7 @@ public class RuleController extends BaseController {
         	droolsRuleService.ruleTestRelease(ruleFileName,ruleName);
         	ruleService.validateRule(ruleBean);
         }catch(Exception e){
-        	e.printStackTrace();
+        	logger.error(e.getLocalizedMessage(), e);
         	ruleBean.setResponse(e.toString());  
         	return ruleBean;
         }		       
@@ -264,7 +266,7 @@ public class RuleController extends BaseController {
         	droolsRuleService.ruleTestRelease(ruleFileName,ruleName);
         	ruleService.testRule(ruleBean, paramStr);
         }catch(Exception e){
-        	e.printStackTrace();
+        	logger.error(e.getLocalizedMessage(), e);
         	ruleBean.setResponse(e.toString());  
         	return ruleBean;
         }		       

@@ -255,6 +255,13 @@ public class RuleFileUtil {
 		if(subIndex>0){
 			groupName=groupName.substring(subIndex+1);
 		}
+		
+		//linux上的目录分隔
+		subIndex=groupName.lastIndexOf('/');
+		if(subIndex>0){
+			groupName=groupName.substring(subIndex+1);
+		}
+		
 		Drools_group drools_group = groupMap.get(groupName);
 		if(drools_group==null){
 			drools_group = new Drools_group();
@@ -278,7 +285,6 @@ public class RuleFileUtil {
 		BufferedReader br = null;
 		try { 
 			 br = new BufferedReader(new FileReader(file));
-			 StringBuffer content=new StringBuffer();//规则内容Buf
 	         String line = ""; 
 	            
 	         while ((line = br.readLine()) != null) {

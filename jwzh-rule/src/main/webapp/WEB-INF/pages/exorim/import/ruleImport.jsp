@@ -105,9 +105,15 @@ function importSys(){
 <body>
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 	<div class="navbar-header">
-      <a class="navbar-brand" href="#">规则导入</a>
-   </div>	
+      <a class="navbar-brand" href="<%=contextPath%>/ruleExOrIm/ruleImportPre">规则包选择</a>
+   </div>
+   <div>
+      <ul class="nav navbar-nav">
+         <li class="active"><a href="#">规则导入</a></li>           
+      </ul>
+   </div>
 </nav>
+
 <div class="mainDiv">
 <div class="layoutDiv">
 <!-- 导航 -->

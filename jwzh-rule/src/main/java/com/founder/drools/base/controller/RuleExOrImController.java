@@ -109,7 +109,7 @@ public class RuleExOrImController extends BaseController {
 			Drools_group groupEntity = droolsGroupService.queryById(groupid);//规则分组
 			droolsRuleHisService.exportRule(groupEntity.getGroupname(), fileStr,timeStr);
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 			map.put("resStatus", "1");//失败
 			map.put("errorMsg", e.toString());//失败
 		}
@@ -126,7 +126,7 @@ public class RuleExOrImController extends BaseController {
 			String basePath=request.getSession().getServletContext().getRealPath("/");
 			droolsRuleHisService.exportZip(timeStr,basePath);
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 			map.put("resStatus", "1");//失败
 			map.put("errorMsg", e.toString());//失败
 		}
@@ -220,7 +220,7 @@ public class RuleExOrImController extends BaseController {
 				}
 			}
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 			map.put("resStatus", "1");//失败
 			map.put("errorMsg", e.toString());//失败
 		}
@@ -245,7 +245,7 @@ public class RuleExOrImController extends BaseController {
 			droolsRuleService.clearRule();
 			droolsGroupService.clearGroup();
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 			map.put("resStatus", "1");//失败
 			map.put("errorMsg", e.toString());//失败
 		}
@@ -280,7 +280,7 @@ public class RuleExOrImController extends BaseController {
 			droolsRuleHisService.exportSys(timeStr, "Drools_method_parameter", parameterList);
 			
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 			map.put("resStatus", "1");//失败
 			map.put("errorMsg", e.toString());//失败
 		}

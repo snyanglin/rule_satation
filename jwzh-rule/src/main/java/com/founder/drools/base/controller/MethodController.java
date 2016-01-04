@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,8 @@ import com.founder.framework.base.controller.BaseController;
 @Controller
 @RequestMapping("methodManager")
 public class MethodController extends BaseController {
+	private Logger logger = Logger.getLogger(this.getClass());
+	
 	@Autowired
 	private DroolsMethodService droolsMethodService;
 	
@@ -130,7 +133,7 @@ public class MethodController extends BaseController {
 			droolsParamService.addParam(paramList,entity.getId());
 			
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 			map.put("resStatus", "1");//失败
 			map.put("errorMsg", e.toString());//失败
 		}
@@ -189,7 +192,7 @@ public class MethodController extends BaseController {
 			droolsParamService.addParam(paramList,entity.getId());
 			
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 			map.put("resStatus", "1");//失败
 			map.put("errorMsg", e.toString());//失败
 		}
@@ -212,7 +215,7 @@ public class MethodController extends BaseController {
 		try{			
 			droolsMethodService.deleteMethod(id);			
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 			map.put("resStatus", "1");//失败
 			map.put("errorMsg", e.toString());//失败
 		}

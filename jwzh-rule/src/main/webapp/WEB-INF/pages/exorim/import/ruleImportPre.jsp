@@ -20,7 +20,7 @@
 <body>
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 	<div class="navbar-header">
-      <a class="navbar-brand" href="#">规则导入</a>
+      <a class="navbar-brand" href="#">规则包选择</a>
    </div>	
 </nav>
 <div class="mainDiv">

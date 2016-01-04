@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,7 +34,8 @@ import com.founder.framework.base.controller.BaseController;
  */
 @Controller
 @RequestMapping("groupManager")
-public class GroupController extends BaseController {					
+public class GroupController extends BaseController {	
+	private Logger logger = Logger.getLogger(this.getClass());
 	
 	@Resource(name="droolsGroupService")
 	private DroolsGroupService droolsGroupService;
@@ -116,7 +118,7 @@ public class GroupController extends BaseController {
 			droolsGroupService.save(entity);
 			
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 			map.put("resStatus", "1");//失败
 			map.put("errorMsg", e.toString());//失败
 		}
@@ -166,7 +168,7 @@ public class GroupController extends BaseController {
 			}
 			droolsGroupService.update(entity);
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 			map.put("resStatus", "1");//失败
 			map.put("errorMsg", e.toString());//失败
 		}
@@ -197,7 +199,7 @@ public class GroupController extends BaseController {
 			}
 			droolsGroupService.deleteGroup(id);			
 		}catch(Exception e){
-			e.printStackTrace();
+			logger.error(e.getLocalizedMessage(), e);
 			map.put("resStatus", "1");//失败
 			map.put("errorMsg", e.toString());//失败
 		}
