@@ -29,7 +29,7 @@ body{
 <p class="title" onclick="window.parent.frames['main_center'].location='<%=contextPath%>/forward/main|main_center'">规则平台</p>
 </td>
 <td>&nbsp;</td>
-<td align="right">
+<td align="right" width="70px">
 	<div href="#" onclick="window.top.location='<%=basePath%>founderRule/logout'" style="margin-right:20px;cursor:pointer;">
 		<img alt="退出" src="<%=basePath%>/images/logout.png" width="60px" />
 	</div>
