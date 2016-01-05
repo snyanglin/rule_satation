@@ -256,7 +256,7 @@ public class DroolsRuleService{
 		Drools_rule ruleHead = drools_ruleDao.queryByEntity(entity);
 		StringBuffer content=new StringBuffer();
 		if(ruleHead.getContent()!=null)
-			content.append("/*RULE HEAD START*/\r\n/*BZ:"+ruleHead.getBz()+"*/\r\n").append(ruleHead.getContent()).append("\r\n/*RULE HEAD END*/\r\n\r\n");
+			content.append("/*RULE HEAD START*/\r\n/*BZ:"+ruleHead.getBz()+":BZ*/\r\n").append(ruleHead.getContent()).append("\r\n/*RULE HEAD END*/\r\n\r\n");
 		
 		//查询规则体
 		entity.setRuletype("1");
