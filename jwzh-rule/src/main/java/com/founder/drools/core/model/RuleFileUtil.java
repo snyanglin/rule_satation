@@ -140,7 +140,7 @@ public class RuleFileUtil {
 	         Drools_rule entity=null;
 	            
 	         while ((line = br.readLine()) != null) {
-	        	 
+	        	 line=new String(line.getBytes(),"UTF-8");
 	        	 if(readHead){//读取规则头
 	        		 if(line.contains("RULE HEAD END")){//规则头结束的注释
 	        			 readHead=false;
@@ -219,6 +219,7 @@ public class RuleFileUtil {
 	         String line = ""; 
 	            
 	         while ((line = br.readLine()) != null) {
+	        	 line=new String(line.getBytes(),"UTF-8");
         		 content.append(line).append("\r\n");
 	         }
 	         
@@ -288,6 +289,7 @@ public class RuleFileUtil {
 	         String line = ""; 
 	            
 	         while ((line = br.readLine()) != null) {
+	        	 line=new String(line.getBytes(),"UTF-8");
 	        	 if(line.contains("/*BZ:")){
 	        		 return line.substring(line.indexOf("/*BZ:")+5,line.indexOf("*/"));
 	        	 }
