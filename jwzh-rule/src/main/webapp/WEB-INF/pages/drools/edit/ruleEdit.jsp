@@ -64,9 +64,7 @@
  		$("#addTab").hide();
 		$("#releaseButton").show();
 		$("#delButton").show();
-		$("#addButton").show();
-		$("#content_add").val(""); 	
-		$("#rulename_add").val("");
+		$("#addButton").show();		
 	}
  	
  	function deleteRule(index,id){ 	
@@ -96,6 +94,9 @@
 		$("#releaseButton").hide();
 		$("#delButton").hide();
 		$("#addButton").hide();
+		
+		$("#content_add").val("when\r\n\truleBean:RuleBean(ruleName == \"\");//规则说明\r\n\tparaMap:Map();\r\nthen\r\n\truleBean.setResStatus(0);//返回成功\r\n\truleBean.setResponse(\"\");//返回结果\r\n"); 	
+		$("#rulename_add").val("");
  	}
  	
  	function shTest(index,shType){

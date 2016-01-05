@@ -398,6 +398,7 @@ public class RuleController extends BaseController {
 				map.put("errorMsg", entity.getRulefilename()+"已存在");//失败
 				return map;
 			}
+			entity.setContent("import com.founder.drools.core.request.RuleBean\r\nimport com.founder.drools.core.model.DroolsTools\r\n\r\nimport java.util.Map\r\n");//默认导入的类
 			droolsRuleService.addRule(entity);
 		}catch(Exception e){
 			map.put("resStatus", "1");//失败
