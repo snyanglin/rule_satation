@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.founder.drools.base.common.BaseModelUtils;
+import com.founder.drools.base.dao.Drools_methodDao;
 import com.founder.drools.base.dao.Drools_method_parameterDao;
 import com.founder.drools.base.model.Drools_method_parameter;
 import com.founder.framework.utils.UUID;
@@ -29,6 +30,9 @@ public class DroolsParamService{
 		
 	@Resource(name = "drools_method_parameterDao")
 	private Drools_method_parameterDao drools_method_parameterDao;
+	
+	@Resource(name = "drools_methodDao")
+	private Drools_methodDao drools_methodDao;
 	
 	public List<Drools_method_parameter> getParamList(String methodid){
 		Drools_method_parameter entity= new Drools_method_parameter();
@@ -74,6 +78,16 @@ public class DroolsParamService{
 	public void addParam(List<Drools_method_parameter> list){
 		for(Drools_method_parameter entity:list){
 			BaseModelUtils.setSaveProperty(entity);
+			
+			int i=0;
+			while(drools_methodDao.queryById(entity.getMethodid())==null){
+				if(i>=10) break;
+				try {
+					i++;
+					Thread.sleep(500);//方法表还没导入，等待0.5，最多等待5秒
+				} catch (InterruptedException e) {
+				}
+			}
 			drools_method_parameterDao.insert(entity);
 		}
 	}
@@ -113,6 +127,18 @@ public class DroolsParamService{
 		}
 		
 		return null;
+	}
+	
+	/**
+	 * 
+	 * @Title: clearParam
+	 * @Description: TODO(清楚参数)
+	 * @param     设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void clearParam() {		
+		drools_method_parameterDao.clearParam();
 	}
 
 }

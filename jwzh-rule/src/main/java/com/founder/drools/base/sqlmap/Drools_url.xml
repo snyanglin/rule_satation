@@ -65,4 +65,8 @@
          select count(*) from DROOLS_URL
     </select>
     
+    <delete id="clearUrl" parameterClass="String">
+    	delete from DROOLS_URL
+    </delete>
+    
 </sqlMap>

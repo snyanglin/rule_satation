@@ -60,4 +60,16 @@ public class Drools_method_parameterDao extends BaseDaoImpl {
 		if(entity.getParamclass()!=null)
 			entity.setParamclass(entity.getParamclass().trim());
 	}
+	
+	/**
+	 * 
+	 * @Title: clearParam
+	 * @Description: TODO(清楚参数)
+	 * @param     设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void clearParam() {
+		super.delete("Drools_method_parameter.clearParam", null);
+	}
 }

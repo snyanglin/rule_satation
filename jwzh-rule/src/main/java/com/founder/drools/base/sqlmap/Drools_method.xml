@@ -60,4 +60,8 @@
     <select id="countMethodNum" parameterClass="drools_method" resultClass="java.lang.Integer">
          select count(*) from DROOLS_METHOD
     </select>
+    
+    <delete id="clearMethod" parameterClass="String">
+    	delete from drools_method
+    </delete>
 </sqlMap>

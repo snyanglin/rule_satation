@@ -143,4 +143,15 @@ public class DroolsUrlService{
 		}
 	}
 	
+	/**
+	 * 
+	 * @Title: clearUrl
+	 * @Description: TODO(清除地址)
+	 * @param     设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void clearUrl(){
+		drools_urlDao.clearUrl();
+	}
 }

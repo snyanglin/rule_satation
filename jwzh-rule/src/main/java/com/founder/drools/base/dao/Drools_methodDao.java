@@ -52,4 +52,16 @@ public class Drools_methodDao extends BaseDaoImpl {
 		return (int) super.queryForObject("Drools_method.countMethodNum",null);
 	}
 
+	/**
+	 * 
+	 * @Title: clearMethod
+	 * @Description: TODO(清除方法)
+	 * @param     设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void clearMethod() {
+		super.delete("Drools_method.clearMethod", null);
+	}
+
 }

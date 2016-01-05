@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.founder.drools.base.common.BaseModelUtils;
 import com.founder.drools.base.dao.Drools_serviceDao;
+import com.founder.drools.base.dao.Drools_urlDao;
 import com.founder.drools.base.model.Drools_service;
 import com.founder.framework.utils.UUID;
 
@@ -29,6 +30,9 @@ public class DroolsServiceService{
 		
 	@Resource(name = "drools_serviceDao")
 	private Drools_serviceDao drools_serviceDao;
+	
+	@Resource(name = "drools_urlDao")
+	private Drools_urlDao drools_urlDao;
 	
 	public Drools_service queryServiceById(String ID) {
 		return drools_serviceDao.queryById(ID);
@@ -68,6 +72,15 @@ public class DroolsServiceService{
 	public void addServiceList(List<Drools_service>	list) {		
 		for(Drools_service entity:list){
 			BaseModelUtils.setSaveProperty(entity);
+			int i=0;
+			while(drools_urlDao.queryById(entity.getUrlid())==null){
+				if(i>=10) break;
+				try {
+					i++;
+					Thread.sleep(500);//地址表还没导入，等待0.5，最多等待5秒
+				} catch (InterruptedException e) {
+				}
+			}
 			drools_serviceDao.insert(entity);
 		}
 	}
@@ -91,5 +104,17 @@ public class DroolsServiceService{
 	 */
 	public int countServiceNum() {		
 		return drools_serviceDao.countServiceNum();
+	}
+	
+	/**
+	 * 
+	 * @Title: clearService
+	 * @Description: TODO(清除服务)
+	 * @param     设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void clearService(){
+		drools_serviceDao.clearService();
 	}
 }

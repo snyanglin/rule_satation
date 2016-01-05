@@ -56,4 +56,8 @@
      <select id="countServiceNum" parameterClass="drools_service" resultClass="java.lang.Integer">
          select count(*) from DROOLS_SERVICE
     </select>
+    
+    <delete id="clearService" parameterClass="String">
+    	delete from DROOLS_SERVICE
+    </delete>
 </sqlMap>

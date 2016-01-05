@@ -51,4 +51,16 @@ public class Drools_serviceDao extends BaseDaoImpl {
 	public int countServiceNum() {
 		return (int) super.queryForObject("Drools_service.countServiceNum",null);
 	}
+	
+	/**
+	 * 
+	 * @Title: clearService
+	 * @Description: TODO(清除服务)
+	 * @param     设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void clearService(){
+		super.delete("Drools_service.clearService", null);
+	}
 }

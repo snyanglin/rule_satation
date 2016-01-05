@@ -61,4 +61,8 @@
 		<![CDATA[ order by CREATETIME DESC ]]>
     </select>
     
+    <delete id="clearParam" parameterClass="String">
+    	delete from drools_method_parameter
+    </delete>
+    
 </sqlMap>

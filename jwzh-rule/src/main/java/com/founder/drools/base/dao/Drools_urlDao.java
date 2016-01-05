@@ -77,4 +77,16 @@ public class Drools_urlDao extends BaseDaoImpl {
 	public int countUrlNum() {
 		return (int) super.queryForObject("Drools_url.countUrlNum",null);
 	}
+	
+	/**
+	 * 
+	 * @Title: clearUrl
+	 * @Description: TODO(清除地址)
+	 * @param     设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void clearUrl(){
+		super.delete("Drools_url.clearUrl", null);
+	}
 }

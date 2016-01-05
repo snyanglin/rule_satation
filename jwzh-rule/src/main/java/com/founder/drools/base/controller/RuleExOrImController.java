@@ -188,7 +188,7 @@ public class RuleExOrImController extends BaseController {
 			if("sysconfig".equals(groupname)){//服务方法配置文件
 				List list=droolsRuleHisService.importSys(filePath);
 				if("Drools_url".equals(ruleFileName)){
-						droolsUrlService.addUrlList(list);
+					droolsUrlService.addUrlList(list);
 				}else if("Drools_service".equals(ruleFileName)){
 					droolsServiceService.addServiceList(list);
 				}else if("Drools_method".equals(ruleFileName)){
@@ -243,6 +243,10 @@ public class RuleExOrImController extends BaseController {
 		try{
 			droolsRuleService.clearRule();
 			droolsGroupService.clearGroup();
+			droolsParamService.clearParam();
+			droolsMethodService.clearMethod();
+			droolsServiceService.clearService();
+			droolsUrlService.clearUrl();
 		}catch(Exception e){
 			logger.error(e.getLocalizedMessage(), e);
 			map.put("resStatus", "1");//失败

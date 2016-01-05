@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.founder.drools.base.common.BaseModelUtils;
 import com.founder.drools.base.dao.Drools_methodDao;
+import com.founder.drools.base.dao.Drools_serviceDao;
 import com.founder.drools.base.model.Drools_method;
 import com.founder.framework.utils.UUID;
 
@@ -29,6 +30,9 @@ public class DroolsMethodService{
 		
 	@Resource(name = "drools_methodDao")
 	private Drools_methodDao drools_methodDao;
+	
+	@Resource(name = "drools_serviceDao")
+	private Drools_serviceDao drools_serviceDao;
 	
 	public Drools_method queryMethodById(String ID) {
 		return drools_methodDao.queryById(ID);
@@ -73,6 +77,16 @@ public class DroolsMethodService{
 	public void addMethodList(List<Drools_method> list) {		
 		for(Drools_method entity:list){
 			BaseModelUtils.setSaveProperty(entity);
+			
+			int i=0;
+			while(drools_serviceDao.queryById(entity.getServiceid())==null){
+				if(i>=10) break;
+				try {
+					i++;
+					Thread.sleep(500);//服务表还没导入，等待0.5，最多等待5秒
+				} catch (InterruptedException e) {
+				}
+			}
 			drools_methodDao.insert(entity);
 		}
 	}
@@ -96,6 +110,18 @@ public class DroolsMethodService{
 	 */
 	public int countMethodNum() {		
 		return drools_methodDao.countMethodNum();
+	}
+	
+	/**
+	 * 
+	 * @Title: clearMethod
+	 * @Description: TODO(清除方法)
+	 * @param     设定文件
+	 * @return void    返回类型
+	 * @throw
+	 */
+	public void clearMethod(){
+		drools_methodDao.clearMethod();
 	}
 
 }
