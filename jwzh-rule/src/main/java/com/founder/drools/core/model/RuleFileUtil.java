@@ -150,7 +150,7 @@ public class RuleFileUtil {
 	        		 }
 	        		 
 	        		 if(line.contains("/*BZ:")){//备注
-	        			 rule_head.setBz(line.substring(line.indexOf("/*BZ:")+5,line.indexOf(":BZ*/")));
+	        			 rule_head.setBz(line.substring(line.indexOf("/*BZ:")+5,line.indexOf("*/")));
 	        			 continue;
 	        		 }
 	        		 
@@ -291,7 +291,7 @@ public class RuleFileUtil {
 	         while ((line = br.readLine()) != null) {
 	        	 line=new String(line.getBytes(),"UTF-8");
 	        	 if(line.contains("/*BZ:")){
-	        		 return line.substring(line.indexOf("/*BZ:")+5,line.indexOf(":BZ*/"));
+	        		 return line.substring(line.indexOf("/*BZ:")+5,line.indexOf("*/"));
 	        	 }
 	         }
 		 }catch (Exception e) {
