@@ -288,14 +288,14 @@ public class DroolsRuleHisService{
 		
 		//读取并解析规则
 		Map<String,Drools_group> groupMap=new HashMap<String,Drools_group>();
-		RuleFileUtil.readRuleFromDir(baseFdir, groupMap);
-		Object keyAry[] = groupMap.keySet().toArray();
+//		RuleFileUtil.readRuleFromDir(baseFdir, groupMap);
+//		Object keyAry[] = groupMap.keySet().toArray();
 		List<Drools_group> groupList=new LinkedList<Drools_group>();
-		for(int i=0;i<keyAry.length;i++){
-			String groupName=keyAry[i].toString();
-			Drools_group drools_group = groupMap.get(groupName);
-			groupList.add(drools_group);
-		}
+//		for(int i=0;i<keyAry.length;i++){
+//			String groupName=keyAry[i].toString();
+//			Drools_group drools_group = groupMap.get(groupName);
+//			groupList.add(drools_group);
+//		}
 		return groupList;
 	}
 	

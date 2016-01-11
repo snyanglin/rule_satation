@@ -13,8 +13,8 @@ import java.util.Map;
 
 import com.founder.drools.base.model.Drools_group;
 import com.founder.drools.base.model.Drools_rule;
-import com.founder.drools.base.model.Drools_ruleHis;
 import com.founder.drools.core.request.DroolsRequest;
+import org.apache.commons.codec.binary.Base64;
 
 public class RuleFileUtil {
 	/**
@@ -26,12 +26,12 @@ public class RuleFileUtil {
 	 * @return void    返回类型
 	 * @throw
 	 */
-	public static void readRuleFromDir(File file,Map<String,Drools_group> groupMap){
+	public static void readImportListFromDir(File file,Map<String,Object> groupMap){
 		try{
 			if(file.isDirectory()){//目录
 				File[] files = file.listFiles();
 				for(int i=0;i<files.length;i++){
-					readRuleFromDir(files[i],groupMap);
+					readImportListFromDir(files[i],groupMap);
 				}
 			}else{//文件
 				String fileName=file.getName();
@@ -46,22 +46,12 @@ public class RuleFileUtil {
 					return;
 				}
 				
-				String ruleFileName=fileName.substring(0,atI);
-				
-				//获取分组
-				Drools_group drools_group = getGroup(file,groupMap);
-				List<Drools_ruleHis> ruleFileList=drools_group.getRuleFileList();
-				
-				Drools_ruleHis entity=new Drools_ruleHis();//此时不解析具体的规则
-				entity.setRulefilename(ruleFileName);
-		        ruleFileList.add(entity);
-				
-		        if("drl".equals(fileType))
-		        	entity.setBz(readBZ(file));
-		        else
-		        	entity.setBz("系统服务方法配置文件");
-		        entity.setContent(file.getPath());
-		       
+				//获取分组名，文件夹名既是分组名，分组不可重复，所以存公共Map中
+				String groupName=fileName.substring(0,atI);				
+				//读取文件内容
+				String fileContent=readContent(file);
+				Object obj=DroolsRequest.XStream2Obj(fileContent);//Drools__group对象或者List
+				groupMap.put(groupName, obj);
 			}
 			
 		}catch(Exception e){
@@ -240,38 +230,7 @@ public class RuleFileUtil {
 		return null;
 	}
 	
-	/**
-	 * 
-	 * @Title: getGroup
-	 * @Description: TODO(获取分组名，文件夹名既是分组名，分组不可重复，所以存公共Map中)
-	 * @param @param file
-	 * @param @param groupMap
-	 * @param @return    设定文件
-	 * @return Drools_group    返回类型
-	 * @throw
-	 */
-	private static Drools_group getGroup(File file,Map<String,Drools_group> groupMap){
-		String groupName=file.getParent();
-		int subIndex=groupName.lastIndexOf('\\');
-		if(subIndex>0){
-			groupName=groupName.substring(subIndex+1);
-		}
-		
-		//linux上的目录分隔
-		subIndex=groupName.lastIndexOf('/');
-		if(subIndex>0){
-			groupName=groupName.substring(subIndex+1);
-		}
-		
-		Drools_group drools_group = groupMap.get(groupName);
-		if(drools_group==null){
-			drools_group = new Drools_group();
-			drools_group.setGroupname(groupName);
-			drools_group.setRuleFileList(new LinkedList<Drools_ruleHis>());
-			groupMap.put(groupName, drools_group);
-		}
-		return drools_group;
-	}
+	
 	
 	/**
 	 * 
@@ -308,20 +267,62 @@ public class RuleFileUtil {
 	     }
 		return null;
 	}
-	public static void main(String[] args) throws Exception {
-		Map<String,Drools_group> groupMap=new HashMap<String,Drools_group>();
-		RuleFileUtil.readRuleFromDir(new File("D:/work/drl/import"), groupMap);
-		
-		Object keyAry[] = groupMap.keySet().toArray();
-		List<Drools_ruleHis> ruleFileList;
-		for(int i=0;i<keyAry.length;i++){
-			String groupName=keyAry[i].toString();
-			Drools_group drools_group = groupMap.get(groupName);
-			System.out.println("规则分组"+drools_group.getGroupname());
-			ruleFileList=drools_group.getRuleFileList();
-			for(int j=0;j<ruleFileList.size();j++){
-				System.out.println("	规则文件："+ruleFileList.get(j).getRulefilename()+"	路径："+ruleFileList.get(j).getContent());
-			}
+	
+	/**
+	 * 
+	 * @Title: readContent
+	 * @Description: TODO(读取文件内容)
+	 * @param @param file
+	 * @param @return    设定文件
+	 * @return String    返回类型
+	 * @throw
+	 */
+	public static String readContent(File file){
+		try{
+			FileInputStream fis = new FileInputStream(file); 
+	        byte[] res=new byte[0];
+	        byte[] res2;
+	        byte[] bytes=new byte[1024];
+	        int readLength=fis.read(bytes);	        
+	        while(readLength>0){
+	        	res2=new byte[res.length+readLength];
+	        	System.arraycopy(res,0,res2,0,res.length);
+	        	System.arraycopy(bytes,0,res2,res.length,readLength);
+	        	res=res2;
+	        	readLength=fis.read(bytes);	
+	        }
+	        return new String(res);
+		}catch(Exception e){
+			e.printStackTrace();
 		}
+		return null;
+	}
+	public static void main(String[] args) throws Exception {
+//		Map<String,Object> groupMap=new HashMap<String,Object>();
+//		RuleFileUtil.readImportListFromDir(new File("D:/work/drl/import"), groupMap);
+//		
+//		Object keyAry[] = groupMap.keySet().toArray();
+//		List<List> ruleFileList;
+//		for(int i=0;i<keyAry.length;i++){
+//			String groupName=keyAry[i].toString();
+//			Object drools_group = groupMap.get(groupName);
+//			System.out.println("规则分组"+groupName);
+//			
+//			if(drools_group instanceof Drools_group){
+//			
+//				ruleFileList=((Drools_group)drools_group).getRuleFileList();
+//				for(Drools_rule rule:(List<Drools_rule>)ruleFileList.get(0)){
+//					System.out.println("	规则文件："+rule.getRulefilename());
+//				}
+//			}
+//			
+//			
+//		}
+		String str="重点人员查询服务器";
+		byte[] baseStr = Base64.encodeBase64(str.getBytes("UTF-8"));
+		byte[] bytes = Base64.decodeBase64("6YeN54K55Lq65ZGY5p+l6K+i5pyN5Yqh5Zmo".getBytes());
+		System.out.println(str);
+		System.out.println(new String(baseStr,"UTF-8"));
+		System.out.println(new String(bytes,"UTF-8"));
 	}
 }

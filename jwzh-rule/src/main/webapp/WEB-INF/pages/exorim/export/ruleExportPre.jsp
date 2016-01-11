@@ -189,7 +189,7 @@
 		<c:forEach items="${item.ruleFileList}" var="item2" varStatus="status2">
 		<tr>
 			<td>
-				<input type="checkbox" id="ruleFile_${item2.version}" name="ruleFileAry_${status.index }" checked="checked" value="${item2.version}"/>
+				<input type="checkbox" id="ruleFile_${item2.version}" name="ruleFileAry_${status.index }" checked="checked" value="${item2.rulefilename}"/>
 			</td>
 			<td>${item2.rulefilename }</td>
 			<td>${item2.bz }</td>

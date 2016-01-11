@@ -98,12 +98,13 @@ public class DroolsGroupService {
 	 * @return Drools_group    返回类型
 	 * @throw
 	 */
-	public synchronized Drools_group validateAndAdd(String groupname){
+	public synchronized Drools_group validateAndAdd(String groupname,String groupbz){
 		
 		Drools_group groupEntity=new Drools_group();
 		groupEntity.setGroupname(groupname);
 		List<Drools_group> resGroupList = queryListByEntity(groupEntity);
 		if(resGroupList.size()==0){
+			groupEntity.setBz(groupbz);
 			 save(groupEntity);
 		}else{
 			 groupEntity=resGroupList.get(0);
