@@ -98,4 +98,17 @@ public class Drools_ruleDao extends BaseDaoImpl {
 	public void clearRule(){
 		super.delete("Drools_rule.clearRule", null);
 	}
+	/**
+	 * 
+	 * @Title: saveParament
+	 * @Description: TODO(保存参数)
+	 * @param     设定文件
+	 * @return void    返回类型
+	 * @throws
+	 */
+	
+	public void saveParament(Drools_rule entity){
+		
+		super.insert("Drools_rule.updateRulePara", entity);
+	}
 }

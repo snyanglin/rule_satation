@@ -118,4 +118,14 @@
     <select id="countRuleNum" parameterClass="drools_rule" resultClass="java.lang.Integer">
          select count(*) from DROOLS_RULE where RULETYPE='0'
     </select>
+
+      <update id="updateRulePara" parameterClass="drools_rule">
+      
+      	<![CDATA[ update DROOLS_RULE ]]>	
+		<dynamic prepend="set">
+			<isNotNull prepend="," property="paramstr"><![CDATA[ paramstr = #paramstr#]]></isNotNull>			
+		</dynamic>
+		<![CDATA[ where 1=1 and rulefilename=#rulefilename# and rulename=#rulename#]]>
+
+    </update>
 </sqlMap>

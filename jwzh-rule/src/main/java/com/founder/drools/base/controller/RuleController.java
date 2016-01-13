@@ -112,12 +112,17 @@ public class RuleController extends BaseController {
 		
 		entity.setRuletype("1");//规则体		
 		List<Drools_rule> list = droolsRuleService.queryRuleListByEntity(entity);
+		for(Drools_rule li:list){
+			if("".equals(li.getParamstr())||li.getParamstr()==null){
+				li.setParamstr("{}");
+			}
+		}
 		
 		mv.addObject("ruleHead",ruleHead);
 		mv.addObject("List",list);
 		return mv;
 	}	
-	
+
 	/**
 	 * 
 	 * @Title: ruleEdit
@@ -221,7 +226,7 @@ public class RuleController extends BaseController {
         
         
         try{
-        	droolsRuleService.ruleTestRelease(ruleFileName,ruleName);
+        	droolsRuleService.ruleTestRelease(ruleFileName,ruleName);//验证文件的时候，将规则文件头和规则文件提拼成格式文件
         	ruleService.validateRule(ruleBean);
         }catch(Exception e){
         	logger.error(e.getLocalizedMessage(), e);
@@ -278,7 +283,30 @@ public class RuleController extends BaseController {
         }
 		return ruleBean;
 	}
-	
+	/**
+	 * 
+	 * @Title: saveParamStr
+	 * @Description: TODO(测试成功保存测试参数)
+	 * @param @param rulefilename
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
+	@RequestMapping(value = "/saveParamStr", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody RuleBean saveParamStr(String ruleFileName,String ruleName,String paramStr){
+		RuleBean ruleBean = new RuleBean();
+        ruleBean.setRuleFileName(ruleFileName);
+        ruleBean.setRuleName(ruleName);     
+        try{
+        	droolsRuleService.savePara(ruleFileName,ruleName,paramStr);//返回保存状态
+        	ruleBean.setResStatus(0);	
+        }catch(Exception e){
+        	logger.error(e.getLocalizedMessage(), e);
+        	ruleBean.setResponse(e.toString());  
+        	return ruleBean;
+        }		       
+		return ruleBean;
+	}
 	
 	/**
 	 * 

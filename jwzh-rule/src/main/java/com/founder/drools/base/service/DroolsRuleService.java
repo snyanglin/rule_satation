@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.antlr.grammar.v3.ANTLRv3Parser.rule_return;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,7 +65,7 @@ public class DroolsRuleService{
 	public void addRule(Drools_rule entity) {
 		entity.setStatus("1");//初始状态，未验证
 		BaseModelUtils.setSaveProperty(entity);				
-		entity.setId(UUID.create());
+		entity.setId(UUID.create());//创建一个UUID作为ruleId;
 		if("undefined".equals(entity.getParamstr())){
 			entity.setParamstr(null);
 		}
@@ -355,6 +356,24 @@ public class DroolsRuleService{
 	 */
 	public void clearRule(){
 		drools_ruleDao.clearRule();
+	}
+	/**
+	 * 
+	 * @Title: savePara
+	 * @Description: TODO(这里用一句话描述这个方法的作用)
+	 * @param @param rulefileName
+	 * @param @param rulename
+	 * @param @param paramstr    设定文件
+	 * @return void    返回类型
+	 * @throws
+	 */
+	public void savePara(String rulefileName,String rulename,String paramstr){
+		Drools_rule entity=new Drools_rule();
+		entity.setRulefilename(rulefileName);
+		entity.setRulename(rulename);
+		entity.setParamstr(paramstr);
+		drools_ruleDao.saveParament(entity);
+		
 	}
 
 }

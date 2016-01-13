@@ -83,7 +83,7 @@ public class RuleServiceImpl implements RuleService {
 				drlFilePath=SystemConfig.getString("DrlFilePath");
 			
 			RuleConfig ruleConfig = new RuleConfig(drlFilePath+"/test/"+ruleBean.getRuleFileName()+"_"+ruleBean.getRuleName()+"_TEST.drl");
-			StatefulKnowledgeSession ksession = ruleConfig.getKbase().newStatefulKnowledgeSession();
+			StatefulKnowledgeSession ksession = ruleConfig.getKbase().newStatefulKnowledgeSession();//将拼装的文件进行验证
 			
 			ruleBean.setResStatus(0);//验证的时候，只要不报错，说明规则没有语法错误			
 	        ksession.dispose();

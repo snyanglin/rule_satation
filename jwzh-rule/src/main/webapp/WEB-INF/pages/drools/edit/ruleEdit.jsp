@@ -181,6 +181,7 @@
 			if(data){
 				if(data.resStatus == '0'){
 					res="测试结果：成功！\r\n";
+					savaParaStr(index,rulename);
 					$("#ruleRes_"+index).css("background-color",color_NotRelease);
 				}else{
 					$("#ruleRes_"+index).css("background-color",color_NotValidate);
@@ -194,6 +195,28 @@
  		
  	}
  	
+ 	function savaParaStr(index,rulename){
+ 		var rulefilename=$("#rulefilename").val(); 		
+ 		var paramStr=$("#paramstr_"+index).val();
+ 		var paramPairs=[
+ 		 				new ParamPair("ruleFileName",rulefilename),
+ 		 				new ParamPair("ruleName",rulename),
+ 		 				new ParamPair("paramStr",paramStr)
+ 		 		];
+ 		var url="<%= basePath%>ruleManager/saveParamStr";
+ 		postToServer(paramPairs,url,function(data){
+			if(data){
+				if(data.resStatus == '0'){
+					alert("参数保存成功！");
+					$("#ruleRes_"+index).css("background-color",color_NotRelease);
+				}else{
+					$("#ruleRes_"+index).css("background-color",color_NotValidate);
+				}
+			}
+		});
+ 		
+ 		
+ 	}
  	function showSaveButton(index){
  		$("#saveButton_"+index).show();
  		saveNum++;

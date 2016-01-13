@@ -40,8 +40,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <div class="well well-lg">
 	
 	<form id="form1"  align="center" name="loginform" method="post" action="<%=basePath%>founderRule/login">
-		<h1 align="center" class="menu">方正规则平台</h1>
 		<br/><br/><br/>
+		<h1 align="center" class="menu">方正规则平台</h1>
 		<div align="center">
 		<div style="width:300px">
 			<div>
