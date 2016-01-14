@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -73,6 +74,26 @@ public class RuleController extends BaseController {
 	
 	/**
 	 * 
+	 * @Title: ruleManagerId
+	 * @Description: TODO(规则管理页面)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
+	@RequestMapping(value = "/ruleManagerId", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView ruleManagerId(Drools_rule entity,String ruleGroupname){
+		ModelAndView mv = new ModelAndView("drools/edit/ruleManager");
+		Drools_group groupEntity=new Drools_group();
+		groupEntity.setGroupname(ruleGroupname);
+		List<Drools_group> list=droolsGroupService.queryListByEntity(groupEntity);
+		mv.addObject("Entity",entity);
+		mv.addObject("GroupList",list);
+		return mv;
+	}
+	
+	/**
+	 * 
 	 * @Title: getRuleManagerList
 	 * @Description: TODO(规则管理列表)
 	 * @param @param entity
@@ -109,7 +130,8 @@ public class RuleController extends BaseController {
 		entity.setRulefilename(rulefilename);//规则文件名
 		entity.setRuletype("0");//规则头
 		Drools_rule ruleHead = droolsRuleService.queryRuleByEntity(entity);
-		
+		String grop=ruleHead.getGroupname();
+		entity.setGroupname(ruleHead.getGroupname());
 		entity.setRuletype("1");//规则体		
 		List<Drools_rule> list = droolsRuleService.queryRuleListByEntity(entity);
 		for(Drools_rule li:list){
@@ -117,7 +139,7 @@ public class RuleController extends BaseController {
 				li.setParamstr("{}");
 			}
 		}
-		
+		mv.addObject("entity",entity);
 		mv.addObject("ruleHead",ruleHead);
 		mv.addObject("List",list);
 		return mv;

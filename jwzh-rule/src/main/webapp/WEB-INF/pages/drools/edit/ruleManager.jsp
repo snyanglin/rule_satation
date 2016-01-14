@@ -38,6 +38,7 @@ function onPageChange(pageNum){
 
 function editRule(rulefilename){
 	window.location.href="<%=contextPath%>/ruleManager/ruleEditPre?rulefilename="+rulefilename;
+	
 }
 
 function doIt(){
@@ -71,7 +72,7 @@ function doIt(){
 			<span class="input-group-addon">规则分组</span>	
 			<select id="groupid" name="groupid" class="form-control">
 				<c:forEach items="${GroupList}" var="item" varStatus="status">
-				<option value="<c:out value="${item.id }" />"><c:out value="${item.groupname }" /></option>
+				<option value="<c:out value="${item.id }" />"><c:out value="${item.groupname}" /></option>
 				</c:forEach>
 			</select>
 			</div>

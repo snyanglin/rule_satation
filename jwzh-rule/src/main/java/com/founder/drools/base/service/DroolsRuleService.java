@@ -95,7 +95,8 @@ public class DroolsRuleService{
 	 * @throw
 	 */
 	public List<Drools_rule> queryRuleManagerList(Drools_rule entity) {	
-		if(entity == null) entity= new Drools_rule();
+		if(entity == null) 
+			entity= new Drools_rule();
 		entity.setRuletype("0");//查询规则显示列表
 		return drools_ruleDao.queryListByEntityFuzzy(entity);
 	}

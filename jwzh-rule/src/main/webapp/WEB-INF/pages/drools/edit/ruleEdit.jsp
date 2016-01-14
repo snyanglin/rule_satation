@@ -238,7 +238,7 @@
 <body>
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 	<div class="navbar-header">
-      <a class="navbar-brand" href="<%=contextPath%>/ruleManager/ruleManager">规则列表</a>
+      <a class="navbar-brand" href="<%=contextPath%>/ruleManager/ruleManagerId?ruleGroupname=${entity.groupname}">规则列表</a>
    </div>
    <div>
       <ul class="nav navbar-nav">
