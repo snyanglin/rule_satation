@@ -84,9 +84,8 @@ public class RuleController extends BaseController {
 	@RequestMapping(value = "/ruleManagerId", method = {RequestMethod.GET,RequestMethod.POST})
 	public ModelAndView ruleManagerId(Drools_rule entity,String ruleGroupname){
 		ModelAndView mv = new ModelAndView("drools/edit/ruleManager");
-		Drools_group groupEntity=new Drools_group();
-		groupEntity.setGroupname(ruleGroupname);
-		List<Drools_group> list=droolsGroupService.queryListByEntity(groupEntity);
+		List<Drools_group> list=droolsGroupService.queryListByEntity(null);
+		mv.addObject("ruleGroupname", ruleGroupname);
 		mv.addObject("Entity",entity);
 		mv.addObject("GroupList",list);
 		return mv;
