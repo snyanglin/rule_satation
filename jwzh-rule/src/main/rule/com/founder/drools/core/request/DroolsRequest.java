@@ -7,6 +7,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
@@ -39,6 +40,8 @@ public class DroolsRequest {
 	
 	private HttpRequestBean httpRequestBean=null;
 	private HttpClientUtil httpClientUtil=null;
+	
+	private Logger logger = Logger.getLogger(this.getClass());
 	
 	public DroolsRequest(){		
 	}
@@ -143,7 +146,8 @@ public class DroolsRequest {
 		//参数对象，要处理成json字符串
 		if(paramObj!=null){			
 			String str=new Gson().toJson(paramObj);
-			System.out.println("Drools request parameter string:"+str);
+			
+			logger.info("Drools request parameter string:"+str);
 			
 			ruleBean.setJsonParamStr(str);
 		}
