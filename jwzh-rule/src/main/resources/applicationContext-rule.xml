@@ -18,7 +18,7 @@
 
 	<!-- 规则引擎  连接池配置，打包给其他服务的时候用-->
 	<bean id="droolsRequest" class="com.founder.drools.core.request.DroolsRequest">
-		<property name="serverIp" value="192.168.1.247"></property>
+		<property name="serverIp" value="172.29.213.202"></property>
 		<property name="serverPort" value="8081"></property>
 		<property name="connectTimeout" value="10000"></property>
 		<property name="connectionRequestTimeout" value="10000"></property>
