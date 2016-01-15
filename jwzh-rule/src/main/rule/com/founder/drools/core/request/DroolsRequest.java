@@ -146,8 +146,9 @@ public class DroolsRequest {
 		//参数对象，要处理成json字符串
 		if(paramObj!=null){			
 			String str=new Gson().toJson(paramObj);
-			
-			logger.info("Drools request parameter string:"+str);
+			logger.info("Drools request ruleFileName:"+ruleFileName);
+			logger.info("Drools request ruleName:"+ruleName);
+			logger.info("Drools request parameter:"+str);
 			
 			ruleBean.setJsonParamStr(str);
 		}
