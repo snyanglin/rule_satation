@@ -14,7 +14,7 @@
 <body>
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 	<div class="navbar-header">
-      <a class="navbar-brand" href="<%=contextPath%>/ruleManager/ruleListQuery">规则查询</a>
+      <a class="navbar-brand" href="<%=contextPath%>/ruleManager/ruleListQueryId?groupName=${ruleObj.groupname}">规则查询</a>
    </div>	
    <div>
       <ul class="nav navbar-nav">

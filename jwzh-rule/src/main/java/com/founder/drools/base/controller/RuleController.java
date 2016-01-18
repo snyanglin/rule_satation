@@ -349,6 +349,24 @@ public class RuleController extends BaseController {
 	
 	/**
 	 * 
+	 * @Title: ruleListQueryId
+	 * @Description: TODO(规则查询)
+	 * @param @param entity
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
+	@RequestMapping(value = "/ruleListQueryId", method = {RequestMethod.GET,RequestMethod.POST})
+	public ModelAndView ruleListQueryId(String groupName){
+		ModelAndView mv = new ModelAndView("drools/query/ruleListQuery");	
+		List<Drools_group> list=droolsGroupService.queryListByEntity(null);
+		mv.addObject("groupName", groupName);
+		mv.addObject("GroupList",list);
+		return mv;
+	}
+	
+	/**
+	 * 
 	 * @Title: getRuleList
 	 * @Description: TODO(规则列表)
 	 * @param @param entity
