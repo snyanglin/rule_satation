@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+
+<sqlMap>
+	<!-- 新增记录系统字段 -->
+	<sql id="insertXtzd">XT_CJSJ ,XT_LRSJ,XT_LRRXM,XT_LRRID,XT_LRRBM,XT_LRRBMID,XT_LRIP ,XT_ZXBZ,XT_ZHXGSJ,XT_ZHXGRXM,XT_ZHXGRID,XT_ZHXGRBM,XT_ZHXGRBMID,XT_ZHXGIP</sql>
+	<!-- 新增记录系统字段值 -->
+	<sql id="insertXtzdVal">#xt_cjsj# ,#xt_lrsj#,#xt_lrrxm#,#xt_lrrid#,#xt_lrrbm#,#xt_lrrbmid#,#xt_lrip# ,#xt_zxbz#,#xt_zhxgsj#,#xt_zhxgrxm#,#xt_zhxgrid#,#xt_zhxgrbm#,#xt_zhxgrbmid#,#xt_zhxgip#</sql>
+	<!-- 修改记录系统字段 -->
+	<sql id="updateXtzd">XT_ZHXGSJ=#xt_zhxgsj#,XT_ZHXGRXM=#xt_zhxgrxm#,	XT_ZHXGRID=#xt_zhxgrid#,XT_ZHXGRBM=#xt_zhxgrbm#,XT_ZHXGRBMID=#xt_zhxgrbmid#,XT_ZHXGIP=#xt_zhxgip#</sql>
+	<!-- 注销记录系统字段 -->
+	<sql id="deleteXtzd">XT_ZHXGSJ=#xt_zhxgsj#,XT_ZHXGRXM=#xt_zhxgrxm#,	XT_ZHXGRID=#xt_zhxgrid#,XT_ZHXGRBM=#xt_zhxgrbm#,XT_ZHXGRBMID=#xt_zhxgrbmid#,XT_ZHXGIP=#xt_zhxgip#,XT_ZXBZ='1',XT_ZXYY=#xt_zxyy#	</sql>
+	<!-- 有效数据 -->
+	<sql id="yxjl"> xt_zxbz = '0' </sql>
+	<!-- 注销数据 -->
+	<sql id="zxjl"> xt_zxbz = '1' </sql>
+	<typeAlias alias="node" type="com.founder.framework.base.entity.TreeNode" />
+	<typeAlias alias="dict" type="com.founder.framework.base.entity.Dict" />
+	<typeAlias alias="sessionBean" type="com.founder.framework.base.entity.SessionBean" />
+	<typeAlias alias="operLog" type="com.founder.framework.entity.OperationLog" />
+	<typeAlias alias="manaLog" type="com.founder.framework.entity.ManagerLog" />
+	<typeAlias alias="comboBox" type="com.founder.framework.utils.ComboBox" />
+	
+</sqlMap>

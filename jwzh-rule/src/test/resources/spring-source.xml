@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                     http://www.springframework.org/schema/beans/spring-beans.xsd
+                     http://www.springframework.org/schema/tx
+                     http://www.springframework.org/schema/tx/spring-tx.xsd
+                     http://www.springframework.org/schema/context 
+                     http://www.springframework.org/schema/context/spring-context.xsd
+                     http://www.springframework.org/schema/aop
+                     http://www.springframework.org/schema/aop/spring-aop.xsd
+                     http://www.springframework.org/schema/jee
+                     http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+                     http://www.springframework.org/schema/jdbc
+                     http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd" default-autowire="byName">
+	<!-- 配置文件路径定义 -->
+	<context:property-placeholder location="classpath:resources.test.properties" />
+	
+	<context:component-scan base-package="com.founder" >
+		<context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
+	</context:component-scan>
+	
+	<!-- jndi配置
+	<jee:jndi-lookup id="dataSource" jndi-name="${PublicJNDI}" /> -->
+
+	<!-- c3p0 连接池配置-->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${oracle.driverClassName}"></property>
+		<property name="jdbcUrl" value="${oracle.url}"></property>
+		<property name="user" value="${oracle.username}"></property>
+		<property name="password" value="${oracle.password}"></property>
+		<property name="minPoolSize" value="5" />
+		<property name="maxPoolSize" value="20" />
+		<property name="maxIdleTime" value="1800" />
+		<property name="acquireIncrement" value="2" />
+		<property name="maxStatements" value="0" />
+		<property name="initialPoolSize" value="5" />
+		<property name="idleConnectionTestPeriod" value="1800" />
+		<property name="acquireRetryAttempts" value="30" />
+		<property name="breakAfterAcquireFailure" value="true" />
+		<property name="testConnectionOnCheckout" value="false" />
+	</bean>  
+
+	<!-- spring jdbc 事务管理 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 用注解来实现事务管理 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!--事务模板 -->
+	<bean id="transactionTemplate"
+		class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="transactionManager">
+		</property>
+	</bean>
+
+
+	<!-- ehcache 管理器初始化 -->
+	<bean id="ehCacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:ehcache.xml" />
+	</bean>
+	<!-- 普通数据源 
+	<bean id="nativeJdbcExtractor"
+		class="org.springframework.jdbc.support.nativejdbc.CommonsDbcpNativeJdbcExtractor"
+		lazy-init="true" />-->
+	<!-- c3p0数据源 -->
+	<bean id="nativeJdbcExtractor"
+		class="org.springframework.jdbc.support.nativejdbc.C3P0NativeJdbcExtractor"
+		lazy-init="true" />
+		
+	<bean id="oracleLobHandler" class="org.springframework.jdbc.support.lob.OracleLobHandler"
+		lazy-init="true">
+		<property name="nativeJdbcExtractor" ref="nativeJdbcExtractor" />
+	</bean>
+	<!-- ibatis配置 -->
+	<bean id="sqlMapClient"
+		class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+		<property name="configLocation">
+			<value>classpath:sqlmap-config.xml</value>
+		</property>
+		<property name="mappingLocations">
+			<list>
+				<value>classpath:/com/founder/**/sqlmap/*.xml</value>
+				<!-- <value>classpath:/com/founder/framework/sqlmap/operationLog.xml</value>
+				<value>classpath:/com/founder/framework/sqlmap/system.xml</value>
+				<value>classpath:/com/founder/framework/sysManager/sqlmap/*.xml</value>
+				<value>classpath:/com/founder/framework/dictionary/sqlmap/*.xml</value>
+				<value>classpath:/com/founder/framework/organization/**/sqlmap/*.xml</value>
+				<value>classpath:/com/founder/framework/systemconfig/sqlmap/*.xml</value>
+				<value>classpath:/com/founder/framework/workflow/sqlmap/*.xml</value>
+				<value>classpath:/com/founder/framework/workflowtest/sqlmap/*.xml</value> -->
+			</list>
+		</property>
+		<property name="lobHandler" ref="oracleLobHandler"/>
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="sqlMapClientTemplate" class="org.springframework.orm.ibatis.SqlMapClientTemplate">
+		<property name="sqlMapClient">
+			<ref bean="sqlMapClient" /> 
+		</property>
+	</bean>
+
+</beans>

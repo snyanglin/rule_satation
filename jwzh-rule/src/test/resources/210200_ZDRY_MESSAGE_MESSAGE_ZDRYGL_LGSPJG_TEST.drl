@@ -1,0 +1,214 @@
+/*RULE HEAD START*/
+
+/*BZ:大连_重点人员_消息*/
+
+import com.founder.drools.core.request.RuleBean
+import com.founder.drools.core.model.DroolsTools
+import com.founder.drools.core.model.MsgDict
+import com.founder.framework.organization.assign.vo.OrgUserInfo
+import com.founder.framework.organization.department.bean.OrgOrganization
+import java.util.Map
+import java.util.List
+import java.util.ArrayList
+import java.util.HashMap
+import java.lang.String
+import com.google.gson.Gson
+
+
+/*RULE HEAD END*/
+
+
+
+/*RULE BODY START*/
+
+
+
+/*RULE START*/
+
+rule "MESSAGE_ZDRYGL_LGSPJG"
+
+
+
+when
+	ruleBean:RuleBean(ruleName == 'MESSAGE_ZDRYGL_LGSPJG');//列管审批消息
+	paraMap:Map();
+then
+	//获取：重点人员姓名
+	String zdryName=(String) paraMap.get("zdryName");
+	//获取：发送人fsrName
+	String fsrName = (String) paraMap.get("fsrName");
+	//获取：发送人fsrOrgName
+	String fsrOrgName= (String) paraMap.get("fsrOrgName");
+	//获取：重点人员ID
+	String zdryId= (String) paraMap.get("zdryId");
+	//获取：审批结果result
+	String result= (String) paraMap.get("result");
+	//获取：是否为监督部门
+	String isJdbm=  (String)paraMap.get("isJdbm");
+    //获取：申请人部门Code
+	String sqrOrgCode = (String)paraMap.get("sqrOrgId"); 
+     //获取：列管类型
+	String zdrylxName= (String)paraMap.get("zdrylxName"); 
+
+    //参数验证
+	if(zdryName == null){
+		ruleBean.setResponse("重点人员姓名（zdryName）不能为空");//返回数据
+	}else if(fsrName== null){
+		ruleBean.setResponse("发送人姓名（fsrName ）不能为空");//返回数据
+	}else if(fsrOrgName== null){
+		ruleBean.setResponse("发送人机构名称（fsrOrgName）不能为空");//返回数据
+	}else if(zdryId== null){
+		ruleBean.setResponse("重点人员Id（zdryId）不能为空");//返回数据
+	}else if(result== null){
+		ruleBean.setResponse("审批结果（result）不能为空");//返回数据
+	}else if(zdrylxName== null){
+		ruleBean.setResponse("审批结果（zdrylxName）不能为空");//返回数据
+	}else{
+        //处理接收人
+		String zdryStr=(String)DroolsTools.requestByGet("c53b6d8e546c433196d90be9642a17b6",paraMap);
+		if(DroolsTools.isEmpty(zdryStr)){
+			Map zdryMap = (Map)DroolsTools.jsonToMap(zdryStr);
+			String glbmId = (String)zdryMap.get("glbm");//管理部门ID
+			//其他重点人员辖区
+            String inculdeSubOrg="false"; 
+            String noRepeatUser="false";
+
+			//列管成功：原民警
+			String [] mjAry=new String [4];
+			mjAry[0] = (String)zdryMap.get("xt_lrrid");// 接收人代码;
+			mjAry[1] = (String)zdryMap.get("xt_lrrxm");// 接收人姓名
+            mjAry[2]=inculdeSubOrg;
+            mjAry[3]=noRepeatUser;
+
+			//列管失败：如果为监督部门还要向所长发送信息
+			String[][] mgAry = new String[2][2];
+			mgAry[0][0]=(String)mjAry[0];
+			mgAry[0][1]=(String)mjAry[1];
+			List<OrgUserInfo> list=DroolsTools.getSZ(glbmId );
+			if(list.isEmpty()){
+				ruleBean.setResponse("未查到所长的信息");
+			}else{
+				mgAry[1][0] = list.get(0).getUserid();// 接收人代码
+				mgAry[1][1]= list.get(0).getUsername();// 接收人姓名
+			}
+			
+            //实有人口其他居住地辖区
+            paraMap.put("syrkId",(String)zdryMap.get("syrkid"));
+			String jsrAryJson=(String)DroolsTools.requestByGet("77e0c465108c45a3bbe922072e04ebef",paraMap);
+			String[][] otherOrg= new Gson().fromJson(jsrAryJson, String[][].class);
+			if(otherOrg==null){
+				ruleBean.setResponse("未找到该实有人口的其它居住地方！");
+			}else{
+				for(int i=0;i<otherOrg.length;i++){
+				otherOrg[i][2]=inculdeSubOrg;
+				otherOrg[i][3]=noRepeatUser;
+				}
+			}
+
+            String contents=""; //列管成功或失败使用的消息体
+			String msg="";//列管成功后给其他部门发送的消息体
+			
+			String newOrgName = DroolsTools.getOrgName(glbmId); //当前责任区
+			List<OrgOrganization> orgList = DroolsTools.getParentOrgList(glbmId);
+			OrgOrganization newOrg;
+			String newFjName=null;
+			String newPcsName=null;
+			if(orgList.isEmpty()){
+				ruleBean.setResponse("未查到当前管理部门的信息");
+			}else{
+
+				for(int i=0;i<orgList .size();i++){
+					newOrg = orgList.get(i);
+					if("21".equals(newOrg.getOrglevel())){//当前分局
+						newFjName = newOrg.getOrgname();		
+					}
+					if("32".equals(newOrg.getOrglevel())){//当前派出所
+						newPcsName= newOrg.getOrgname();		
+					}		
+				}
+			}
+
+
+			boolean flag=true;
+            //构建消息正文，例如：[审批部门][审批人姓名]审批不/同意重点人员[重点人员姓名]的列管申请。
+			if("lgSuccess".equals(result)){
+				result="";
+				//构建列管操作完成后的消息：你辖区[实有人口管理类型][实有人口姓名]（[实有人口证件类型][实有人口证件号码]）
+				//已被[列管分局、派出所、辖区]列管为[重点人员管理类型]。
+				String syrkJson=(String)DroolsTools.requestByGet("5dfdee07ff2e431f9000b76b596cced8",paraMap);
+				if(DroolsTools.isEmpty(syrkJson)){
+					//列管成功后有两条信息
+					Map resMap=new HashMap(); //列管成功
+					Map lgcgMap=new HashMap();//列管成功后发给其他管辖部门的
+					List resList=new ArrayList();//两条消息封装在一个list集合中
+					String syrkzjhm = (String)zdryMap.get("zjhm"); //实有人口证件号码
+					String syrkzjlx = (String)zdryMap.get("cyzjdm"); //实有人口证件类型
+					String syrkxm = (String)zdryMap.get("xm"); //实有人口姓名 
+					String zdrygllxdm = (String)zdryMap.get("zdrygllxdm"); //重点人员管理类型代码
+                    Map syrkMap = (Map)DroolsTools.jsonToMap(syrkJson);	
+					String syrklb=(String)syrkMap.get("bz");//获取身份证证件类型			
+					msg = "你辖区"+syrklb+syrkxm+"("+syrklb+syrkzjhm+")已被"+newFjName+newPcsName+newOrgName+"列管为"+zdrylxName;
+					contents = fsrOrgName + fsrName + "审批"+result+"同意重点人员" + zdryName+ "的列管申请";
+
+					resMap.put("msgJsr",mjAry);//接收人数组
+					resMap.put("msgTitle","列管审批结果");//消息标题
+					resMap.put("msgContent",contents);//消息内容
+					resMap.put("xxlb",MsgDict.MSGLB.XXTX);// 1消息提醒 2业务协同 3通知公告 4 通报公告 5 工作任务
+					resMap.put("jslx",MsgDict.MSGLX.TOUSER);// 接收类型0按人 1按部门
+
+					lgcgMap.put("msgJsr",otherOrg); //其他地区接收
+					lgcgMap.put("msgTitle","重点人员业务协同");//消息标题
+					lgcgMap.put("msgContent",msg);//消息内容
+					lgcgMap.put("xxlb",MsgDict.MSGLB.XXTX);// 1消息提醒 2业务协同 3通知公告 4 通报公告 5 工作任务
+					lgcgMap.put("jslx",MsgDict.MSGLX.TOORG);// 接收类型0按人 1按部门
+
+					resList.add(resMap);
+					resList.add(lgcgMap);
+					//返回结果
+					ruleBean.setResStatus(0);//返回成功 
+					ruleBean.setResponse(resList);
+				}else{
+					flag=false;
+					ruleBean.setResponse("未查询到实有人口信息");	
+				}
+				
+			}else{
+				result="不";
+				Map falseResMap=new HashMap(); //列管成功
+                if(flag){
+					contents = fsrOrgName + fsrName + "审批"+result+"同意重点人员" + zdryName+ "的列管申请";
+					if("true".equals(isJdbm)){
+						falseResMap.put("msgJsr",mgAry);//接收人数组(含所长)
+						falseResMap.put("msgTitle","重点人员列管审批结果");//消息标题
+						falseResMap.put("msgContent",contents);//消息内容
+						falseResMap.put("xxlb",MsgDict.MSGLB.XXTX);// 1消息提醒 2业务协同 3通知公告 4 通报公告 5 工作任务
+						falseResMap.put("jslx",MsgDict.MSGLX.TOUSER);// 接收类型0按人 1按部门	
+						//返回结果
+						ruleBean.setResStatus(0);//返回成功 
+						ruleBean.setResponse(falseResMap);	
+					}else{
+						falseResMap.put("msgJsr",mjAry);//接收人数组(不含所长)
+						falseResMap.put("msgTitle","重点人员列管审批结果");//消息标题
+						falseResMap.put("msgContent",contents);//消息内容
+						falseResMap.put("xxlb",MsgDict.MSGLB.XXTX);// 1消息提醒 2业务协同 3通知公告 4 通报公告 5 工作任务
+						falseResMap.put("jslx",MsgDict.MSGLX.TOUSER);// 接收类型0按人 1按部门	
+						//返回结果
+						ruleBean.setResStatus(0);//返回成功 
+						ruleBean.setResponse(falseResMap);	
+					}
+                   }	
+				}			 
+		}else{
+                     ruleBean.setResponse("未查询到重点人员"+zdryId+"的信息");	
+               }
+ }
+
+
+
+end
+
+/*RULE END*/
+
+
+
+/*RULE BODY END*/

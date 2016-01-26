@@ -1,0 +1,56 @@
+//created on: 2016-1-19
+package com.ibm.clock  
+
+//import com.founder.drools.test.model.Clock
+ 
+declare Clock
+    hour : int
+	minute : int 
+	second : int 
+end 
+
+function void print(Clock s){
+	System.out.println(s);
+}
+
+rule "init"
+	salience 1
+	no-loop true
+	when 
+		eval(true);
+	then
+		Clock c1 = new Clock();
+		insert(c1);
+end
+
+rule "run"  
+    salience 2  
+    when   
+        $c: Clock(!(hour == 1 && second == 1))  
+    then  
+        print($c);
+        Thread.sleep(1000);  
+         $c.setSecond( $c.getSecond() + 1);  
+        update( $c);  
+end  
+ 
+rule "second"  
+    salience 3  
+    when  
+        $c: Clock(second == 60);  
+    then  
+         $c.setMinute( $c.getMinute() + 1);  
+         $c.setSecond(0);  
+        update( $c);  
+end  
+  
+rule "minute"  
+    salience 4  
+    when  
+         $c: Clock(minute == 60)  
+    then  
+         $c.setHour( $c.getHour() + 1);  
+         $c.setMinute(0);  
+        update( $c);  
+end  
+

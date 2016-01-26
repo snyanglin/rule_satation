@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -24,14 +23,14 @@ import java.util.zip.ZipOutputStream;
 public class ZipUtils {
 	private static byte[] buf = new byte[1024];
 	
-	public static void main(String[] args) throws Exception {
-		ZipUtils.zipFiles("D:/work/drl/export","D:/work/drl/export.zip");
-		File file=new File("D:/work/drl/export.zip");
-		FileInputStream in = new FileInputStream(file);
-		byte[] bytes=new byte[1024*1024];
-		in.read(bytes);
-		ZipUtils.unZipFile(bytes,"D:/work/drl/import");
-	}
+//	public static void main(String[] args) throws Exception {
+//		ZipUtils.zipFiles("D:/work/drl/export","D:/work/drl/export.zip");
+//		File file=new File("D:/work/drl/export.zip");
+//		FileInputStream in = new FileInputStream(file);
+//		byte[] bytes=new byte[1024*1024];
+//		in.read(bytes);
+//		ZipUtils.unZipFile(bytes,"D:/work/drl/import");
+//	}
 	
 	/**‘
 	 * 

@@ -1,11 +1,11 @@
-package com.founder.drools.core.model;
+package com.founder.drools.test;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.founder.drools.test.TestCase;
+import com.founder.drools.core.model.DroolsTools;
 import com.founder.framework.organization.assign.vo.OrgUserInfo;
 import com.founder.framework.organization.department.bean.OrgOrganization;
 import com.founder.framework.organization.user.bean.OrgUser;
@@ -14,7 +14,6 @@ import com.founder.framework.organization.user.bean.OrgUser;
 public class DroolsToolsTest extends TestCase{	
 	@Before
 	public void setUp() throws Exception {
-		super.setUp();		
 	}
 
 	//@Test
