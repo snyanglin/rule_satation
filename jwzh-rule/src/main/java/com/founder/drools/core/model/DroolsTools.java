@@ -13,6 +13,7 @@ import org.apache.http.HttpEntity;
 
 import com.founder.drools.base.service.DroolsRequestService;
 import com.founder.drools.core.request.HttpRequestBean;
+import com.founder.drools.core.request.RuleBean;
 import com.founder.framework.config.SpringCreator;
 import com.founder.framework.organization.assign.service.OrgAssignPublic;
 import com.founder.framework.organization.assign.service.OrgOrgAssignUserService;
@@ -362,5 +363,69 @@ public class DroolsTools {
 		}
 		
 		return orgUserService;
+	}
+	
+	/**
+	 *  response the message use the Map 
+	 * @param msgTitle
+	 * @param msgContent
+	 * @param xxlb
+	 * @param jslx
+	 * @param msgJsr
+	 * @return
+	 */
+	public static Map resMapToUser(String msgTitle,String msgContent,String xxlb,String jslx,String[] mesJsr){
+		Map resMap = new HashMap();
+		resMap.put("msgTitle",msgTitle);
+		resMap.put("msgContent",msgContent);
+		resMap.put("xxlb",xxlb);
+		resMap.put("jslx",jslx);
+		resMap.put("msgJsr",mesJsr);
+		return resMap;
+		
+	}
+	
+	/**
+	 *  response the many message use the Map 
+	 * @param msgTitle
+	 * @param msgContent
+	 * @param xxlb
+	 * @param jslx
+	 * @param msgJsr
+	 * @return
+	 */
+	public static Map resMapToUserAny(String msgTitle,String msgContent,String xxlb,String jslx,String[][] mesJsr){
+		Map resMap = new HashMap();
+		resMap.put("msgTitle",msgTitle);
+		resMap.put("msgContent",msgContent);
+		resMap.put("xxlb",xxlb);
+		resMap.put("jslx",jslx);
+		resMap.put("msgJsr",mesJsr);
+		return resMap;
+		
+	}
+	/**
+	 * judge the parameter is right or not
+	 * @param map
+	 * @param ruleBean
+	 * @param arg
+	 * @return
+	 */
+	public static boolean orSatisfy(Map map,RuleBean ruleBean,String ... arg){
+		Map<String,String> hashMap = map;
+		for(Map.Entry<String,String> key : hashMap.entrySet()){
+			if(key.getValue() ==null){
+				ruleBean.setResponse("传入参数"+key.getKey()+"为空值！");
+				return false;
+			}
+		}
+		for(int i = 0;i < arg.length;i ++){
+		if(!(map.containsKey(arg[i]))){
+			ruleBean.setResponse("传入的参数缺少"+arg[i]);
+			return false;
+			}
+		}
+		return true;
+		
 	}
 }

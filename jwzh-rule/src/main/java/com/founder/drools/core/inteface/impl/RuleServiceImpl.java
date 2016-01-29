@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import net.sf.json.JSONException;
+import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
@@ -153,7 +154,12 @@ public class RuleServiceImpl implements RuleService {
 	        while (iterator.hasNext()) {
 	
 	            key = (String) iterator.next();
-	            value = jsonObject.getString(key);
+	            Object o= jsonObject.get(key);
+	            if(o instanceof JSONNull){
+	            	value=null;
+	            }else {
+	            	value=String.valueOf(o);
+	            }
 	            result.put(key, jsonToMap(value));
 	
 	        }
