@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.founder.drools.base.model.Drools_group;
 import com.founder.drools.base.service.RuleExOrImService;
+import com.founder.drools.core.request.RuleBean;
 import com.founder.framework.base.controller.BaseController;
 /**
  * ****************************************************************************
@@ -57,6 +58,36 @@ public class RuleExOrImController extends BaseController {
 		
 		return mv;
 	}
+	
+	/**
+	 * 
+	 * @Title: testRule
+	 * @Description: TODO(规则日志导出准备)
+	 * @param @return    设定文件
+	 * @return RuleBean    返回类型
+	 * @throw
+	 */
+	@RequestMapping(value = "/logPrepare", method = {RequestMethod.GET})
+	public @ResponseBody String logPrepare(){
+		String result = "true";
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @Title: ruleExportPre
+	 * @Description: TODO(日志导出页面)
+	 * @param @return    设定文件
+	 * @return ModelAndView    返回类型
+	 * @throw
+	 */
+	@RequestMapping(value = "/logExportPre", method = {RequestMethod.GET})
+	public ModelAndView logExportPre(){
+		ModelAndView mv = new ModelAndView("exorim/export/logExportPre");
+		mv.addObject("name", "准备下载");
+		return mv;
+	}
+	
 	
 	/**
 	 * 
