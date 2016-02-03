@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.management.RuntimeErrorException;
+
 import net.sf.json.JSONException;
 import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
@@ -15,7 +17,11 @@ import org.springframework.stereotype.Service;
 import com.founder.drools.core.inteface.RuleService;
 import com.founder.drools.core.model.RuleConfig;
 import com.founder.drools.core.request.RuleBean;
+import com.founder.framework.annotation.MethodAnnotation;
+import com.founder.framework.annotation.MethodAnnotation.logType;
+import com.founder.framework.annotation.TypeAnnotation;
 import com.founder.framework.config.SystemConfig;
+import com.founder.framework.exception.BussinessException;
 
 /**
  * ****************************************************************************
@@ -30,15 +36,20 @@ import com.founder.framework.config.SystemConfig;
  * @Version:      [v1.0]
  */
 @Service
+@TypeAnnotation("执行规则")
 public class RuleServiceImpl implements RuleService {		
 	private Logger logger = Logger.getLogger(this.getClass());
 	private String drlFilePath=null;
 	
+	
 	//规则对应关系Map
 	private Map<String, RuleConfig> ruleConfigMap = new HashMap<String, RuleConfig>();
 	
+	@SuppressWarnings("finally")
+	@MethodAnnotation(value="规则执行",type=logType.query)
 	@Override
 	public boolean executeRule(RuleBean ruleBean) {
+		 boolean isOk = true;
 		try{	
 			String ruleFileName=ruleBean.getRuleFileName();
 			logger.info("execute rule:"+ruleFileName);
@@ -55,14 +66,22 @@ public class RuleServiceImpl implements RuleService {
 			ksession.insert(this.jsonToMap(ruleBean.getJsonParamStr()));		
 	        //触发规则引擎
 	        ksession.fireAllRules();
-	        ksession.dispose();  
-	        return true;
+	        ksession.dispose(); 
+	        isOk = false;
 		}catch(Exception e){
 			e.printStackTrace();
 			ruleBean.setResponse(e.toString());
+			
+		}finally{
+			if(isOk){
+				return false;
+			}else{
+				return true;				
+			}
+			
 		}
 		
-		return false;
+		
 	}
 	
 	public boolean reLoadOne(String ruleFileName) throws Exception{
@@ -78,6 +97,7 @@ public class RuleServiceImpl implements RuleService {
 		
 	}
 	
+	@SuppressWarnings("finally")
 	public RuleBean validateRule(RuleBean ruleBean){
 		try{
 			if(drlFilePath == null)
@@ -92,8 +112,11 @@ public class RuleServiceImpl implements RuleService {
 		}catch(Exception e){
 			e.printStackTrace();
 			ruleBean.setResponse(e.toString());
+			throw new Exception(e);
+		}finally{
+			return ruleBean;
 		}
-		return ruleBean;
+		
 	}
 	
 	/**
@@ -108,6 +131,8 @@ public class RuleServiceImpl implements RuleService {
 	 * @return RuleBean    返回类型
 	 * @throw
 	 */
+	@SuppressWarnings("finally")
+	@MethodAnnotation(value="规则测试",type=logType.insert)
 	public RuleBean testRule(RuleBean ruleBean,String jsonParamStr){
 		try{
 			if(drlFilePath == null)
@@ -115,19 +140,21 @@ public class RuleServiceImpl implements RuleService {
 			
 			RuleConfig ruleConfig = new RuleConfig(drlFilePath+"/test/"+ruleBean.getRuleFileName()+"_"+ruleBean.getRuleName()+"_TEST.drl");
 			StatefulKnowledgeSession ksession = ruleConfig.getKbase().newStatefulKnowledgeSession();
+			ruleBean.setJsonParamStr(jsonParamStr);
 			
-			ksession.insert(ruleBean);	
+  			ksession.insert(ruleBean);	
 			ksession.insert(jsonToMap(jsonParamStr));		
 		        //触发规则引擎
 		    ksession.fireAllRules();
-			
-	        ksession.dispose();
-	        
+	        ksession.dispose();     
 		}catch(Exception e){
 			e.printStackTrace();
 			ruleBean.setResponse(e.toString());
+			throw new RuntimeException(e);
+		}finally{
+			return ruleBean;
 		}
-		return ruleBean;
+		
 	}
 	
 	/**

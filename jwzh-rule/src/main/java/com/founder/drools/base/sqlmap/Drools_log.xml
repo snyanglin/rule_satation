@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Drools_log">
+	
+	<typeAlias alias="droolsLog" type="com.founder.drools.core.request.RuleLogBean" />
+	<!-- 新增 -->
+	<insert id="save" parameterClass="droolsLog">
+		insert into drools_log
+       (
+        id
+		<isNotEmpty prepend="," property="modeName"><![CDATA[ modeName]]></isNotEmpty>
+		<isNotEmpty prepend="," property="funcName"><![CDATA[ funcName]]></isNotEmpty>
+		<isNotEmpty prepend="," property="ruleFileName"><![CDATA[ ruleFileName]]></isNotEmpty>
+		<isNotEmpty prepend="," property="ruleName"><![CDATA[ ruleName]]></isNotEmpty>
+		<isNotEmpty prepend="," property="updateTime"><![CDATA[ updateTime]]></isNotEmpty>
+		<isNotEmpty prepend="," property="paramStr"><![CDATA[ paramStr]]></isNotEmpty>
+		<isNotEmpty prepend="," property="exMessage"><![CDATA[ exMessage]]></isNotEmpty>
+       )VALUES(
+        #id#
+       	<isNotEmpty prepend="," property="modeName"><![CDATA[ #modeName#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="funcName"><![CDATA[ #funcName#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="ruleFileName"><![CDATA[ #ruleFileName#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="ruleName"><![CDATA[ #ruleName#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="updateTime"><![CDATA[ #updateTime#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="paramStr"><![CDATA[ #paramStr#]]></isNotEmpty>
+		<isNotEmpty prepend="," property="exMessage"><![CDATA[ #exMessage#]]></isNotEmpty>
+       )
+	</insert>
+	
+</sqlMap>

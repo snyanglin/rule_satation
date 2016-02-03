@@ -31,4 +31,7 @@
 		<property name="useConPool" value="0" /><!-- 使用连接池 -->
 	</bean>
 	
+	<bean id="operationLogService" class="com.founder.drools.core.inteface.impl.DroolsLogServiceImpl" />
+	
+	<bean id="logInterceptor" class="com.founder.framework.interceptor.LogInterceptor" />
 </beans>
